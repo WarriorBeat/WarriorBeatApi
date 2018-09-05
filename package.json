@@ -1,0 +1,17 @@
+{
+  "name": "warriorbeatapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "yarn run pack && sls deploy",
+    "pack": "rm requirements.txt && pipenv run pip freeze > requirements.txt"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "js-yaml": "^3.9.1",
+    "serverless-python-requirements": "^2.5.0",
+    "serverless-wsgi": "^1.3.0"
+  }
+}

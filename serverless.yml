@@ -1,0 +1,27 @@
+service: warriorbeatapi
+plugins:
+  - serverless-python-requirements
+  - serverless-wsgi
+custom:
+  wsgi:
+    app: app.app
+    packRequirements: false
+  pythonRequirements:
+    dockerizePip: true
+package:
+  exclude:
+    - node_modules/**
+    - venv/**
+provider:
+  name: aws
+  runtime: python3.6
+  stage: dev
+  region: us-east-1
+  apiName: wbapi
+  stackName: WarriorBeat-Serverless
+functions:
+  app:
+    handler: wsgi.handler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
