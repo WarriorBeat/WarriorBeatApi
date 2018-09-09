@@ -2,16 +2,23 @@ service: warriorbeatapi
 plugins:
   - serverless-python-requirements
   - serverless-wsgi
+  - serverless-dynamodb-local
 custom:
+  tableName: 'feed-table-${self:provider.stage}'
   wsgi:
     app: app.app
     packRequirements: false
   pythonRequirements:
     dockerizePip: true
+  dynamodb:
+    start:
+      migrate: true
 package:
   exclude:
     - node_modules/**
     - venv/**
+app: warriorbeatapi
+tenant: bradenm
 provider:
   name: aws
   runtime: python3.6
@@ -19,9 +26,39 @@ provider:
   region: us-east-1
   apiName: wbapi
   stackName: WarriorBeat-Serverless
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - { 'Fn::GetAtt': ['FeedDynamoTable', 'Arn'] }
+  environment:
+    FEED_TABLE: ${self:custom.tableName}
+
 functions:
   app:
     handler: wsgi.handler
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
+
+resources:
+  Resources:
+    FeedDynamoTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: feedId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: feedId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableName}
