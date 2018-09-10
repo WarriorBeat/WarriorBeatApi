@@ -11,6 +11,8 @@ Flask = "==1.0.2"
 MarkupSafe = "==1.0"
 Werkzeug = "==0.14.1"
 "boto3" = "*"
+flask-wtf = "*"
+requests = "*"
 
 [dev-packages]
 pylint = "*"

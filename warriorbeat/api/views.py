@@ -1,11 +1,14 @@
+# warriorbeat/api/views.py
+
 import os
 import json
 
 import boto3
-from flask import Flask, jsonify, request
+from flask import Flask, Blueprint, jsonify, request
 
+api = Blueprint('api', __name__, template_folder='templates',
+                static_folder='static')
 
-app = Flask(__name__)
 
 FEED_TABLE = os.environ['FEED_TABLE']
 IS_OFFLINE = os.environ.get('IS_OFFLINE')
@@ -17,14 +20,14 @@ else:
     client = boto3.client('dynamodb')
 
 
-@app.route("/")
+@api.route("/")
 def main():
     return jsonify({
         'IS_OFFLINE': IS_OFFLINE
     })
 
 
-@app.route("/feed/<string:feed_id>")
+@api.route("/feed/<string:feed_id>")
 def get_feed(feed_id):
     resp = client.get_item(
         TableName=FEED_TABLE,
@@ -42,7 +45,7 @@ def get_feed(feed_id):
     })
 
 
-@app.route("/feed", methods=["POST"])
+@api.route("/feed", methods=["POST"])
 def create_feed():
     feed_id = request.json.get('feedId')
     name = request.json.get('name')

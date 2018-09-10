@@ -7,7 +7,10 @@
     "deploy": "yarn run pack && sls deploy",
     "pack": "rm requirements.txt && pipenv run pip freeze > requirements.txt",
     "up": "yarn run pack && sls deploy function -f app",
-    "local": "yarn run pack && (sls dynamodb start &) && (sls wsgi serve &)"
+    "startdb": "sls dynamodb start",
+    "local": "sls wsgi serve",
+    "detach_local": "yarn run pack && (sls dynamodb start &) && (sls wsgi serve &)",
+    "dlo": "yarn run detach_local"
   },
   "author": "",
   "license": "ISC",
