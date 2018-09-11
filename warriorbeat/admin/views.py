@@ -1,8 +1,14 @@
 # warriorbeat/admin/views.py
 
-from flask import Flask, Blueprint, render_template, redirect, url_for, request, json, jsonify
-from .forms import EmailForm, AddFeedForm
+
 import requests
+from flask import Blueprint, Flask, json, jsonify, redirect, render_template, \
+    request, url_for
+from werkzeug.utils import secure_filename
+import tempfile
+import os
+from .forms import AddFeedForm, EmailForm
+
 
 admin = Blueprint('admin', __name__, template_folder='templates',
                   static_folder='static')
@@ -26,15 +32,20 @@ def test():
 def add_feed():
     form = AddFeedForm()
     if form.validate_on_submit():
-        print(url_for('api.create_feed'))
-        print('FORM INFO')
+        img = form.photo.data
+        img_name = img.filename
+        fd, path = tempfile.mkstemp()
+        with os.fdopen(fd, 'wb') as tmp:
+            img.save(tmp)
+            tmp.close()
         data = {
-            'feedId': request.form['id'],
-            'name': request.form['name']
+            'feedId': form.id.data,
+            'name': form.name.data,
+            'image': path
         }
         headers = {'Content-Type': 'application/json'}
         r = requests.post(url_for('api.create_feed', _external=True),
                           data=json.dumps(data), headers=headers)
-
+        os.remove(path)
         return redirect(url_for('admin.home'))
     return render_template('home/add_feed.html', form=form)

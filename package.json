@@ -8,8 +8,9 @@
     "pack": "rm requirements.txt && pipenv run pip freeze > requirements.txt",
     "up": "yarn run pack && sls deploy function -f app",
     "startdb": "sls dynamodb start",
+    "starts3": "sls s3 start",
     "local": "sls wsgi serve",
-    "detach_local": "yarn run pack && (sls dynamodb start &) && (sls wsgi serve &)",
+    "detach_local": "yarn run pack && (sls dynamodb start &) && (sls s3 start &) && (sls wsgi serve &)",
     "dlo": "yarn run detach_local"
   },
   "author": "",
@@ -19,5 +20,8 @@
     "serverless-dynamodb-local": "^0.2.33",
     "serverless-python-requirements": "^2.5.0",
     "serverless-wsgi": "^1.3.0"
+  },
+  "dependencies": {
+    "serverless-s3-local": "^0.3.16"
   }
 }

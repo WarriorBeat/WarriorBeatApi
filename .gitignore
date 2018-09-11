@@ -104,6 +104,7 @@ ENV/
 .serverless/
 .requirements/
 .dynamodb/
+.s3-local/
 
 # NPM
 /node_modules

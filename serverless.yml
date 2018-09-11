@@ -3,6 +3,7 @@ plugins:
   - serverless-python-requirements
   - serverless-wsgi
   - serverless-dynamodb-local
+  - serverless-s3-local
 custom:
   tableName: 'feed-table-${self:provider.stage}'
   wsgi:
@@ -13,6 +14,12 @@ custom:
   dynamodb:
     start:
       migrate: true
+  s3:
+    host: 0.0.0.0
+    port: 9000
+    directory: ./.s3-local
+    cors: false
+
 package:
   exclude:
     - node_modules/**
@@ -62,3 +69,7 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.tableName}
+    FeedBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: feed-bucket
