@@ -1,7 +1,7 @@
 # warriorbeat/admin/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, FileField
+from wtforms import StringField, FileField, DateField
 from wtforms.validators import Email, DataRequired
 
 
@@ -11,6 +11,7 @@ class EmailForm(FlaskForm):
 
 class AddFeedForm(FlaskForm):
     id = StringField('Email')
-    name = StringField('Name')
-    photo = FileField('Cover Image')
-    
+    title = StringField('Title')
+    body = StringField('Body')
+    author = StringField('Author')
+    cover_img = FileField('Cover Image')

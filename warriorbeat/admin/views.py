@@ -7,6 +7,8 @@ from flask import Blueprint, Flask, json, jsonify, redirect, render_template, \
 from werkzeug.utils import secure_filename
 import tempfile
 import os
+import datetime
+from slugify import slugify
 from .forms import AddFeedForm, EmailForm
 
 
@@ -32,16 +34,22 @@ def test():
 def add_feed():
     form = AddFeedForm()
     if form.validate_on_submit():
-        img = form.photo.data
+        img = form.cover_img.data
         img_name = img.filename
+        # date = datetime().now()
+        slug = slugify(form.title.data)
         fd, path = tempfile.mkstemp()
         with os.fdopen(fd, 'wb') as tmp:
             img.save(tmp)
             tmp.close()
         data = {
             'feedId': form.id.data,
-            'name': form.name.data,
-            'image': path
+            'title': form.title.data,
+            'author': form.author.data,
+            'body': form.body.data,
+            'slug': slug,
+            'date': 'today',
+            'cover_img': path
         }
         headers = {'Content-Type': 'application/json'}
         r = requests.post(url_for('api.create_feed', _external=True),

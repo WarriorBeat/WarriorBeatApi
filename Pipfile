@@ -13,6 +13,7 @@ Werkzeug = "==0.14.1"
 "boto3" = "*"
 flask-wtf = "*"
 requests = "*"
+awesome-slugify = "*"
 
 [dev-packages]
 pylint = "*"

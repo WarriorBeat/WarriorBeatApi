@@ -23,6 +23,7 @@ if IS_OFFLINE:
 else:
     client = boto3.client('dynamodb')
     # TODO: Setup AWS S3 Resource
+dynamodb = boto3.resource('dynamodb')
 
 
 @api.route("/")
@@ -46,28 +47,49 @@ def get_feed(feed_id):
 
     return jsonify({
         'feedId': item.get('feedId').get('S'),
-        'name': item.get('name').get('S')
+        'title': item.get('title').get('S'),
+        'author': item.get('author').get('S'),
+        'body': item.get('body').get('S'),
+        'slug': item.get('slug').get('S'),
+        'date': item.get('date').get('S'),
+        'image': item.get('image').get('S'),
     })
 
 
 @api.route("/feed", methods=["POST"])
 def create_feed():
     feed_id = request.json.get('feedId')
-    name = request.json.get('name')
-    image = request.json.get('image')
-    if not feed_id or not name:
+    title = request.json.get('title')
+    author = request.json.get('author')
+    body = request.json.get('body')
+    slug = request.json.get('slug')
+    date = request.json.get('date')
+    image = request.json.get('cover_img')
+
+    if not feed_id or not title:
         return jsonify({
             'error': 'Please provide feedId and name'
         }), 400
     s3.upload_file(image, "feed-bucket", f"imgs/{feed_id}.jpg")
+    image_key = f"imgs/{feed_id}.jpg"
     resp = client.put_item(
         TableName=FEED_TABLE,
         Item={
             'feedId': {'S': feed_id},
-            'name': {'S': name}
+            'title': {'S': title},
+            'author': {'S': author},
+            'body': {'S': body},
+            'slug': {'S': slug},
+            'date': {'S': date},
+            'image': {'S': image_key}
         }
     )
     return jsonify({
         'feedId': feed_id,
-        'name': name
+        'title': title,
+        'author': author,
+        'body': body,
+        'slug': slug,
+        'date': date,
+        'image': image_key
     })
