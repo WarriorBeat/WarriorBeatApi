@@ -42,17 +42,18 @@ class S3Storage:
         self.endpoint = "http://localhost:9000"
         self.s3bucket = boto3.resource(
             's3', region_name='localhost', endpoint_url=self.endpoint)
-        self.storage = self.s3bucket.Bucket(bucket_name)
+        self.bucket_name = bucket_name
+        self.storage = self.s3bucket.Bucket(self.bucket_name)
         self.key = ''
 
-    def get_key(self, path, key=None):
-        url = self.endpoint + f"/{key}"
+    def get_uri(self, key):
+        url = self.endpoint + f"/{self.bucket_name + '/' + key}"
         return url
 
     def upload(self, path, key=None):
         if key:
-            self.storage.upload_file(key, path)
-            return self.get_key(key)
+            self.storage.upload_file(path, key)
+            return self.get_uri(key)
         else:
-            resp = self.storage.upload_file(self.key, path)
-            return self.get_key(self.key)
+            resp = self.storage.upload_file(path, self.key)
+            return self.get_uri(self.key)

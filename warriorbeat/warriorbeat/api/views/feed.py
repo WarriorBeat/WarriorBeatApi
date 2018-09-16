@@ -1,9 +1,21 @@
 # warriorbeat/api/views/feed.py
 # Api Handle for News Feed
 
-from autopep8 import parse_args
-from flask_restful import Api, Resource, reqparse
+from flask_restful import Api, Resource, reqparse, marshal_with, fields
 from warriorbeat.api.utils.data import DynamoDB, S3Storage, TABLES, BUCKETS
+from warriorbeat.api.utils.fields import SlugifyItem, ReadDateItem
+from warriorbeat.api.utils.decorators import post_modify
+
+resource_fields = {
+    'feedId': fields.String,
+    'title': fields.String,
+    'author': fields.String,
+    'body': fields.String,
+    'cover_img': fields.String,
+    'slug': SlugifyItem(attribute='title'),
+    'uri': fields.Url('feed', absolute=True),
+    'date': ReadDateItem(attribute='date')
+}
 
 
 class FeedListAPI(Resource):
@@ -19,16 +31,16 @@ class FeedListAPI(Resource):
         self.storage = S3Storage(BUCKETS['feed'])
         super(FeedListAPI, self).__init__()
 
+    @marshal_with(resource_fields)
     def get(self):
         return self.db.all
 
+    @post_modify(date=True)
     def post(self):
         args = self.parse.parse_args()
-        url = self.storage.upload(
+        args['cover_img'] = self.storage.upload(
             args['cover_img'], key=f"imgs/{args['feedId']}.jpg")
-        args['cover_img'] = url
-        self.db.add_item(args)
-        return args
+        return args, self.db.add_item
 
 
 class FeedAPI(Resource):
@@ -39,8 +51,9 @@ class FeedAPI(Resource):
         self.db = DynamoDB(TABLES['feed'])
         super(FeedAPI, self).__init__()
 
-    def get(self, id):
-        item = self.db.get_item(id)
+    @marshal_with(resource_fields)
+    def get(self, feedId):
+        item = self.db.get_item(feedId)
         print(item)
         return item
 

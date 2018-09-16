@@ -13,6 +13,6 @@ app.config.from_pyfile('config.py')
 api = Api(app)
 # - Feed Api
 api.add_resource(FeedListAPI, '/api/feed', endpoint='feedlist')
-api.add_resource(FeedAPI, '/api/feed/<string:id>', endpoint='feed')
+api.add_resource(FeedAPI, '/api/feed/<string:feedId>', endpoint='feed')
 # Admin Panel
 app.register_blueprint(admin, url_prefix='/admin')
