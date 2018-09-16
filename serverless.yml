@@ -7,7 +7,7 @@ plugins:
 custom:
   tableName: 'feed-table-${self:provider.stage}'
   wsgi:
-    app: warriorbeat.__init__.app
+    app: warriorbeat.app
     packRequirements: false
   pythonRequirements:
     dockerizePip: true

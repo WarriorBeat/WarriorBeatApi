@@ -47,12 +47,12 @@ def add_feed():
             'title': form.title.data,
             'author': form.author.data,
             'body': form.body.data,
-            'slug': slug,
-            'date': 'today',
+            # 'slug': slug,
+            # 'date': 'today',
             'cover_img': path
         }
         headers = {'Content-Type': 'application/json'}
-        r = requests.post(url_for('api.create_feed', _external=True),
+        r = requests.post(url_for('feedlist', _external=True),
                           data=json.dumps(data), headers=headers)
         os.remove(path)
         return redirect(url_for('admin.home'))

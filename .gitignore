@@ -111,3 +111,5 @@ ENV/
 
 # Vscode
 /.vscode
+
+\.DS_Store
