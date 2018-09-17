@@ -4,7 +4,7 @@
 from flask_restful import Api, Resource, reqparse, marshal_with, fields
 from warriorbeat.api.utils.data import DynamoDB, S3Storage, TABLES, BUCKETS
 from warriorbeat.api.utils.fields import SlugifyItem, ReadDateItem
-from warriorbeat.api.utils.decorators import post_modify
+from warriorbeat.api.utils.decorators import post_modify, validate_unique
 
 resource_fields = {
     'feedId': fields.String,
@@ -22,7 +22,7 @@ class FeedListAPI(Resource):
     def __init__(self):
         self.parse = reqparse.RequestParser()
         self.parse.add_argument(
-            'title', type=str, location='json', required=True, help='No title provided!')
+            'title', type=str, location='json')
         self.parse.add_argument('author', type=str, location='json')
         self.parse.add_argument('body', type=str, location='json')
         self.parse.add_argument('feedId', type=str, location='json')
@@ -35,6 +35,7 @@ class FeedListAPI(Resource):
     def get(self):
         return self.db.all
 
+    @validate_unique('feedId')
     @post_modify(date=True)
     def post(self):
         args = self.parse.parse_args()

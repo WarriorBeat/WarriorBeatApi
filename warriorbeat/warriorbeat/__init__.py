@@ -1,10 +1,11 @@
 # warriorbeat/__init__.py
 
-from flask import Flask
-from flask_restful import Api, Resource
-from .admin.views import admin
-from .api.views.feed import FeedListAPI, FeedAPI
 import os
+from flask import Flask, jsonify
+from flask_restful import Api, Resource, abort
+from .admin.views import admin
+from .api.views.feed import FeedAPI, FeedListAPI
+from .api.exceptions import ItemAlreadyExists
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config')
@@ -16,3 +17,11 @@ api.add_resource(FeedListAPI, '/api/feed', endpoint='feedlist')
 api.add_resource(FeedAPI, '/api/feed/<string:feedId>', endpoint='feed')
 # Admin Panel
 app.register_blueprint(admin, url_prefix='/admin')
+
+
+# Error Handlers
+@app.errorhandler(ItemAlreadyExists)
+def handle_item_exists(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status
+    return response

@@ -1,9 +1,11 @@
 # warriorbeat/api/utils/data.py
 # Mixins for Data handling
 
-import boto3
-from boto3.dynamodb.conditions import Key, Attr
 import os
+import boto3
+from boto3.dynamodb.conditions import Attr, Key
+from botocore.exceptions import ClientError
+
 
 # Environment Variables
 TABLES = {
@@ -15,6 +17,15 @@ BUCKETS = {
 
 
 class DynamoDB:
+    """
+    AWS Boto3 DynamoDB
+    Handles transactions with database
+
+    params:
+    table_name: string
+        name of table to access
+    """
+
     def __init__(self, table_name):
         self.dynamodb = boto3.resource(
             'dynamodb', region_name='localhost', endpoint_url='http://localhost:8000')
@@ -25,10 +36,17 @@ class DynamoDB:
         return item
 
     def get_item(self, id):
-        resp = self.table.get_item(Key={
-            'feedId': id
-        })
-        return resp.get('Item')
+        try:
+            resp = self.table.get_item(Key={
+                'feedId': id
+            })
+            return resp.get('Item')
+        except ClientError as e:
+            print(e)
+            return None
+
+    def exists(self, id):
+        return False if self.get_item(id) is None else True
 
     @property
     def all(self):
@@ -38,6 +56,15 @@ class DynamoDB:
 
 
 class S3Storage:
+    """
+    AWS S3 Bucket
+    Handles transactions with s3 Buckets
+
+    params:
+    bucket_name: string
+        name of bucket to access
+    """
+
     def __init__(self, bucket_name):
         self.endpoint = "http://localhost:9000"
         self.s3bucket = boto3.resource(
