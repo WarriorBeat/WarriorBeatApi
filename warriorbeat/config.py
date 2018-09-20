@@ -1,3 +1,7 @@
+import os
+
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 DEBUG = True
 SERVER_NAME = 'localhost:5000'
 
