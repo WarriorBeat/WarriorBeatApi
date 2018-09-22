@@ -1,12 +1,14 @@
-# warriorbeat/api/views/feed.py
-# Api Handle for News Feed
+"""
+    warriorbeat/api/views/feed.py
+    Api Handle for News Feed
+"""
 
-from flask_restful import Api, Resource, reqparse, marshal_with, fields
+from flask_restful import Resource, reqparse
 from webargs.flaskparser import use_args
-from warriorbeat.api.utils.data import DynamoDB, S3Storage, TABLES, BUCKETS
-from warriorbeat.api.utils.fields import SlugifyItem, ReadDateItem
-from warriorbeat.api.utils.decorators import post_modify, validate_unique
+
 from warriorbeat.api.schema.feed import FeedSchema
+from warriorbeat.api.utils.data import BUCKETS, TABLES, DynamoDB, S3Storage
+from warriorbeat.api.utils.decorators import use_schema
 
 
 class FeedListAPI(Resource):
@@ -15,10 +17,9 @@ class FeedListAPI(Resource):
         self.storage = S3Storage(BUCKETS['feed'])
         super(FeedListAPI, self).__init__()
 
+    @use_schema(FeedSchema(many=True))
     def get(self):
-        _schema = FeedSchema(many=True)
-        items = _schema.dump(self.db.all)
-        return items
+        return self.db.all
 
     @use_args(FeedSchema(exclude=("ref")))
     def post(self, args):
@@ -35,8 +36,7 @@ class FeedAPI(Resource):
         self.db = DynamoDB(TABLES['feed'])
         super(FeedAPI, self).__init__()
 
+    @use_schema(FeedSchema())
     def get(self, feedId):
-        _schema = FeedSchema()
         item = self.db.get_item(feedId)
-        item = _schema.dump(item)
         return item

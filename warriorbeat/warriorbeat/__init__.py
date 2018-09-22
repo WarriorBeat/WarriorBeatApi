@@ -1,4 +1,8 @@
-# warriorbeat/__init__.py
+"""
+    warriorbeat/__init__.py
+    Entry file for WarriorBeatApi
+    Setup for flask, api, marshmallow, and other items
+"""
 
 import os
 from flask import Flask, jsonify
@@ -21,9 +25,8 @@ rest.add_resource(FeedAPI, '/api/feed/<string:feedId>', endpoint='feed')
 # Admin Panel
 app.register_blueprint(admin, url_prefix='/admin')
 
+
 # Error Handlers
-
-
 @app.errorhandler(ItemAlreadyExists)
 def handle_item_exists(error):
     response = jsonify(error.to_dict())
