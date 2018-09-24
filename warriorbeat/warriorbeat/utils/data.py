@@ -3,18 +3,18 @@
     Data Handlers
 """
 
-import os
 
 import boto3
-from boto3.dynamodb.conditions import Attr, Key
+import requests
 from botocore.exceptions import ClientError
+
 
 # Environment Variables
 TABLES = {
-    'feed': os.environ['FEED_TABLE']
+    'feed': 'feed-table-dev'
 }
 BUCKETS = {
-    'feed': 'feed-bucket'
+    'feed': 'feed-bucket-dev'
 }
 
 
@@ -29,8 +29,7 @@ class DynamoDB:
     """
 
     def __init__(self, table_name):
-        self.dynamodb = boto3.resource(
-            'dynamodb', region_name='localhost', endpoint_url='http://localhost:8000')
+        self.dynamodb = boto3.resource('dynamodb')
         self.table = self.dynamodb.Table(table_name)
 
     def add_item(self, item):
@@ -72,23 +71,43 @@ class S3Storage:
     """
 
     def __init__(self, bucket_name):
-        self.endpoint = "http://localhost:9000"
-        self.s3bucket = boto3.resource(
-            's3', region_name='localhost', endpoint_url=self.endpoint)
+        self.s3bucket = boto3.resource('s3')
+        self.s3client = boto3.client('s3')
         self.bucket_name = bucket_name
         self.storage = self.s3bucket.Bucket(self.bucket_name)
         self.key = ''
 
-    def get_uri(self, key):
-        """generates uri where the image is hosted"""
-        url = self.endpoint + f"/{self.bucket_name + '/' + key}"
+    def get_url(self, key, **kwargs):
+        """generates url where the image is hosted"""
+        method = kwargs.get('method', 'get_object')
+        expire = kwargs.get('expire', 0)
+        url = self.s3client.generate_presigned_url(
+            ClientMethod=method,
+            ExpiresIn=expire,
+            Params={
+                'Bucket': self.bucket_name,
+                'Key': key
+            }
+        )
         return url
 
     def upload(self, path, key=None):
         """uploads a file to the s3 bucket"""
         if key:
             self.storage.upload_file(path, key)
-            return self.get_uri(key)
+            return self.get_url(key)
         else:
             self.storage.upload_file(path, self.key)
-            return self.get_uri(self.key)
+            return self.get_url(self.key)
+
+    def upload_obj(self, obj, key=''):
+        """upload file object"""
+        self.storage.put_object(Key=key, Body=obj)
+        return self.get_url(key)
+
+    def upload_from_url(self, url, **kwargs):
+        """upload file from url"""
+        img_stream = requests.get(url, stream=True)
+        img_obj = img_stream.raw
+        img_data = img_obj.read()
+        return self.upload_obj(img_data, **kwargs)

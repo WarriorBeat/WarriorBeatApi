@@ -4,28 +4,21 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-click = "==6.7"
-itsdangerous = "==0.24"
-Flask = "==1.0.2"
-"Jinja2" = "==2.10"
-MarkupSafe = "==1.0"
-Werkzeug = "==0.14.1"
-"boto3" = "*"
-flask-wtf = "*"
-requests = "*"
-awesome-slugify = "*"
+flask = "*"
+zappa = "*"
 flask-restful = "*"
-flask-marshmallow = "*"
-pylint-flask = "*"
-webargs = "*"
 marshmallow = "*"
+flask-marshmallow = "*"
+webargs = "*"
+warriorbeat = {editable = true, path = "./warriorbeat"}
+"boto3" = "*"
+awesome-slugify = "*"
 
 [dev-packages]
 pylint = "*"
 "autopep8" = "*"
-pylint-flask = "*"
-pytest = "*"
 autoflake = "*"
+rope = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"

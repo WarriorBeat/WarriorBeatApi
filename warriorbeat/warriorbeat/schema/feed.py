@@ -25,8 +25,8 @@ class FeedSchema(ma.Schema):
         author of feed item
     body: string
         body of feed item
-    cover_img: string (Base64)
-        String of Base64 image data
+    cover_img: string (url)
+        url to image, will be uploaded to s3
 
     serialize (dumping):
     ----
@@ -70,7 +70,7 @@ class FeedSchema(ma.Schema):
     @pre_load
     def generate_id(self, in_data):
         """generate slugified ID from title"""
-        in_data['feedId'] = slugify(in_data['title'], to_lower=True)
+        in_data['feedId'] = slugify(in_data['title'])
         return in_data
 
     @pre_load

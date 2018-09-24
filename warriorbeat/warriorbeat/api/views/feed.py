@@ -3,12 +3,12 @@
     Api Handle for News Feed
 """
 
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 from webargs.flaskparser import use_args
 
-from warriorbeat.api.schema.feed import FeedSchema
-from warriorbeat.api.utils.data import BUCKETS, TABLES, DynamoDB, S3Storage
-from warriorbeat.api.utils.decorators import use_schema
+from warriorbeat.schema.feed import FeedSchema
+from warriorbeat.utils.data import BUCKETS, TABLES, DynamoDB, S3Storage
+from warriorbeat.utils.decorators import use_schema
 
 
 class FeedListAPI(Resource):
@@ -23,16 +23,13 @@ class FeedListAPI(Resource):
 
     @use_args(FeedSchema(exclude=("ref")))
     def post(self, args):
-        args['cover_img'] = self.storage.upload(
+        args['cover_img'] = self.storage.upload_from_url(
             args['cover_img'], key=f"imgs/{args['feedId']}.jpg")
         return self.db.add_item(args)
 
 
 class FeedAPI(Resource):
     def __init__(self):
-        self.parse = reqparse.RequestParser()
-        self.parse.add_argument(
-            'feedId', type=str, location='json', required=True, help='No ID provided!')
         self.db = DynamoDB(TABLES['feed'])
         super(FeedAPI, self).__init__()
 

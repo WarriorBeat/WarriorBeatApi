@@ -1,20 +1,23 @@
 """
-    warriorbeat/__init__.py
+    warriorbeat/app.py
     Entry file for WarriorBeatApi
     Setup for flask, api, marshmallow, and other items
 """
 
-import os
 from flask import Flask, jsonify
-from flask_restful import Api, Resource, abort
+from flask_restful import Api
 from flask_marshmallow import Marshmallow
-from .admin.views import admin
 from .api.views.feed import FeedAPI, FeedListAPI
-from .api.exceptions import ItemAlreadyExists
+from .exceptions import ItemAlreadyExists
 
 app = Flask(__name__, instance_relative_config=True)
-app.config.from_object('config')
-app.config.from_pyfile('config.py')
+app.config.from_object('warriorbeat.config')
+
+try:
+    app.config.from_pyfile('config.py')
+except FileNotFoundError:
+    pass
+
 # Marshmallow
 ma = Marshmallow(app)
 # API
@@ -22,8 +25,6 @@ rest = Api(app)
 # - Feed Api
 rest.add_resource(FeedListAPI, '/api/feed', endpoint='feedlist')
 rest.add_resource(FeedAPI, '/api/feed/<string:feedId>', endpoint='feed')
-# Admin Panel
-app.register_blueprint(admin, url_prefix='/admin')
 
 
 # Error Handlers
@@ -32,6 +33,3 @@ def handle_item_exists(error):
     response = jsonify(error.to_dict())
     response.status_code = error.status
     return response
-
-
-__all__ = ["app", "rest", "ma"]
