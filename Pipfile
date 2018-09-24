@@ -15,12 +15,17 @@ flask-wtf = "*"
 requests = "*"
 awesome-slugify = "*"
 flask-restful = "*"
+flask-marshmallow = "*"
+pylint-flask = "*"
+webargs = "*"
+marshmallow = "*"
 
 [dev-packages]
 pylint = "*"
 "autopep8" = "*"
 pylint-flask = "*"
 pytest = "*"
+autoflake = "*"
 
 [requires]
 python_version = "3.7"

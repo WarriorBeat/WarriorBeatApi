@@ -14,6 +14,7 @@ class APIException(Exception):
         self._payload = payload
 
     def to_dict(self):
+        """generate dict with exception information"""
         report = {}
         report['message'] = self.message
         report['status'] = self._status
@@ -21,10 +22,12 @@ class APIException(Exception):
 
     @property
     def status(self):
+        """status code of exception"""
         return self._status
 
     @property
     def message(self):
+        """informative message detailing the exception"""
         return self._message
 
     def __str__(self):

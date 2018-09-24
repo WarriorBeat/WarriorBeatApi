@@ -1,11 +1,13 @@
-# warriorbeat/api/utils/data.py
-# Mixins for Data handling
+"""
+    warriorbeat/api/utils/data.py
+    Data Handlers
+"""
 
 import os
+
 import boto3
 from boto3.dynamodb.conditions import Attr, Key
 from botocore.exceptions import ClientError
-
 
 # Environment Variables
 TABLES = {
@@ -32,10 +34,12 @@ class DynamoDB:
         self.table = self.dynamodb.Table(table_name)
 
     def add_item(self, item):
+        """adds item to database"""
         self.table.put_item(Item=item)
         return item
 
     def get_item(self, id):
+        """retrieves an item item from database"""
         try:
             resp = self.table.get_item(Key={
                 'feedId': id
@@ -46,10 +50,12 @@ class DynamoDB:
             return None
 
     def exists(self, id):
+        """checks if an item exists in the database"""
         return False if self.get_item(id) is None else True
 
     @property
     def all(self):
+        """list all items in the database table"""
         resp = self.table.scan()
         items = resp["Items"]
         return items
@@ -74,13 +80,15 @@ class S3Storage:
         self.key = ''
 
     def get_uri(self, key):
+        """generates uri where the image is hosted"""
         url = self.endpoint + f"/{self.bucket_name + '/' + key}"
         return url
 
     def upload(self, path, key=None):
+        """uploads a file to the s3 bucket"""
         if key:
             self.storage.upload_file(path, key)
             return self.get_uri(key)
         else:
-            resp = self.storage.upload_file(path, self.key)
+            self.storage.upload_file(path, self.key)
             return self.get_uri(self.key)
