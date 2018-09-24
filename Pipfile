@@ -18,6 +18,7 @@ awesome-slugify = "*"
 pylint = "*"
 "autopep8" = "*"
 autoflake = "*"
+rope = "*"
 
 [requires]
 python_version = "3.6"

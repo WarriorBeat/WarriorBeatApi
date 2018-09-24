@@ -4,9 +4,8 @@
     Setup for flask, api, marshmallow, and other items
 """
 
-import os
 from flask import Flask, jsonify
-from flask_restful import Api, Resource, abort
+from flask_restful import Api
 from flask_marshmallow import Marshmallow
 from .api.views.feed import FeedAPI, FeedListAPI
 from .exceptions import ItemAlreadyExists
