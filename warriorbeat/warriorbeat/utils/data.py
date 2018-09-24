@@ -11,7 +11,7 @@ from botocore.exceptions import ClientError
 
 # Environment Variables
 TABLES = {
-    'feed': os.environ['FEED_TABLE']
+    'feed': 'feed-table-dev'
 }
 BUCKETS = {
     'feed': 'feed-bucket'
@@ -29,8 +29,9 @@ class DynamoDB:
     """
 
     def __init__(self, table_name):
-        self.dynamodb = boto3.resource(
-            'dynamodb', region_name='localhost', endpoint_url='http://localhost:8000')
+        # self.dynamodb = boto3.resource(
+        #     'dynamodb', region_name='localhost', endpoint_url='http://localhost:8000')
+        self.dynamodb = boto3.resource('dynamodb')
         self.table = self.dynamodb.Table(table_name)
 
     def add_item(self, item):
@@ -73,8 +74,9 @@ class S3Storage:
 
     def __init__(self, bucket_name):
         self.endpoint = "http://localhost:9000"
-        self.s3bucket = boto3.resource(
-            's3', region_name='localhost', endpoint_url=self.endpoint)
+        # self.s3bucket = boto3.resource(
+        #     's3', region_name='localhost', endpoint_url=self.endpoint)
+        self.s3bucket = boto3.resource('s3')
         self.bucket_name = bucket_name
         self.storage = self.s3bucket.Bucket(self.bucket_name)
         self.key = ''
