@@ -18,3 +18,4 @@ var/
 
 # Misc
 .vscode/
+.DS_Store
