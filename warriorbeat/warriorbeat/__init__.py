@@ -8,6 +8,7 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_marshmallow import Marshmallow
 from .api.views.feed import FeedAPI, FeedListAPI
+from .webhook.wordpress.hook import PressHook
 from .exceptions import ItemAlreadyExists
 
 app = Flask(__name__, instance_relative_config=True)
@@ -25,6 +26,8 @@ rest = Api(app)
 # - Feed Api
 rest.add_resource(FeedListAPI, '/api/feed', endpoint='feedlist')
 rest.add_resource(FeedAPI, '/api/feed/<string:feedId>', endpoint='feed')
+# Webhook
+rest.add_resource(PressHook, '/api/webhook/wp', endpoint='hook:wp')
 
 
 # Error Handlers

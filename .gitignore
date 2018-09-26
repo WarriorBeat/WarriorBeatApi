@@ -19,3 +19,5 @@ var/
 # Misc
 .vscode/
 .DS_Store
+# Helper bash-script
+run

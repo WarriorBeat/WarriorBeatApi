@@ -19,6 +19,7 @@ pylint = "*"
 "autopep8" = "*"
 autoflake = "*"
 rope = "*"
+pprint = "*"
 
 [requires]
 python_version = "3.6"
