@@ -5,11 +5,13 @@
 """
 
 from flask import Flask, jsonify
-from flask_restful import Api
 from flask_marshmallow import Marshmallow
+from flask_restful import Api
+
 from .api.views.feed import FeedAPI, FeedListAPI
-from .webhook.wordpress.hook import PressHook
 from .exceptions import ItemAlreadyExists
+from .webhook.wordpress.listener import HookListener, PostListener
+
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('warriorbeat.config')
@@ -27,7 +29,9 @@ rest = Api(app)
 rest.add_resource(FeedListAPI, '/api/feed', endpoint='feedlist')
 rest.add_resource(FeedAPI, '/api/feed/<string:feedId>', endpoint='feed')
 # Webhook
-rest.add_resource(PressHook, '/api/webhook/wp', endpoint='hook:wp')
+rest.add_resource(HookListener, '/api/webhook/wp', endpoint='hook:wp')
+rest.add_resource(PostListener, '/api/webhook/wp/post',
+                  endpoint='hook:wp:post')
 
 
 # Error Handlers

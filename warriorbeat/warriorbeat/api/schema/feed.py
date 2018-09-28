@@ -17,7 +17,7 @@ class FeedSchema(ma.Schema):
     """
     Schema for de/serializiation of Feed related data
 
-    params:
+    Fields:
     ----
     title: string
         title of feed item
@@ -28,7 +28,7 @@ class FeedSchema(ma.Schema):
     cover_img: string (url)
         url to image, will be uploaded to s3
 
-    serialize (dumping):
+    Serialize (dumping):
     ----
     input data
     feedId: string
@@ -41,7 +41,7 @@ class FeedSchema(ma.Schema):
         all: string
             absolute link to list of feeds
 
-    deserialize (loading):
+    Deserialize (loading):
     ----
     input data
     feedId: string

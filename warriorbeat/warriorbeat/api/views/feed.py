@@ -6,7 +6,7 @@
 from flask_restful import Resource
 from webargs.flaskparser import use_args
 
-from warriorbeat.schema.feed import FeedSchema
+from warriorbeat.api.schema.feed import FeedSchema
 from warriorbeat.utils.data import BUCKETS, TABLES, DynamoDB, S3Storage
 from warriorbeat.utils.decorators import use_schema
 
