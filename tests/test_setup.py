@@ -94,6 +94,20 @@ class ApiTestCase(unittest.TestCase):
         t.data('Test Assert Data', test_author)
         assert resp == test_author
 
+    def create_mock_author(self, id, name, is_post=False):
+        mock_author = {
+            'authorId': id,
+            'name': name,
+            'avatar': 'https://bit.ly/2QmP0eM',
+            'posts': [],
+            'title': 'Staff Writer',
+            'description': f'Hi, I am a test author #{id}'
+        }
+        self.author_table.put_item(
+            Item=mock_author
+        )
+        return mock_author if not is_post else {'authorId': id, 'name': name}
+
 
 if __name__ == '__main__':
     unittest.main()
