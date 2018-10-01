@@ -8,7 +8,6 @@ from flask_marshmallow.fields import AbsoluteUrlFor, Hyperlinks
 from marshmallow import fields, post_load
 
 from warriorbeat.api.post.model import Article
-from warriorbeat.api.author.schema import AuthorSchema
 
 ma = Marshmallow()
 
@@ -26,4 +25,6 @@ class ArticleSchema(ma.Schema):
 
     @post_load
     def make_article(self, data):
-        return Article(**data)
+        article = Article(**data)
+        article.schema = ArticleSchema()
+        return article

@@ -7,6 +7,7 @@ from warriorbeat.utils.data import DynamoDB
 
 class Author(object):
     """Model for Author Resource"""
+    db = DynamoDB('author')
 
     def __init__(self, authorId, name, avatar, posts, title, description):
         self.authorId = authorId
@@ -15,8 +16,16 @@ class Author(object):
         self.posts = posts
         self.title = title
         self.description = description
-        self.db = DynamoDB('author')
         self.schema = None
+
+    @classmethod
+    def create_or_retrieve(cls, **kwargs):
+        """return an author if it exists, otherwise create one"""
+        authorId = kwargs.get('authorId')
+        author = cls.db.exists(authorId)
+        if not author:
+            return cls(**kwargs)
+        return cls(**author)
 
     def save(self):
         dumped = self.schema.dump(self).data

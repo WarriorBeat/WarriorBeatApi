@@ -14,7 +14,6 @@ class AuthorList(Resource):
 
     def post(self):
         author = AuthorSchema().loads(request.json).data
-        print(author)
         author.save()
         data = AuthorSchema().dumps(author)
         return data

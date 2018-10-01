@@ -31,9 +31,9 @@ class AuthorTest(ApiTestCase):
         ser_reply = json.loads(reply)
         assert self.mock_request == ser_reply
 
-    def test_saved(self):
+    def test_author_saved(self):
         self.test_create_author()
-        t = TestPrint('test_saved')
+        t = TestPrint('test_author_saved')
         _resp = self.author_table.get_item(
             Key={
                 'authorId': '2'

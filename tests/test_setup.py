@@ -66,7 +66,7 @@ class ApiTestCase(unittest.TestCase):
         self.post_table.delete()
         t.info('Testing Databases Deleted.')
 
-    def test_sample_author(self):
+    def upload_sample_author(self):
         t = TestPrint('Upload Sample Author')
         with open("tests/sample_author.json") as sample_data:
             authors = json.load(sample_data, parse_float=decimal.Decimal)

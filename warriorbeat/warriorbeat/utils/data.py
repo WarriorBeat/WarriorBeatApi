@@ -7,7 +7,7 @@
 import boto3
 import requests
 from botocore.exceptions import ClientError
-from flask import current_app
+import os
 
 # Connection Info
 TABLES = {
@@ -21,6 +21,8 @@ TABLES = {
     }
 }
 
+TESTING = os.environ['FLASK_TESTING']
+
 
 class DynamoDB:
     """
@@ -33,7 +35,7 @@ class DynamoDB:
     """
 
     def __init__(self, table):
-        if current_app.config['TESTING']:
+        if TESTING:
             self.dynamodb = boto3.resource(
                 'dynamodb', region_name='localhost', endpoint_url='http://localhost:8000')
         else:
@@ -59,7 +61,8 @@ class DynamoDB:
 
     def exists(self, id):
         """checks if an item exists in the database"""
-        return False if self.get_item(id) is None else True
+        item = self.get_item(id)
+        return False if item is None else item
 
     @property
     def all(self):

@@ -2,16 +2,23 @@
     warriorbeat/api/post/model.py
     Models for Post Resource
 """
+from warriorbeat.utils.data import DynamoDB
 
 
 class Post(object):
     """Base Model for Post Resource"""
+    db = DynamoDB('post')
 
     def __init__(self, postId, title, author, type):
         self.postId = postId
         self.title = title
         self.author = author
         self.type = type
+        self.schema = None
+
+    def save(self):
+        dumped = self.schema.dump(self).data
+        self.db.add_item(dumped)
 
     def __str__(self):
         return f"({self.type}) {self.title} by {self.author}"

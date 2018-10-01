@@ -26,6 +26,6 @@ class AuthorSchema(ma.Schema):
 
     @post_load
     def make_author(self, data):
-        author = Author(**data)
+        author = Author.create_or_retrieve(**data)
         author.schema = AuthorSchema()
         return author
