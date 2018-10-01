@@ -2,6 +2,7 @@
     warriorbeat/api/post/model.py
     Models for Post Resource
 """
+
 from warriorbeat.utils.data import DynamoDB
 
 
@@ -19,6 +20,12 @@ class Post(object):
     def save(self):
         dumped = self.schema.dump(self).data
         self.db.add_item(dumped)
+
+    @classmethod
+    def all(cls):
+        """return all posts"""
+        data = cls.db.all
+        return data
 
     def __str__(self):
         return f"({self.type}) {self.title} by {self.author}"

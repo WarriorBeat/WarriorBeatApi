@@ -31,6 +31,12 @@ class Author(object):
         dumped = self.schema.dump(self).data
         self.db.add_item(dumped)
 
+    @classmethod
+    def all(cls):
+        """return all authors"""
+        data = cls.db.all
+        return data
+
     def __repr__(self):
         return f'<Author(authorId={self.authorId}, name={self.name})>'
 

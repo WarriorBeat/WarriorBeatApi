@@ -5,12 +5,13 @@
 
 from flask_restful import Resource, request
 from warriorbeat.api.author.schema import AuthorSchema
+from warriorbeat.api.author.model import Author
 
 
 class AuthorList(Resource):
 
     def get(self):
-        pass
+        return Author.all()
 
     def post(self):
         author = AuthorSchema().loads(request.json).data
