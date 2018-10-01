@@ -4,17 +4,17 @@
 """
 
 from flask_restful import Resource, request
-from webargs.flaskparser import use_args
 from warriorbeat.api.author.schema import AuthorSchema
 
 
 class AuthorList(Resource):
 
     def get(self):
-        return ''
+        pass
 
     def post(self):
         author = AuthorSchema().loads(request.json).data
         print(author)
+        author.save()
         data = AuthorSchema().dumps(author)
         return data

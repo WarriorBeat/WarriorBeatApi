@@ -7,14 +7,18 @@
 import boto3
 import requests
 from botocore.exceptions import ClientError
+from flask import current_app
 
-
-# Environment Variables
+# Connection Info
 TABLES = {
-    'feed': 'feed-table-dev'
-}
-BUCKETS = {
-    'feed': 'feed-bucket-dev'
+    'author': {
+        'table_name': 'author-table-dev',
+        'primary_key': 'authorId'
+    },
+    'post': {
+        'table_name': 'post-table-dev',
+        'primary_key': 'postId'
+    }
 }
 
 
@@ -28,20 +32,25 @@ class DynamoDB:
         name of table to access
     """
 
-    def __init__(self, table_name):
-        self.dynamodb = boto3.resource('dynamodb')
-        self.table = self.dynamodb.Table(table_name)
+    def __init__(self, table):
+        if current_app.config['TESTING']:
+            self.dynamodb = boto3.resource(
+                'dynamodb', region_name='localhost', endpoint_url='http://localhost:8000')
+        else:
+            self.dynamodb = boto3.resource('dynamodb')
+        self.table = TABLES[table]
+        self.db = self.dynamodb.Table(self.table['table_name'])
 
     def add_item(self, item):
         """adds item to database"""
-        self.table.put_item(Item=item)
+        self.db.put_item(Item=item)
         return item
 
     def get_item(self, id):
         """retrieves an item item from database"""
         try:
-            resp = self.table.get_item(Key={
-                'feedId': id
+            resp = self.db.get_item(Key={
+                self.table['primary_key']: id
             })
             return resp.get('Item')
         except ClientError as e:
@@ -55,7 +64,7 @@ class DynamoDB:
     @property
     def all(self):
         """list all items in the database table"""
-        resp = self.table.scan()
+        resp = self.db.scan()
         items = resp["Items"]
         return items
 

@@ -14,16 +14,18 @@ ma = Marshmallow()
 
 
 class AuthorSchema(ma.Schema):
+    """Author Schema"""
     class Meta:
         strict = True
     authorId = fields.Str()
     name = fields.Str()
     avatar = fields.Str()
-    posts = fields.List(fields.Str())
+    posts = fields.Nested('ArticleSchema', many=True, exclude=('author', ))
     title = fields.Str()
     description = fields.Str()
 
     @post_load
     def make_author(self, data):
-        print(data)
-        return Author(**data)
+        author = Author(**data)
+        author.schema = AuthorSchema()
+        return author
