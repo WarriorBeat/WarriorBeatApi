@@ -9,6 +9,7 @@ from flask_restful import Api
 from flask_marshmallow import Marshmallow
 from .api.author.view import AuthorList
 from .api.post.view import PostList
+from .api.media.view import MediaList
 from .exceptions import ItemAlreadyExists
 
 app = Flask(__name__, instance_relative_config=True)
@@ -27,9 +28,12 @@ rest = Api(app)
 rest.add_resource(AuthorList, '/api/authors', endpoint='authors')
 # Post Resource
 rest.add_resource(PostList, '/api/posts', endpoint='posts')
-
+# Media Resource
+rest.add_resource(MediaList, '/api/media', endpoint='media')
 
 # Error Handlers
+
+
 @app.errorhandler(ItemAlreadyExists)
 def handle_item_exists(error):
     response = jsonify(error.to_dict())

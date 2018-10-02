@@ -17,7 +17,6 @@ class PostList(Resource):
         return Article.all()
 
     def post(self):
-        data = request.get_json()
         article = ArticleSchema().loads(request.json).data
         author = article.author
         # TODO: Append probably not the best method (MAKE AN UPDATE METHOD)
