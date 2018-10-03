@@ -40,7 +40,7 @@ class MediaTest(ApiTestCase):
         p.data('Serialized Reply', ser_reply)
         expected = dict({'type': 'cover-image'}, **mock_request)
         p.data('Expected Reply', expected)
-        assert expected == ser_reply
+        self.assertEqual(expected, ser_reply)
         # Test Image Source
 
         def get_img_data(url):
@@ -50,7 +50,7 @@ class MediaTest(ApiTestCase):
             return img_data
         sent_img = get_img_data(sent_source)
         rec_img = get_img_data(rec_source)
-        assert sent_img == rec_img
+        self.assertEqual(sent_img, rec_img)
 
     def test_media_save(self):
         """Test if media saves in database"""
@@ -71,4 +71,4 @@ class MediaTest(ApiTestCase):
         }
         resp = self.make_db_test(p, self.media_table, db_key)
         p.data('Expected', expected)
-        assert expected == resp
+        self.assertDictEqual(expected, resp)

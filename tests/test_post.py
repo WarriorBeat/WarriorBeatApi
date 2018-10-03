@@ -34,7 +34,7 @@ class PostTest(ApiTestCase):
         reply = req.json()
         p.data('Json Reply', reply)
         ser_reply = json.loads(reply)
-        assert self.mock_request == ser_reply
+        self.assertDictEqual(self.mock_request, ser_reply)
 
     def test_post_update(self):
         """
@@ -56,7 +56,7 @@ class PostTest(ApiTestCase):
             scan = self.post_table.scan()
             items = scan["Items"]
             t.data('DATABASE DUMP', items)
-        assert self.mock_request == resp
+        self.assertDictEqual(self.mock_request, resp)
         # Check Author Updated
         t = TestPrint('test_post_update (author)')
         _resp = self.author_table.get_item(
@@ -66,11 +66,8 @@ class PostTest(ApiTestCase):
         )
         resp = _resp['Item']
         t.data('_resp Data', resp)
-        # remove author (inheritance)
-        expected = {
-            'authorId': '1',
-            'name': 'Test Author',
-            'avatar': 'url',
+        # check if author data contains new post data
+        expected_subset = {
             'posts': [{
                 'postId': '1',
                 'title': 'A Test Article',
@@ -78,10 +75,8 @@ class PostTest(ApiTestCase):
                 'cover_image': 'https://bit.ly/2QmP0eM',
                 'content': 'Filler Content!'
             }],
-            'title': 'Staff Writer',
-            'description': 'A Test Sample'
         }
-        assert expected == resp
+        self.assertDictContainsSubset(expected_subset, resp)
 
     def test_multi_article_save(self):
         """
@@ -106,22 +101,18 @@ class PostTest(ApiTestCase):
         _resp_2 = requests.post(self.base_url, json=json.dumps(mock_post_2))
         resp_1 = _resp_1.json()
         resp_2 = _resp_2.json()
-        t.data('Response 1', resp_1)
-        t.data('Response 2', resp_2)
-        del mock_post_1['author']
-        del mock_post_2['author']
-        expected = {
-            'authorId': '2',
-            'name': 'Mock Author Two',
-            'avatar': 'https://bit.ly/2QmP0eM',
-            'posts': [mock_post_1, mock_post_2],
-            'title': 'Staff Writer',
-            'description': f'Hi, I am a test author #2'
-        }
-        t.data('Expected Response', expected)
+        t.data('Response Post 1', resp_1)
+        t.data('Response Post 2', resp_2)
         _resp = self.author_table.get_item(Key={
             'authorId': '2'
         })
         resp = _resp['Item']
         t.data('Received Response', resp)
-        assert expected == resp
+        # Delete two way nested author (would cause inheritance issues in schema)
+        del mock_post_1['author']
+        del mock_post_2['author']
+        expected_subset = {
+            'posts': [mock_post_1, mock_post_2]
+        }
+        t.data('Expected subset', expected_subset)
+        self.assertDictContainsSubset(expected_subset, resp)

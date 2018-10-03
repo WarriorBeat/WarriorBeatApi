@@ -114,7 +114,7 @@ class ApiTestCase(unittest.TestCase):
         down = json.loads(tmpdata.getvalue().decode("utf-8"))
         t.data('Expected Data', expected)
         t.data('Downloaded Data', down)
-        assert expected == down
+        self.assertEqual(expected, down)
 
     def upload_sample_author(self):
         t = TestPrint('Upload Sample Author')
@@ -142,7 +142,7 @@ class ApiTestCase(unittest.TestCase):
         resp = _resp['Item']
         t.data('Get Item Response', resp)
         t.data('Test Assert Data', test_author)
-        assert resp == test_author
+        self.assertDictEqual(resp, test_author)
 
     def create_mock_author(self, id, name, is_post=False):
         mock_author = {

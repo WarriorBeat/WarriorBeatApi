@@ -29,7 +29,7 @@ class AuthorTest(ApiTestCase):
         reply = req.json()
         p.data('Json Reply', reply)
         ser_reply = json.loads(reply)
-        assert self.mock_request == ser_reply
+        self.assertDictEqual(self.mock_request, ser_reply)
 
     def test_author_saved(self):
         self.test_create_author()
@@ -47,7 +47,7 @@ class AuthorTest(ApiTestCase):
             scan = self.author_table.scan()
             items = scan["Items"]
             t.data('DATABASE DUMP', items)
-        assert self.mock_request == resp
+        self.assertDictEqual(self.mock_request, resp)
 
 
 if __name__ == '__main__':
