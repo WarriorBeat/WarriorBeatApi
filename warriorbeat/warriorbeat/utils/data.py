@@ -47,7 +47,7 @@ class DynamoDB:
     """
 
     def __init__(self, table):
-        if TESTING:
+        if TESTING == 'True':
             self.dynamodb = boto3.resource(
                 'dynamodb', region_name='localhost', endpoint_url='http://localhost:8000')
         else:
@@ -95,7 +95,7 @@ class S3Storage:
     """
 
     def __init__(self, bucket):
-        if TESTING:
+        if TESTING == 'True':
             self.s3bucket = boto3.resource(
                 's3', region_name='localhost', endpoint_url='http://localhost:9000', aws_access_key_id='accessKey1', aws_secret_access_key='verySecretKey1')
             self.s3client = boto3.client(
