@@ -9,6 +9,8 @@ import requests
 import json
 import os
 import decimal
+import tempfile
+import io
 
 TABLES = {
     'author': {
@@ -18,6 +20,12 @@ TABLES = {
     'post': {
         'table_name': 'post-table-dev',
         'primary_key': 'postId'
+    }
+}
+
+BUCKETS = {
+    'media': {
+        'bucket_name': 'media-bucket'
     }
 }
 
@@ -32,6 +40,11 @@ class ApiTestCase(unittest.TestCase):
         t = TestPrint('Test Setup')
         dynamodb = boto3.resource(
             'dynamodb', region_name='localhost', endpoint_url='http://localhost:8000')
+        self.s3bucket = boto3.resource(
+            's3', region_name='localhost', endpoint_url='http://localhost:9000', aws_access_key_id='accessKey1', aws_secret_access_key='verySecretKey1')
+        self.s3client = boto3.client('s3', region_name='localhost',
+                                     endpoint_url='http://localhost:9000',
+                                     aws_access_key_id='accessKey1', aws_secret_access_key='verySecretKey1')
         t.info(f'Current Dir: {os.getcwd()}')
 
         def create_table(table):
@@ -57,14 +70,44 @@ class ApiTestCase(unittest.TestCase):
             t.info(f"{table['table_name']} Status: {new_table.table_status}")
             return new_table
 
+        def create_bucket(bucket):
+            t.data('Creating Bucket', bucket)
+            _bucket = self.s3client.create_bucket(
+                Bucket=bucket['bucket_name'], ACL='public-read')
+            bucket = self.s3bucket.Bucket(bucket['bucket_name'])
+            return bucket
+
         self.author_table = create_table(TABLES['author'])
         self.post_table = create_table(TABLES['post'])
+        self.media_bucket = create_bucket(BUCKETS['media'])
+        resp = self.s3client.list_buckets()
+        buckets = [bucket['Name'] for bucket in resp['Buckets']]
+        t.data('Media Bucket', self.media_bucket)
+        t.data('S3 Buckets', buckets)
 
     def tearDown(self):
         t = TestPrint('TEARDOWN')
         self.author_table.delete()
         self.post_table.delete()
         t.info('Testing Databases Deleted.')
+        self.media_bucket.objects.all().delete()
+        self.media_bucket.delete()
+        t.info('Test Buckets Deleted.')
+
+    def test_s3_bucket(self):
+        """Test Local S3 Bucket"""
+        t = TestPrint('test_s3_bucket')
+        sample_file = 'tests/sample_author.json'
+        sample_data = open(sample_file, 'r')
+        expected = json.load(sample_data)
+        self.media_bucket.upload_file(sample_file, 'tests/sample_author.json')
+        tmpdata = io.BytesIO()
+        self.media_bucket.download_fileobj(
+            'tests/sample_author.json', tmpdata)
+        down = json.loads(tmpdata.getvalue().decode("utf-8"))
+        t.data('Expected Data', expected)
+        t.data('Downloaded Data', down)
+        assert expected == down
 
     def upload_sample_author(self):
         t = TestPrint('Upload Sample Author')

@@ -22,6 +22,7 @@ class CoverImageSchema(ma.Schema):
     caption = fields.Str()
     title = fields.Str()
     type = fields.Str()
+    key = fields.Str()
 
     @post_load
     def make_cover_image(self, data):

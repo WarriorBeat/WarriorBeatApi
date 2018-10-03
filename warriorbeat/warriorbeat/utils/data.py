@@ -21,6 +21,14 @@ TABLES = {
     }
 }
 
+BUCKETS = {
+    'media': {
+        'bucket_name': 'media-bucket',
+        'parent_key': 'media/'
+    }
+}
+
+# Testing Data
 TESTING = os.environ['FLASK_TESTING']
 
 
@@ -82,17 +90,24 @@ class S3Storage:
         name of bucket to access
     """
 
-    def __init__(self, bucket_name):
-        self.s3bucket = boto3.resource('s3')
-        self.s3client = boto3.client('s3')
-        self.bucket_name = bucket_name
+    def __init__(self, bucket):
+        if TESTING:
+            self.s3bucket = boto3.resource(
+                's3', region_name='localhost', endpoint_url='http://localhost:9000', aws_access_key_id='accessKey1', aws_secret_access_key='verySecretKey1')
+            self.s3client = boto3.client(
+                's3', region_name='localhost', endpoint_url='http://localhost:9000', aws_access_key_id='accessKey1', aws_secret_access_key='verySecretKey1')
+        else:
+            self.s3bucket = boto3.resource('s3')
+            self.s3client = boto3.client('s3')
+        self.bucket = BUCKETS[bucket]
+        self.bucket_name = self.bucket['bucket_name']
         self.storage = self.s3bucket.Bucket(self.bucket_name)
-        self.key = ''
+        self.key = self.bucket['parent_key']
 
     def get_url(self, key, **kwargs):
         """generates url where the image is hosted"""
         method = kwargs.get('method', 'get_object')
-        expire = kwargs.get('expire', 0)
+        expire = kwargs.get('expire', 604800)
         url = self.s3client.generate_presigned_url(
             ClientMethod=method,
             ExpiresIn=expire,
@@ -106,6 +121,7 @@ class S3Storage:
     def upload(self, path, key=None):
         """uploads a file to the s3 bucket"""
         if key:
+            key = self.key + key
             self.storage.upload_file(path, key)
             return self.get_url(key)
         else:
@@ -114,6 +130,7 @@ class S3Storage:
 
     def upload_obj(self, obj, key=''):
         """upload file object"""
+        key = self.key + key
         self.storage.put_object(Key=key, Body=obj)
         return self.get_url(key)
 
