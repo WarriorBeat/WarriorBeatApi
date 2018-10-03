@@ -18,6 +18,10 @@ TABLES = {
     'post': {
         'table_name': 'post-table-dev',
         'primary_key': 'postId'
+    },
+    'media': {
+        'table_name': 'media-table-dev',
+        'primary_key': 'mediaId'
     }
 }
 

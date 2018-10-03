@@ -4,19 +4,29 @@
 """
 
 import requests
-from warriorbeat.utils.data import S3Storage
+from warriorbeat.utils.data import S3Storage, DynamoDB
 from slugify import slugify
 
 
 class Media(object):
     """Base Class for Media resource"""
     storage = S3Storage('media')
+    db = DynamoDB('media')
 
     def __init__(self, mediaId, type, source):
         self.mediaId = mediaId
         self.type = type
         self.source = source
         self.schema = None
+
+    def save(self):
+        dumped = self.schema.dump(self).data
+        self.db.add_item(dumped)
+
+    @classmethod
+    def all(cls):
+        data = cls.db.all
+        return data
 
 
 class Image(Media):
@@ -43,6 +53,7 @@ class Image(Media):
         """generate url for image"""
         url = self.storage.get_url(self.key)
         self.source = url
+        self.save()
         return url
 
 

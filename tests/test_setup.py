@@ -20,12 +20,17 @@ TABLES = {
     'post': {
         'table_name': 'post-table-dev',
         'primary_key': 'postId'
+    },
+    'media': {
+        'table_name': 'media-table-dev',
+        'primary_key': 'mediaId'
     }
 }
 
 BUCKETS = {
     'media': {
-        'bucket_name': 'media-bucket'
+        'bucket_name': 'media-bucket',
+        'parent_key': 'media/'
     }
 }
 
@@ -79,6 +84,7 @@ class ApiTestCase(unittest.TestCase):
 
         self.author_table = create_table(TABLES['author'])
         self.post_table = create_table(TABLES['post'])
+        self.media_table = create_table(TABLES['media'])
         self.media_bucket = create_bucket(BUCKETS['media'])
         resp = self.s3client.list_buckets()
         buckets = [bucket['Name'] for bucket in resp['Buckets']]
@@ -89,6 +95,7 @@ class ApiTestCase(unittest.TestCase):
         t = TestPrint('TEARDOWN')
         self.author_table.delete()
         self.post_table.delete()
+        self.media_table.delete()
         t.info('Testing Databases Deleted.')
         self.media_bucket.objects.all().delete()
         self.media_bucket.delete()
@@ -150,6 +157,13 @@ class ApiTestCase(unittest.TestCase):
             Item=mock_author
         )
         return mock_author if not is_post else {'authorId': id, 'name': name}
+
+    def make_db_test(self, test_print, table, key):
+        t = test_print
+        _resp = table.get_item(Key=key)
+        resp = _resp['Item']
+        t.data('Resp Data', resp)
+        return resp
 
 
 if __name__ == '__main__':
