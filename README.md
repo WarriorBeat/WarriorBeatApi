@@ -2,16 +2,15 @@
 
 # WarriorBeatApi
 
-Flask Serverless API for Warrior Beat</br>
+Flask Zappa API for Warrior Beat</br>
 Hosted via AWS
 
 ## Install & Setup
 
 ### Dependencies / Prerequisites
 
-- [Python 3.7](https://www.python.org/)
-- [Yarn](https://yarnpkg.com/en/)
-- [Serverless](https://serverless.com/)
+- [Python 3.6](https://www.python.org/)
+- [Zappa](https://github.com/Miserlou/Zappa)
 - Python Virtual Environment (_[Pipenv recommended](https://pipenv.readthedocs.io/en/latest/)_)
 - [AWS CLI](https://aws.amazon.com/cli/)
 
@@ -25,17 +24,11 @@ $ git clone https://github.com/WarriorBeat/WarriorBeatApi.git
 $ cd WarriorBeatApi
 ```
 
-Install the rest of the dependencies via yarn.
-
-```sh
-$ yarn
-```
-
 Create and enter python virtual environment. Install dependencies.
 
 ```sh
 $ pipenv shell
-$ pipenv update --dev
+$ pipenv install --dev
 $ pipenv sync
 ```
 
@@ -48,11 +41,16 @@ $ aws configure
 
 > [AWS Configure Docs](https://docs.aws.amazon.com/cli/latest/reference/configure/index.html)
 
-Install Serverless dynamodb local.
+The server is now installed and configured.
 
-```sh
-$ serverless dynamodb install
-```
+## Setting up your Environment
+
+To setup a development/testing environment, you require the following:
+
+1. Flask Instance Config
+2. Flask Env Variables
+3. A Local AWS DynamoDB Server
+4. A Local AWS S3 Storage Server
 
 Create an instance config file for flask.
 
@@ -71,45 +69,109 @@ SECRET_KEY = 'superdupersecretkey'
 SERVER_NAME = 'localhost:5000'
 ```
 
-> NOTE: SERVER_NAME is required in order to properly point API url_for calls to the absolute url path.
+In order to run the application, you need to set some environment variables:
 
-The Server is now ready to be ran whenever needed.
+```sh
+$ export FLASK_APP=warriorbeat
+$ export FLASK_ENV=development
+# To make use of local database/storage:
+$ export FLASK_TESTING=True
+```
+
+> NOTE: SERVER_NAME is required if you wish to use/work on webhooks in your testing environment.
+
+The Local AWS servers can be configured in a few different ways, but in my opinion the easiest way is to use [Docker](https://www.docker.com/).
+
+Once you have Docker installed, you need to pull the images and run the docker containers.
+
+**DynamoDB:**
+
+Pull the image:
+
+```sh
+$ docker pull amazon/dynamodb-local
+```
+
+> By default, this dynamodb image keeps all its data in memory. Therefore, by restarting or stopping the container, you effectively wipe the testing database.
+> You can read more [here](https://hub.docker.com/r/amazon/dynamodb-local/).
+
+Run the image:
+
+```sh
+$ docker run -p 8000:8000
+```
+
+Running the image like this doesn't detach it from your active terminal process, so to stop it simply `ctrl-c`
+
+**S3 Storage:**
+
+Pull the image:
+
+```sh
+# To store all files in memory:
+$ docker pull scality/s3server:mem-latest
+# If you want to keep the files:
+$ docker pull scality/s3server:latest
+```
+
+> For my purposes, I generally just run the S3 Server in memory. You can read more [here](https://hub.docker.com/r/scality/s3server/).
+
+Run the image:
+
+```sh
+$ docker run -d --name s3server -p 9000:8000 scality/s3server:mem-latest
+```
+
+To start/stop the image:
+
+```sh
+# start
+$ docker start s3server
+# stop
+$ docker stop s3server
+```
 
 ### Running the Server
 
-Running the server at full functionality requires starting three seperate services:
+Once you have setup your environment, running the server is pretty simple.
 
-1.  Dynamodb Local - (_Database_)
-2.  S3 Local - (_File Storage_)
-3.  WSGI Server - (_Serverless & Flask Offline_)
-
-There are two methods to do so.
-
-**Method 1:**
-
-Run all three in a detached process.
+Make sure your environment variables are set (as in step two from above), you docker containers are up and running, and run:
 
 ```sh
-$ yarn detach_local
-# or "yarn dlo" for a shortcut
+$ flask run
 ```
 
-> Note: If you are unable to stop the server, kill the services by killing the processing running on ports: 5000 (wsgi), 8000 (dynamodb), and 9000 (s3 bucket)
-
-**Method 2:**
-
-Run all three services in seperate terminal windows.
+Or, make a quick `run` bash script if your like me and forget to reset your environment variables when starting to work again:
 
 ```sh
-$ yarn startdb # starts database
-$ yarn starts3 # starts s3 server
-$ yarn local # starts local wsgi/sls server
+#!/usr/bin/env bash
+export FLASK_APP=warriorbeat
+export FLASK_ENV=development
+export FLASK_TESTING=True
+
+flask run
 ```
 
----
+Save the above as `run` in the projects root directory and set it as executable:
 
-Server should now be up and running. When restarting the WarriorBeatApp, you should see the following:
+```sh
+$ chmod +x ./run
+```
 
-> CONNECTED TO LOCALHOST
+Now you can run the server by calling the script:
 
-In the console.
+```
+$ ./run
+```
+
+## Running the Tests
+
+Finally, to ensure that everything is setup properly, you need to run the UnitTests in the `tests/` directory.
+
+> Make sure to have your Docker containers and flask server running.
+
+Generally your IDE will come with functionality to recognize and run these tests, but you can also run them via `python -m unittest` command.
+
+For VSCode, the Python Extension comes with full testing suite functionality. To get it started, open the action menu via: `#(your OS super key, CMD for macOS) ⌘CMD + P` and select the `> Python: Discover Unit Tests` command. Following that, run the `> Python: Run All Unit Tests` command.
+
+You should now have a full development/testing environment ready to go.
