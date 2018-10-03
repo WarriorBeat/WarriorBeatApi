@@ -1,0 +1,10 @@
+[
+  {
+    "authorId": "1",
+    "name": "Test Author",
+    "avatar": "url",
+    "posts": [],
+    "title": "Staff Writer",
+    "description": "A Test Sample"
+  }
+]

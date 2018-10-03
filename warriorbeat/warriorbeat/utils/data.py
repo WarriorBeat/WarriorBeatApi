@@ -7,15 +7,33 @@
 import boto3
 import requests
 from botocore.exceptions import ClientError
+import os
 
-
-# Environment Variables
+# Connection Info
 TABLES = {
-    'feed': 'feed-table-dev'
+    'author': {
+        'table_name': 'author-table-dev',
+        'primary_key': 'authorId'
+    },
+    'post': {
+        'table_name': 'post-table-dev',
+        'primary_key': 'postId'
+    },
+    'media': {
+        'table_name': 'media-table-dev',
+        'primary_key': 'mediaId'
+    }
 }
+
 BUCKETS = {
-    'feed': 'feed-bucket-dev'
+    'media': {
+        'bucket_name': 'media-bucket',
+        'parent_key': 'media/'
+    }
 }
+
+# Testing Data
+TESTING = os.environ['FLASK_TESTING']
 
 
 class DynamoDB:
@@ -28,20 +46,25 @@ class DynamoDB:
         name of table to access
     """
 
-    def __init__(self, table_name):
-        self.dynamodb = boto3.resource('dynamodb')
-        self.table = self.dynamodb.Table(table_name)
+    def __init__(self, table):
+        if TESTING:
+            self.dynamodb = boto3.resource(
+                'dynamodb', region_name='localhost', endpoint_url='http://localhost:8000')
+        else:
+            self.dynamodb = boto3.resource('dynamodb')
+        self.table = TABLES[table]
+        self.db = self.dynamodb.Table(self.table['table_name'])
 
     def add_item(self, item):
         """adds item to database"""
-        self.table.put_item(Item=item)
+        self.db.put_item(Item=item)
         return item
 
     def get_item(self, id):
         """retrieves an item item from database"""
         try:
-            resp = self.table.get_item(Key={
-                'feedId': id
+            resp = self.db.get_item(Key={
+                self.table['primary_key']: id
             })
             return resp.get('Item')
         except ClientError as e:
@@ -50,12 +73,13 @@ class DynamoDB:
 
     def exists(self, id):
         """checks if an item exists in the database"""
-        return False if self.get_item(id) is None else True
+        item = self.get_item(id)
+        return False if item is None else item
 
     @property
     def all(self):
         """list all items in the database table"""
-        resp = self.table.scan()
+        resp = self.db.scan()
         items = resp["Items"]
         return items
 
@@ -70,17 +94,24 @@ class S3Storage:
         name of bucket to access
     """
 
-    def __init__(self, bucket_name):
-        self.s3bucket = boto3.resource('s3')
-        self.s3client = boto3.client('s3')
-        self.bucket_name = bucket_name
+    def __init__(self, bucket):
+        if TESTING:
+            self.s3bucket = boto3.resource(
+                's3', region_name='localhost', endpoint_url='http://localhost:9000', aws_access_key_id='accessKey1', aws_secret_access_key='verySecretKey1')
+            self.s3client = boto3.client(
+                's3', region_name='localhost', endpoint_url='http://localhost:9000', aws_access_key_id='accessKey1', aws_secret_access_key='verySecretKey1')
+        else:
+            self.s3bucket = boto3.resource('s3')
+            self.s3client = boto3.client('s3')
+        self.bucket = BUCKETS[bucket]
+        self.bucket_name = self.bucket['bucket_name']
         self.storage = self.s3bucket.Bucket(self.bucket_name)
-        self.key = ''
+        self.key = self.bucket['parent_key']
 
     def get_url(self, key, **kwargs):
         """generates url where the image is hosted"""
         method = kwargs.get('method', 'get_object')
-        expire = kwargs.get('expire', 0)
+        expire = kwargs.get('expire', 604800)
         url = self.s3client.generate_presigned_url(
             ClientMethod=method,
             ExpiresIn=expire,
@@ -94,6 +125,7 @@ class S3Storage:
     def upload(self, path, key=None):
         """uploads a file to the s3 bucket"""
         if key:
+            key = self.key + key
             self.storage.upload_file(path, key)
             return self.get_url(key)
         else:
@@ -102,6 +134,7 @@ class S3Storage:
 
     def upload_obj(self, obj, key=''):
         """upload file object"""
+        key = self.key + key
         self.storage.put_object(Key=key, Body=obj)
         return self.get_url(key)
 

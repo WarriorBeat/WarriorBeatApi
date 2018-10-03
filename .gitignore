@@ -19,3 +19,24 @@ var/
 # Misc
 .vscode/
 .DS_Store
+
+# Helper bash-script
+run
+
+*.py[co]
+*.DS_*
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+
+# Dev
+venv
+*.pyc
+build
+
+# Flask
+instance/
