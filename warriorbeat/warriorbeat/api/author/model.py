@@ -9,10 +9,10 @@ class Author(object):
     """Model for Author Resource"""
     db = DynamoDB('author')
 
-    def __init__(self, authorId, name, avatar, posts, title, description):
+    def __init__(self, authorId, name, profile_image, posts, title, description):
         self.authorId = authorId
         self.name = name
-        self.avatar = avatar
+        self.profile_image = profile_image
         self.posts = posts
         self.title = title
         self.description = description

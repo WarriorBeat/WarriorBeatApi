@@ -22,6 +22,7 @@ var/
 
 # Helper bash-script
 run
+clean
 
 *.py[co]
 *.DS_*

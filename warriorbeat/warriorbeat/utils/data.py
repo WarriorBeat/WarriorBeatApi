@@ -135,9 +135,9 @@ class S3Storage:
 
     def upload_obj(self, obj, key=''):
         """upload file object"""
-        key = self.key + key
-        self.storage.put_object(Key=key, Body=obj)
-        return self.get_url(key)
+        _key = self.key + key
+        self.storage.put_object(Key=_key, Body=obj)
+        return self.get_url(_key)
 
     def upload_from_url(self, url, **kwargs):
         """upload file from url"""

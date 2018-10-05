@@ -16,6 +16,8 @@ class AuthorList(Resource):
 
     def post(self):
         author = AuthorSchema().loads(request.json).data
+        profile_image = author.profile_image
+        profile_image.save()
         author.save()
         data = AuthorSchema().dumps(author)
         return data

@@ -28,10 +28,15 @@ def make_mock_article(author=None, id='1', title='A Test Article', cover_img=Non
 
 
 def make_mock_author(id='1', name='A Test Author'):
+    mock_profile = {
+        'name': name,
+        'source': 'https://bit.ly/2QmP0eM',
+        'mediaId': '9'
+    }
     mock_author = {
         'authorId': id,
         'name': name,
-        'avatar': 'https://bit.ly/2QmP0eM',
+        'profile_image': mock_profile,
         'posts': [],
         'title': 'Staff Writer',
         'description': f'Hi, I am a test author #{id}'

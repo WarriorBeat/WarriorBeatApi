@@ -47,13 +47,13 @@ class Image(Media):
         self.caption = kwargs.get('caption', '')
         self.type = 'image'
         self.title = title
-        self.key = ''
+        self.key = kwargs.get('key', '')
         super().__init__(mediaId, self.type, source)
         self.set_source()
 
     def set_source(self):
         """download image from url and set source"""
-        key = slugify(self.title)
+        key = self.key + slugify(self.title)
         url = self.storage.upload_from_url(self.source, key=key)
         self.source = url
         self.key = self.storage.key + key
@@ -74,3 +74,13 @@ class CoverImage(Image):
         super().__init__(
             mediaId, source, title, **kwargs)
         self.type = 'cover-image'
+
+
+class ProfileImage(Image):
+    """User Profile Image Model"""
+
+    def __init__(self, mediaId, source, title, **kwargs):
+        self.key = 'profile/'
+        self.title = title
+        super().__init__(mediaId, source, title, key=self.key, **kwargs)
+        self.type = 'profile-image'

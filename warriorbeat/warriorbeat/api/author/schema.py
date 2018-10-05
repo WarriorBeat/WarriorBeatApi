@@ -17,7 +17,7 @@ class AuthorSchema(ma.Schema):
         strict = True
     authorId = fields.Str()
     name = fields.Str()
-    avatar = fields.Str()
+    profile_image = fields.Nested('ProfileImageSchema', exclude=('profile', ))
     posts = fields.Nested('ArticleSchema', many=True, exclude=('author', ))
     title = fields.Str()
     description = fields.Str()

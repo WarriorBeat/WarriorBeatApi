@@ -16,12 +16,13 @@ class PostTest(ApiTestCase):
 
     def test_create_article(self):
         """Create Article Request Test"""
-        self.upload_sample_author()
+        mock_author = make_mock_author()
+        requests.post(author_url, json=json.dumps(mock_author))
         p = TestPrint('test_create_article')
         p.info(__doc__)
         mock_author = {
-            'authorId': '1',
-            'name': 'Test Author'
+            'authorId': mock_author['authorId'],
+            'name': mock_author['name']
         }
         self.mock_request = make_mock_article(author=mock_author)
         mock_data = json.dumps(self.mock_request)
@@ -41,7 +42,7 @@ class PostTest(ApiTestCase):
         t = TestPrint('test_post_update (post)')
         # Create Author
         mock_author = make_mock_author(id='2')
-        req = requests.post(author_url, json=json.dumps(mock_author))
+        requests.post(author_url, json=json.dumps(mock_author))
         # Create Article
         mock_author = {
             'authorId': mock_author['authorId'],
