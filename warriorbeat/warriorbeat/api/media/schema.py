@@ -4,7 +4,6 @@
 """
 
 from flask_marshmallow import Marshmallow
-from flask_marshmallow.fields import AbsoluteUrlFor, Hyperlinks
 from marshmallow import fields, post_load
 
 from warriorbeat.api.media.model import CoverImage
@@ -26,6 +25,7 @@ class CoverImageSchema(ma.Schema):
 
     @post_load
     def make_cover_image(self, data):
+        """return instance of CoverImage"""
         cover_img = CoverImage(**data)
         cover_img.schema = CoverImageSchema()
         return cover_img

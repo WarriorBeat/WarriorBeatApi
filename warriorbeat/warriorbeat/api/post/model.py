@@ -18,6 +18,7 @@ class Post(object):
         self.schema = None
 
     def save(self):
+        """save post to database"""
         dumped = self.schema.dump(self).data
         self.db.add_item(dumped)
 
@@ -26,6 +27,15 @@ class Post(object):
         """return all posts"""
         data = cls.db.all
         return data
+
+    @classmethod
+    def create_or_retrieve(cls, **kwargs):
+        """return post if exists, otherwise create one"""
+        postId = kwargs.get('postId')
+        post = cls.db.exists(postId)
+        if not post:
+            return cls(**kwargs)
+        return cls(**post)
 
     def __str__(self):
         return f"({self.type}) {self.title} by {self.author}"

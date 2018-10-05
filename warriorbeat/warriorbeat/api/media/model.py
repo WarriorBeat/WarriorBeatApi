@@ -3,9 +3,9 @@
     Models for Media Resources
 """
 
-import requests
-from warriorbeat.utils.data import S3Storage, DynamoDB
 from slugify import slugify
+
+from warriorbeat.utils.data import DynamoDB, S3Storage
 
 
 class Media(object):
@@ -20,8 +20,18 @@ class Media(object):
         self.schema = None
 
     def save(self):
+        """save media item to database"""
         dumped = self.schema.dump(self).data
         self.db.add_item(dumped)
+
+    @classmethod
+    def create_or_retrieve(cls, **kwargs):
+        """return media if exists, otherwise create one"""
+        mediaId = kwargs.get("mediaId")
+        media = cls.db.exists(mediaId)
+        if not media:
+            return cls(**kwargs)
+        return cls(**media)
 
     @classmethod
     def all(cls):
@@ -38,7 +48,7 @@ class Image(Media):
         self.type = 'image'
         self.title = title
         self.key = ''
-        super(Image, self).__init__(mediaId, self.type, source)
+        super().__init__(mediaId, self.type, source)
         self.set_source()
 
     def set_source(self):
@@ -61,6 +71,6 @@ class CoverImage(Image):
     """Cover Image Media Object"""
 
     def __init__(self, mediaId, source, title, **kwargs):
-        super(CoverImage, self).__init__(
+        super().__init__(
             mediaId, source, title, **kwargs)
         self.type = 'cover-image'

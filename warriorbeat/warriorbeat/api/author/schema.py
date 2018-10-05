@@ -4,11 +4,9 @@
 """
 
 from flask_marshmallow import Marshmallow
-from flask_marshmallow.fields import AbsoluteUrlFor, Hyperlinks
 from marshmallow import fields, post_load
 
 from warriorbeat.api.author.model import Author
-
 
 ma = Marshmallow()
 

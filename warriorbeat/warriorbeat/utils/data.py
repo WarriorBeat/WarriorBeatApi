@@ -4,10 +4,11 @@
 """
 
 
+import os
+
 import boto3
 import requests
 from botocore.exceptions import ClientError
-import os
 
 # Connection Info
 TABLES = {

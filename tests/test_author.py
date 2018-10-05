@@ -2,9 +2,11 @@
     Tests for Author Resource
 """
 
-import unittest
-import requests
 import json
+import unittest
+
+import requests
+
 from helper import TestPrint
 from test_setup import ApiTestCase
 

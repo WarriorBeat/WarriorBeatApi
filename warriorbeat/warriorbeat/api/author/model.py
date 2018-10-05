@@ -28,6 +28,7 @@ class Author(object):
         return cls(**author)
 
     def save(self):
+        """save author to database"""
         dumped = self.schema.dump(self).data
         self.db.add_item(dumped)
 
