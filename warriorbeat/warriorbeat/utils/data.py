@@ -4,10 +4,11 @@
 """
 
 
+import os
+
 import boto3
 import requests
 from botocore.exceptions import ClientError
-import os
 
 # Connection Info
 TABLES = {
@@ -94,6 +95,11 @@ class S3Storage:
         name of bucket to access
     """
 
+    FILE_EXTENSIONS = {
+        "image/jpeg": ".jpeg",
+        "image/png": ".png"
+    }
+
     def __init__(self, bucket):
         if TESTING == 'True':
             self.s3bucket = boto3.resource(
@@ -132,15 +138,17 @@ class S3Storage:
             self.storage.upload_file(path, self.key)
             return self.get_url(self.key)
 
-    def upload_obj(self, obj, key=''):
+    def upload_obj(self, obj: tuple, key=''):
         """upload file object"""
-        key = self.key + key
-        self.storage.put_object(Key=key, Body=obj)
-        return self.get_url(key)
+        _key = self.key + key + obj[1]
+        self.storage.put_object(Key=_key, Body=obj[0])
+        return self.get_url(_key)
 
     def upload_from_url(self, url, **kwargs):
         """upload file from url"""
         img_stream = requests.get(url, stream=True)
+        content_type = img_stream.headers.get('content-type', 'image/jpeg')
+        file_ext = self.FILE_EXTENSIONS[content_type]
         img_obj = img_stream.raw
         img_data = img_obj.read()
-        return self.upload_obj(img_data, **kwargs)
+        return (self.upload_obj((img_data, file_ext), **kwargs), file_ext)

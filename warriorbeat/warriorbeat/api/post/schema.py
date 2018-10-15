@@ -4,7 +4,6 @@
 """
 
 from flask_marshmallow import Marshmallow
-from flask_marshmallow.fields import AbsoluteUrlFor, Hyperlinks
 from marshmallow import fields, post_load
 
 from warriorbeat.api.post.model import Article
@@ -20,11 +19,12 @@ class ArticleSchema(ma.Schema):
     title = fields.Str()
     author = fields.Nested('AuthorSchema', only=('authorId', 'name'))
     type = fields.Str()
-    cover_image = fields.Str()
+    cover_image = fields.Nested('CoverImageSchema', exclude=('post', ))
     content = fields.Str()
 
     @post_load
     def make_article(self, data):
-        article = Article(**data)
+        """return article instance"""
+        article = Article.create_or_retrieve(**data)
         article.schema = ArticleSchema()
         return article

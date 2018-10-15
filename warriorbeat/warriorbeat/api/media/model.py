@@ -3,9 +3,9 @@
     Models for Media Resources
 """
 
-import requests
-from warriorbeat.utils.data import S3Storage, DynamoDB
 from slugify import slugify
+
+from warriorbeat.utils.data import DynamoDB, S3Storage
 
 
 class Media(object):
@@ -20,8 +20,18 @@ class Media(object):
         self.schema = None
 
     def save(self):
+        """save media item to database"""
         dumped = self.schema.dump(self).data
         self.db.add_item(dumped)
+
+    @classmethod
+    def create_or_retrieve(cls, **kwargs):
+        """return media if exists, otherwise create one"""
+        mediaId = kwargs.get("mediaId")
+        media = cls.db.exists(mediaId)
+        if not media:
+            return cls(**kwargs)
+        return cls(**media)
 
     @classmethod
     def all(cls):
@@ -37,16 +47,16 @@ class Image(Media):
         self.caption = kwargs.get('caption', '')
         self.type = 'image'
         self.title = title
-        self.key = ''
-        super(Image, self).__init__(mediaId, self.type, source)
+        self.key = kwargs.get('key', '')
+        super().__init__(mediaId, self.type, source)
         self.set_source()
 
     def set_source(self):
         """download image from url and set source"""
-        key = slugify(self.title)
-        url = self.storage.upload_from_url(self.source, key=key)
+        key = self.key + slugify(self.title)
+        url, file_ext = self.storage.upload_from_url(self.source, key=key)
         self.source = url
-        self.key = self.storage.key + key
+        self.key = self.storage.key + key + file_ext
         return url
 
     def get_source(self):
@@ -61,6 +71,16 @@ class CoverImage(Image):
     """Cover Image Media Object"""
 
     def __init__(self, mediaId, source, title, **kwargs):
-        super(CoverImage, self).__init__(
+        super().__init__(
             mediaId, source, title, **kwargs)
         self.type = 'cover-image'
+
+
+class ProfileImage(Image):
+    """User Profile Image Model"""
+
+    def __init__(self, mediaId, source, title, **kwargs):
+        self.key = 'profile/'
+        self.title = title
+        super().__init__(mediaId, source, title, key=self.key, **kwargs)
+        self.type = 'profile-image'

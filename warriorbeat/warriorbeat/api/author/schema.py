@@ -4,11 +4,9 @@
 """
 
 from flask_marshmallow import Marshmallow
-from flask_marshmallow.fields import AbsoluteUrlFor, Hyperlinks
 from marshmallow import fields, post_load
 
 from warriorbeat.api.author.model import Author
-
 
 ma = Marshmallow()
 
@@ -19,7 +17,7 @@ class AuthorSchema(ma.Schema):
         strict = True
     authorId = fields.Str()
     name = fields.Str()
-    avatar = fields.Str()
+    profile_image = fields.Nested('ProfileImageSchema', exclude=('profile', ))
     posts = fields.Nested('ArticleSchema', many=True, exclude=('author', ))
     title = fields.Str()
     description = fields.Str()

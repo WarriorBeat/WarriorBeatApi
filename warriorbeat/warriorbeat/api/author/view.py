@@ -4,8 +4,9 @@
 """
 
 from flask_restful import Resource, request
-from warriorbeat.api.author.schema import AuthorSchema
+
 from warriorbeat.api.author.model import Author
+from warriorbeat.api.author.schema import AuthorSchema
 
 
 class AuthorList(Resource):
@@ -15,6 +16,8 @@ class AuthorList(Resource):
 
     def post(self):
         author = AuthorSchema().loads(request.json).data
+        profile_image = author.profile_image
+        profile_image.save()
         author.save()
         data = AuthorSchema().dumps(author)
         return data

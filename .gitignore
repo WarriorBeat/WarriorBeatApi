@@ -22,6 +22,7 @@ var/
 
 # Helper bash-script
 run
+clean
 
 *.py[co]
 *.DS_*
@@ -40,3 +41,4 @@ build
 
 # Flask
 instance/
+tests/live\.py

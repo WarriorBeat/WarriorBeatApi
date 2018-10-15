@@ -2,43 +2,34 @@
     Tests for Media Resource
 """
 
-import unittest
-import requests
 import json
+
+import requests
+
 from helper import TestPrint
+from sample import media_url, make_mock_media
 from test_setup import ApiTestCase
 
 
 class MediaTest(ApiTestCase):
-    base_url = "http://127.0.0.1:5000/api/media"
-
-    def make_mock_request(self, id='1', title='Super Cool Pic'):
-        """Make media mock request"""
-        mock_request = {
-            'mediaId': id,
-            'source': 'https://bit.ly/2xF5t73',
-            'credits': '@123ABC Comp.',
-            'caption': 'Super Cool Image',
-            'title': title
-        }
-        return mock_request
+    media_url = "http://127.0.0.1:5000/api/media"
 
     def test_create_cover(self):
         """Create Cover Image Test"""
         p = TestPrint('test_create_cover')
         p.info('Test: Create Cover Image')
-        mock_request = self.make_mock_request()
+        mock_request = make_mock_media()
         mock_data = json.dumps(mock_request)
         p.data('Mock Data', mock_data)
-        req = requests.post(self.base_url, json=mock_data)
+        req = requests.post(media_url, json=mock_data)
         # Test Data
         reply = req.json()
         ser_reply = json.loads(reply)
         sent_source = mock_request.pop('source')
         rec_source = ser_reply.pop('source')
-        ser_reply.pop('key')  # need to make a Mock probably
         p.data('Serialized Reply', ser_reply)
         expected = dict({'type': 'cover-image'}, **mock_request)
+        expected['key'] = 'media/super-cool-pic.jpeg'
         p.data('Expected Reply', expected)
         self.assertEqual(expected, ser_reply)
         # Test Image Source
@@ -56,10 +47,10 @@ class MediaTest(ApiTestCase):
         """Test if media saves in database"""
         p = TestPrint('test_media_save')
         p.info('Testing Media Save')
-        mock_request = self.make_mock_request()
+        mock_request = make_mock_media()
         mock_data = json.dumps(mock_request)
         p.data('Mock Data', mock_data)
-        req = requests.post(self.base_url, json=mock_data)
+        req = requests.post(media_url, json=mock_data)
         reply = req.json()
         ser_reply = json.loads(reply)
         expected = mock_request.copy()
@@ -69,6 +60,6 @@ class MediaTest(ApiTestCase):
         db_key = {
             'mediaId': mock_request['mediaId']
         }
-        resp = self.make_db_test(p, self.media_table, db_key)
+        db_content = self.make_db_test(p, self.media_table, db_key)
         p.data('Expected', expected)
-        self.assertDictEqual(expected, resp)
+        self.assertDictEqual(expected, db_content)

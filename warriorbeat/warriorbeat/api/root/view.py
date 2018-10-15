@@ -3,7 +3,7 @@
     Root Resource for Root of API
 """
 
-from flask_restful import Resource, request
+from flask_restful import Resource
 
 
 class Root(Resource):

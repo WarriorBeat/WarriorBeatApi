@@ -20,6 +20,8 @@ pylint = "*"
 autoflake = "*"
 rope = "*"
 flask-shell-ipython = "*"
+isort = "*"
+warriorbeatcli = {editable = true, path = "/Users/bradenmars/Documents/projects/warrior-beat/warriorbeatcli/src"}
 
 [requires]
 python_version = "3.6"

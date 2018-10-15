@@ -2,15 +2,15 @@
     Setup File for Tests
 """
 
-import unittest
-from helper import TestPrint
-import boto3
-import requests
+import decimal
+import io
 import json
 import os
-import decimal
-import tempfile
-import io
+import unittest
+
+import boto3
+
+from helper import TestPrint
 
 TABLES = {
     'author': {
@@ -29,7 +29,7 @@ TABLES = {
 
 BUCKETS = {
     'media': {
-        'bucket_name': 'media-bucket',
+        'bucket_name': 'media-bucket-dev',
         'parent_key': 'media/'
     }
 }
@@ -38,10 +38,11 @@ BUCKETS = {
 class ApiTestCase(unittest.TestCase):
     """
     Parent Test Case
-    Setup Local DynamoDB Tables
+    Setup Local DynamoDB Tables and S3 Buckets
     """
 
     def setUp(self):
+        """create test tables and buckets"""
         t = TestPrint('Test Setup')
         dynamodb = boto3.resource(
             'dynamodb', region_name='localhost', endpoint_url='http://localhost:8000')
@@ -92,6 +93,7 @@ class ApiTestCase(unittest.TestCase):
         t.data('S3 Buckets', buckets)
 
     def tearDown(self):
+        """cleanup tables and buckets"""
         t = TestPrint('TEARDOWN')
         self.author_table.delete()
         self.post_table.delete()
@@ -144,24 +146,15 @@ class ApiTestCase(unittest.TestCase):
         t.data('Test Assert Data', test_author)
         self.assertDictEqual(resp, test_author)
 
-    def create_mock_author(self, id, name, is_post=False):
-        mock_author = {
-            'authorId': id,
-            'name': name,
-            'avatar': 'https://bit.ly/2QmP0eM',
-            'posts': [],
-            'title': 'Staff Writer',
-            'description': f'Hi, I am a test author #{id}'
-        }
-        self.author_table.put_item(
-            Item=mock_author
-        )
-        return mock_author if not is_post else {'authorId': id, 'name': name}
-
     def make_db_test(self, test_print, table, key):
+        """queries database and returns data"""
         t = test_print
         _resp = table.get_item(Key=key)
-        resp = _resp['Item']
+        try:
+            resp = _resp['Item']
+        except KeyError:
+            self.fail(
+                f'[{test_print.func}] {list(key.keys())[0]} not found in database!')
         t.data('Resp Data', resp)
         return resp
 
