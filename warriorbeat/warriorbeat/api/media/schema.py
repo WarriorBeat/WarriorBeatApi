@@ -43,7 +43,7 @@ class ProfileImageSchema(ImageSchema):
     """Profile Image Schema"""
     class Meta:
         strict = True
-        fields = ('title', 'source', 'mediaId')
+        fields = ('title', 'source', 'mediaId', 'type')
 
     title = fields.Str(load_from='name')
 

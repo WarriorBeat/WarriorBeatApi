@@ -27,7 +27,7 @@ class PostTest(ApiTestCase):
         self.mock_request = make_mock_article(author=mock_author)
         mock_data = json.dumps(self.mock_request)
         p.data('Mock Json', mock_data)
-        req = requests.post('http://127.0.0.1:5000/api/posts', json=mock_data)
+        req = requests.post(post_url, json=mock_data)
         reply = req.json()
         p.data('Json Reply', reply)
         ser_reply = json.loads(reply)

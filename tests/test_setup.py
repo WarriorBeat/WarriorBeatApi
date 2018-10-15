@@ -29,7 +29,7 @@ TABLES = {
 
 BUCKETS = {
     'media': {
-        'bucket_name': 'media-bucket',
+        'bucket_name': 'media-bucket-dev',
         'parent_key': 'media/'
     }
 }

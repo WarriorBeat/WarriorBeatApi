@@ -54,9 +54,9 @@ class Image(Media):
     def set_source(self):
         """download image from url and set source"""
         key = self.key + slugify(self.title)
-        url = self.storage.upload_from_url(self.source, key=key)
+        url, file_ext = self.storage.upload_from_url(self.source, key=key)
         self.source = url
-        self.key = self.storage.key + key
+        self.key = self.storage.key + key + file_ext
         return url
 
     def get_source(self):

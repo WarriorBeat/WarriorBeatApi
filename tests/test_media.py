@@ -7,20 +7,8 @@ import json
 import requests
 
 from helper import TestPrint
-from sample import media_url
+from sample import media_url, make_mock_media
 from test_setup import ApiTestCase
-
-
-def make_mock_media(id='1', title='Super Cool Pic'):
-    """Make media mock request"""
-    mock_request = {
-        'mediaId': id,
-        'source': 'https://bit.ly/2xF5t73',
-        'credits': '@123ABC Comp.',
-        'caption': 'Super Cool Image',
-        'title': title
-    }
-    return mock_request
 
 
 class MediaTest(ApiTestCase):
@@ -39,9 +27,9 @@ class MediaTest(ApiTestCase):
         ser_reply = json.loads(reply)
         sent_source = mock_request.pop('source')
         rec_source = ser_reply.pop('source')
-        ser_reply.pop('key')  # need to make a Mock probably
         p.data('Serialized Reply', ser_reply)
         expected = dict({'type': 'cover-image'}, **mock_request)
+        expected['key'] = 'media/super-cool-pic.jpeg'
         p.data('Expected Reply', expected)
         self.assertEqual(expected, ser_reply)
         # Test Image Source
