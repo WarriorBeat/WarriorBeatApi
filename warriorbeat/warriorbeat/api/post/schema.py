@@ -17,7 +17,7 @@ class ArticleSchema(ma.Schema):
         strict = True
     postId = fields.Str()
     title = fields.Str()
-    author = fields.Nested('AuthorSchema', only=('authorId', 'name'))
+    author = fields.Nested('AuthorSchema', exclude=('posts', ))
     type = fields.Str()
     cover_image = fields.Nested('CoverImageSchema', exclude=('post', ))
     content = fields.Str()
