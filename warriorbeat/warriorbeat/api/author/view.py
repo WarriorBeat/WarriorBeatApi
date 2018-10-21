@@ -15,7 +15,10 @@ class AuthorList(Resource):
         return Author.all()
 
     def post(self):
-        author = AuthorSchema().loads(request.json).data
+        try:
+            author = AuthorSchema().load(request.json)
+        except Exception:
+            author = AuthorSchema().loads(request.json)
         profile_image = author.profile_image
         profile_image.save()
         author.save()

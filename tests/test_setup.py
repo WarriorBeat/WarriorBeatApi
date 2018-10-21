@@ -51,6 +51,7 @@ class ApiTestCase(unittest.TestCase):
         self.s3client = boto3.client('s3', region_name='localhost',
                                      endpoint_url='http://localhost:9000',
                                      aws_access_key_id='accessKey1', aws_secret_access_key='verySecretKey1')
+        self.maxDiff = None
         t.info(f'Current Dir: {os.getcwd()}')
 
         def create_table(table):

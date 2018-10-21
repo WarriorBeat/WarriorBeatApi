@@ -21,8 +21,6 @@ try:
 except FileNotFoundError:
     pass
 
-# Marshmallow
-ma = Marshmallow(app)
 # API
 rest = Api(app)
 # Root

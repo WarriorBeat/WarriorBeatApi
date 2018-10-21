@@ -19,7 +19,7 @@ class Post(object):
 
     def save(self):
         """save post to database"""
-        dumped = self.schema.dump(self).data
+        dumped = self.schema.dump(self)
         self.db.add_item(dumped)
 
     @classmethod

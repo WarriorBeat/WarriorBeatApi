@@ -3,21 +3,16 @@
     Schema for Author Resource
 """
 
-from flask_marshmallow import Marshmallow
-from marshmallow import fields, post_load
+from marshmallow import Schema, fields, post_load
 
 from warriorbeat.api.author.model import Author
 
-ma = Marshmallow()
 
-
-class AuthorSchema(ma.Schema):
+class AuthorSchema(Schema):
     """Author Schema"""
-    class Meta:
-        strict = True
-    authorId = fields.Str()
+    authorId = fields.Str(required=True)
     name = fields.Str()
-    profile_image = fields.Nested('ProfileImageSchema', exclude=('profile', ))
+    profile_image = fields.Nested('ProfileImageSchema')
     posts = fields.Nested('ArticleSchema', many=True,
                           exclude=('author', ))
     title = fields.Str()

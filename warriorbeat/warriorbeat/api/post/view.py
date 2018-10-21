@@ -5,7 +5,7 @@
 
 
 from flask_restful import Resource, request
-
+from marshmallow.exceptions import ValidationError
 from warriorbeat.api.post.model import Article
 from warriorbeat.api.post.schema import ArticleSchema
 
@@ -16,7 +16,10 @@ class PostList(Resource):
         return Article.all()
 
     def post(self):
-        article = ArticleSchema().load(request.json).data
+        try:
+            article = ArticleSchema().load(request.json)
+        except Exception:
+            article = ArticleSchema().loads(request.json)
         author = article.author
         cover_image = article.cover_image
         # TODO: Append probably not the best method (MAKE AN UPDATE METHOD)

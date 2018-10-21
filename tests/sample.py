@@ -17,8 +17,7 @@ def make_mock_article(author=None, id='1', title='A Test Article', cover_img=Non
         'postId': id,
         'title': title,
         'author': {
-            'authorId': mock_author['authorId'],
-            'name': mock_author['name']
+            'authorId': mock_author['authorId']
         },
         'type': 'article',
         'cover_image': mock_cover,
@@ -61,6 +60,7 @@ def make_fullmock_article(id='10', title='A Cascading Article'):
     """article mock with full author and media details"""
     media = make_mock_media()
     author = make_mock_author(id='2')
+    del author['posts']
     post = make_mock_article()
     post['author'] = author
     post['cover_image'] = media

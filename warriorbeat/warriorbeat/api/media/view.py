@@ -15,7 +15,10 @@ class MediaList(Resource):
         return Media.all()
 
     def post(self):
-        media = CoverImageSchema().loads(request.json).data
+        try:
+            media = CoverImageSchema().load(request.json)
+        except Exception:
+            media = CoverImageSchema().loads(request.json)
         media.save()
         data = CoverImageSchema().dumps(media)
         return data
