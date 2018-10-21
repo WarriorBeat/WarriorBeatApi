@@ -18,9 +18,11 @@ class AuthorSchema(ma.Schema):
     authorId = fields.Str()
     name = fields.Str()
     profile_image = fields.Nested('ProfileImageSchema', exclude=('profile', ))
-    posts = fields.Nested('ArticleSchema', many=True, exclude=('author', ))
+    posts = fields.Nested('ArticleSchema', many=True,
+                          exclude=('author', ))
     title = fields.Str()
-    description = fields.Str()
+    description = fields.Str(
+        required=False, allow_none=True, default='Staff Member')
 
     @post_load
     def make_author(self, data):

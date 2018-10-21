@@ -22,9 +22,10 @@ class Author(object):
     def create_or_retrieve(cls, **kwargs):
         """return an author if it exists, otherwise create one"""
         authorId = kwargs.get('authorId')
+        authorPosts = kwargs.pop('posts', [])
         author = cls.db.exists(authorId)
         if not author:
-            return cls(**kwargs)
+            return cls(**kwargs, posts=authorPosts)
         return cls(**author)
 
     def save(self):

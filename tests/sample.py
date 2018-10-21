@@ -63,5 +63,5 @@ def make_fullmock_article(id='10', title='A Cascading Article'):
     author = make_mock_author(id='2')
     post = make_mock_article()
     post['author'] = author
-    post['cover_img'] = media
+    post['cover_image'] = media
     return post

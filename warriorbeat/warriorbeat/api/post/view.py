@@ -16,7 +16,7 @@ class PostList(Resource):
         return Article.all()
 
     def post(self):
-        article = ArticleSchema().loads(request.json).data
+        article = ArticleSchema().load(request.json).data
         author = article.author
         cover_image = article.cover_image
         # TODO: Append probably not the best method (MAKE AN UPDATE METHOD)

@@ -21,6 +21,7 @@ autoflake = "*"
 rope = "*"
 flask-shell-ipython = "*"
 isort = "*"
+warriorbeatcli = {editable = true, path = "/Users/bradenmars/Documents/projects/warriorbeat/warriorbeatcli/src"}
 
 [requires]
 python_version = "3.6"
