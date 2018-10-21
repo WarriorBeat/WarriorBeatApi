@@ -3,7 +3,7 @@
     View for Author Resource
 """
 
-from flask_restful import Resource, request
+from flask_restful import Resource
 
 from warriorbeat.api.author.model import Author
 from warriorbeat.api.author.schema import AuthorSchema

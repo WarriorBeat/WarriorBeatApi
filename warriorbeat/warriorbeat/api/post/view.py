@@ -4,8 +4,8 @@
 """
 
 
-from flask_restful import Resource, request
-from marshmallow.exceptions import ValidationError
+from flask_restful import Resource
+
 from warriorbeat.api.post.model import Article
 from warriorbeat.api.post.schema import ArticleSchema
 from warriorbeat.utils.decorators import use_schema

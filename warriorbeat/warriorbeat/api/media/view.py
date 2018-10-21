@@ -4,7 +4,7 @@
 """
 
 
-from flask_restful import Resource, request
+from flask_restful import Resource
 
 from warriorbeat.api.media.model import Media
 from warriorbeat.api.media.schema import CoverImageSchema

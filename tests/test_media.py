@@ -7,7 +7,7 @@ import json
 import requests
 
 from helper import TestPrint
-from sample import media_url, make_mock_media
+from sample import make_mock_media, media_url
 from test_setup import ApiTestCase
 
 

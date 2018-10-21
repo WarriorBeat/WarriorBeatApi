@@ -6,7 +6,6 @@
 
 from flask import Flask, jsonify
 from flask_restful import Api
-from flask_marshmallow import Marshmallow
 from .api.root.view import Root
 from .api.author.view import AuthorList
 from .api.post.view import PostList
