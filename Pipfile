@@ -10,7 +10,6 @@ flask-restful = "*"
 marshmallow = "*"
 flask-marshmallow = "*"
 webargs = "*"
-warriorbeat = {editable = true, path = "./warriorbeat"}
 "boto3" = "*"
 awesome-slugify = "*"
 
@@ -21,7 +20,10 @@ autoflake = "*"
 rope = "*"
 flask-shell-ipython = "*"
 isort = "*"
-warriorbeatcli = {editable = true, path = "/Users/bradenmars/Documents/projects/warrior-beat/warriorbeatcli/src"}
+warriorbeatcli = {editable = true, path = "/Users/bradenmars/Documents/projects/warriorbeat/warriorbeatcli/src"}
 
 [requires]
 python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true

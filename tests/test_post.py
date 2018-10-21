@@ -8,7 +8,8 @@ import unittest
 import requests
 
 from helper import TestPrint
-from sample import author_url, make_mock_article, make_mock_author, post_url
+from sample import (author_url, make_fullmock_article, make_mock_article,
+                    make_mock_author, post_url)
 from test_setup import ApiTestCase
 
 
@@ -21,8 +22,7 @@ class PostTest(ApiTestCase):
         p = TestPrint('test_create_article')
         p.info(__doc__)
         mock_author = {
-            'authorId': mock_author['authorId'],
-            'name': mock_author['name']
+            'authorId': mock_author['authorId']
         }
         self.mock_request = make_mock_article(author=mock_author)
         mock_data = json.dumps(self.mock_request)
@@ -33,6 +33,7 @@ class PostTest(ApiTestCase):
         ser_reply = json.loads(reply)
         cover_img = ser_reply['cover_image']
         self.mock_request['cover_image'] = cover_img
+        self.mock_request['author'] = ser_reply['author']
         self.assertDictEqual(self.mock_request, ser_reply)
 
     def test_post_update(self):
@@ -45,8 +46,7 @@ class PostTest(ApiTestCase):
         requests.post(author_url, json=json.dumps(mock_author))
         # Create Article
         mock_author = {
-            'authorId': mock_author['authorId'],
-            'name': mock_author['name']
+            'authorId': mock_author['authorId']
         }
         mock_request = make_mock_article(id='1', author=mock_author)
         mock_data = json.dumps(mock_request)
@@ -66,8 +66,8 @@ class PostTest(ApiTestCase):
             items = scan["Items"]
             t.data('DATABASE DUMP', items)
             self.fail("Post ID not found in database!")
-        resp_coverimg = resp['cover_image']
-        mock_request['cover_image'] = resp_coverimg
+        mock_request['cover_image'] = resp['cover_image']
+        mock_request['author'] = resp['author']
         t.data('Expected: ', mock_request)
         t.data('resp Data', resp)
         self.assertDictEqual(mock_request, resp)
@@ -129,6 +129,18 @@ class PostTest(ApiTestCase):
         }
         t.data('Expected subset', expected_subset)
         self.assertDictContainsSubset(expected_subset, resp)
+
+    def test_post_cascade(self):
+        """Test author and media creation from a new post"""
+        t = TestPrint('test_post_cascade')
+        _mock_post = make_fullmock_article()
+        _req = requests.post(post_url, json=json.dumps(_mock_post))
+        req = json.loads(_req.json())
+        ignore = ['key', 'source', 'type']
+        recv_data = {k: v for k, v in req.items() if k not in ignore}
+        expected = recv_data = {k: v for k,
+                                v in req.items() if k not in ignore}
+        self.assertDictEqual(expected, recv_data)
 
 
 if __name__ == '__main__':

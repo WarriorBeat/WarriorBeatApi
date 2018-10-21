@@ -4,10 +4,11 @@
 """
 
 
-from flask_restful import Resource, request
+from flask_restful import Resource
 
 from warriorbeat.api.post.model import Article
 from warriorbeat.api.post.schema import ArticleSchema
+from warriorbeat.utils.decorators import use_schema
 
 
 class PostList(Resource):
@@ -15,8 +16,8 @@ class PostList(Resource):
     def get(self):
         return Article.all()
 
-    def post(self):
-        article = ArticleSchema().loads(request.json).data
+    @use_schema(ArticleSchema(), dump=True)
+    def post(self, article):
         author = article.author
         cover_image = article.cover_image
         # TODO: Append probably not the best method (MAKE AN UPDATE METHOD)
@@ -24,5 +25,4 @@ class PostList(Resource):
         author.save()
         cover_image.save()
         article.save()
-        data = ArticleSchema().dumps(article)
-        return data
+        return article

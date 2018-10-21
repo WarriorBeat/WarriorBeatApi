@@ -21,7 +21,7 @@ class Media(object):
 
     def save(self):
         """save media item to database"""
-        dumped = self.schema.dump(self).data
+        dumped = self.schema.dump(self)
         self.db.add_item(dumped)
 
     @classmethod
@@ -43,8 +43,8 @@ class Image(Media):
     """Image Type Media"""
 
     def __init__(self, mediaId, source, title, **kwargs):
-        self.credits = kwargs.get('credits', '')
-        self.caption = kwargs.get('caption', '')
+        self.credits = kwargs.get('credits', None)
+        self.caption = kwargs.get('caption', None)
         self.type = 'image'
         self.title = title
         self.key = kwargs.get('key', '')
