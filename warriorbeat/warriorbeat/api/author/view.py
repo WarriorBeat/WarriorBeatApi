@@ -7,6 +7,7 @@ from flask_restful import Resource, request
 
 from warriorbeat.api.author.model import Author
 from warriorbeat.api.author.schema import AuthorSchema
+from warriorbeat.utils.decorators import use_schema
 
 
 class AuthorList(Resource):
@@ -14,13 +15,9 @@ class AuthorList(Resource):
     def get(self):
         return Author.all()
 
-    def post(self):
-        try:
-            author = AuthorSchema().load(request.json)
-        except Exception:
-            author = AuthorSchema().loads(request.json)
+    @use_schema(AuthorSchema(), dump=True)
+    def post(self, author):
         profile_image = author.profile_image
         profile_image.save()
         author.save()
-        data = AuthorSchema().dumps(author)
-        return data
+        return author
