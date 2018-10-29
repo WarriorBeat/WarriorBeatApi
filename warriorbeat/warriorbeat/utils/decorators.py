@@ -27,7 +27,8 @@ def use_schema(schema, dump=False):
         def wrapper(self, *args, **kwargs):
             try:
                 data = schema.load(request.json)
-            except Exception:
+            except Exception as e:
+                print(e)
                 data = schema.loads(request.json)
             f_return = func(self, data, *args, **kwargs)
             if dump:

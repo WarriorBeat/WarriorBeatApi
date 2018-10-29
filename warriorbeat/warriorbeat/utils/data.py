@@ -116,32 +116,26 @@ class S3Storage:
 
     def get_url(self, key, **kwargs):
         """generates url where the image is hosted"""
-        method = kwargs.get('method', 'get_object')
-        expire = kwargs.get('expire', 604800)
-        url = self.s3client.generate_presigned_url(
-            ClientMethod=method,
-            ExpiresIn=expire,
-            Params={
-                'Bucket': self.bucket_name,
-                'Key': key
-            }
-        )
+        aws_root = "https://s3.amazonaws.com"
+        if TESTING == 'True':
+            aws_root = "http://localhost:9000"
+        url = f"{aws_root}/{self.bucket['bucket_name']}/{key}"
         return url
 
     def upload(self, path, key=None):
         """uploads a file to the s3 bucket"""
         if key:
             key = self.key + key
-            self.storage.upload_file(path, key)
+            self.storage.upload_file(path, key, ACL='public-read')
             return self.get_url(key)
         else:
-            self.storage.upload_file(path, self.key)
+            self.storage.upload_file(path, self.key, ACL='public-read')
             return self.get_url(self.key)
 
     def upload_obj(self, obj: tuple, key=''):
         """upload file object"""
         _key = self.key + key + obj[1]
-        self.storage.put_object(Key=_key, Body=obj[0])
+        self.storage.put_object(Key=_key, Body=obj[0], ACL='public-read')
         return self.get_url(_key)
 
     def upload_from_url(self, url, **kwargs):
