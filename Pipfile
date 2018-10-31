@@ -12,6 +12,7 @@ flask-marshmallow = "*"
 webargs = "*"
 "boto3" = "*"
 awesome-slugify = "*"
+requests = "*"
 
 [dev-packages]
 pylint = "*"
