@@ -2,9 +2,11 @@
     Sample Functions
 """
 
-post_url = "http://127.0.0.1:5000/api/posts"
-author_url = "http://127.0.0.1:5000/api/authors"
-media_url = "http://127.0.0.1:5000/api/media"
+base_url = "http://127.0.0.1:5000"
+post_url = f"{base_url}/api/posts"
+author_url = f"{base_url}/api/authors"
+media_url = f"{base_url}/api/media"
+user_url = f"{base_url}/api/user"
 
 # MOCK DATA
 
@@ -65,3 +67,13 @@ def make_fullmock_article(id='10', title='A Cascading Article'):
     post['author'] = author
     post['cover_image'] = media
     return post
+
+
+def make_mock_feedback(guest=True):
+    """mock user feedback"""
+    mock_request = {
+        'phone': '7694561986',
+        'subject': 'Cool New Idea',
+        'content': 'wow more detail'
+    }
+    return mock_request

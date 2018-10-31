@@ -10,7 +10,13 @@ from .api.root.view import Root
 from .api.author.view import AuthorList, AuthorItem
 from .api.post.view import PostList, PostItem
 from .api.media.view import MediaList, MediaItem
+from .api.user.view import UserFeedbackList
 from .exceptions import ItemAlreadyExists
+from flask import Flask, jsonify
+from flask_restful import Api
+
+from warriorbeat.api.user.view import UserFeedbackList
+
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('warriorbeat.config')
@@ -33,7 +39,9 @@ rest.add_resource(PostItem, '/api/posts/<int:postId>', endpoint='post')
 # Media Resource
 rest.add_resource(MediaList, '/api/media', endpoint='media')
 rest.add_resource(MediaItem, '/api/media/<int:mediaId>', endpoint='media_file')
-
+# User Resource
+rest.add_resource(UserFeedbackList, '/api/user/feedback',
+                  endpoint='user_feedback')
 # Error Handlers
 
 
