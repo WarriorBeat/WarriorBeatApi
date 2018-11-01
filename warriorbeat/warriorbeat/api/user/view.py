@@ -20,3 +20,9 @@ class UserFeedbackList(Resource):
     def post(self, feedback):
         feedback.save()
         return feedback
+
+
+class UserFeedbackItem(Resource):
+    def get(self, feedbackId):
+        feedback = UserFeedback.retrieve(feedbackId)
+        return feedback
