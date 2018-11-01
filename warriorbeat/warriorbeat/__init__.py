@@ -7,9 +7,9 @@
 from flask import Flask, jsonify
 from flask_restful import Api
 from .api.root.view import Root
-from .api.author.view import AuthorList
-from .api.post.view import PostList
-from .api.media.view import MediaList
+from .api.author.view import AuthorList, AuthorItem
+from .api.post.view import PostList, PostItem
+from .api.media.view import MediaList, MediaItem
 from .exceptions import ItemAlreadyExists
 
 app = Flask(__name__, instance_relative_config=True)
@@ -26,10 +26,13 @@ rest = Api(app)
 rest.add_resource(Root, '/', endpoint='root')
 # Author Resource
 rest.add_resource(AuthorList, '/api/authors', endpoint='authors')
+rest.add_resource(AuthorItem, '/api/authors/<int:authorId>', endpoint='author')
 # Post Resource
 rest.add_resource(PostList, '/api/posts', endpoint='posts')
+rest.add_resource(PostItem, '/api/posts/<int:postId>', endpoint='post')
 # Media Resource
 rest.add_resource(MediaList, '/api/media', endpoint='media')
+rest.add_resource(MediaItem, '/api/media/<int:mediaId>', endpoint='media_file')
 
 # Error Handlers
 

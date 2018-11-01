@@ -19,3 +19,9 @@ class MediaList(Resource):
     def post(self, media):
         media.save()
         return media
+
+
+class MediaItem(Resource):
+    def get(self, mediaId):
+        media = Media.retrieve(mediaId)
+        return media

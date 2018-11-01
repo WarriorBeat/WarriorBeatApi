@@ -26,3 +26,9 @@ class PostList(Resource):
         cover_image.save()
         article.save()
         return article
+
+
+class PostItem(Resource):
+    def get(self, postId):
+        article = Article.retrieve(postId)
+        return article
