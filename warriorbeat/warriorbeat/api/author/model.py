@@ -9,23 +9,22 @@ class Author(object):
     """Model for Author Resource"""
     db = DynamoDB('author')
 
-    def __init__(self, authorId, name, profile_image, posts, title, description):
+    def __init__(self, authorId, **kwargs):
         self.authorId = authorId
-        self.name = name
-        self.profile_image = profile_image
-        self.posts = posts
-        self.title = title
-        self.description = description
+        self.name = kwargs.get('name')
+        self.profile_image = kwargs.get('profile_image')
+        self.posts = kwargs.get('posts', [])
+        self.title = kwargs.get('title')
+        self.description = kwargs.get('description')
         self.schema = None
 
     @classmethod
     def create_or_retrieve(cls, **kwargs):
         """return an author if it exists, otherwise create one"""
         authorId = kwargs.get('authorId')
-        authorPosts = kwargs.pop('posts', [])
         author = cls.db.exists(authorId)
         if not author:
-            return cls(**kwargs, posts=authorPosts)
+            return cls(**kwargs)
         return cls(**author)
 
     def save(self):
