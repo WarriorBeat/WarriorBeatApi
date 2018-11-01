@@ -13,6 +13,7 @@ webargs = "*"
 "boto3" = "*"
 awesome-slugify = "*"
 requests = "*"
+warriorbeat = {editable = true, path = "./warriorbeat"}
 
 [dev-packages]
 pylint = "*"

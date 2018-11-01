@@ -7,7 +7,7 @@ from flask_restful import Resource
 
 from warriorbeat.api.author.model import Author
 from warriorbeat.api.author.schema import AuthorSchema
-from warriorbeat.utils.decorators import use_schema
+from warriorbeat.utils import use_schema
 
 
 class AuthorList(Resource):

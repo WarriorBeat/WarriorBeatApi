@@ -5,7 +5,7 @@
 
 from slugify import slugify
 
-from warriorbeat.utils.data import DynamoDB, S3Storage
+from warriorbeat.utils import DynamoDB, S3Storage
 
 
 class Media(object):

@@ -2,7 +2,7 @@
     warriorbeat/api/author/model.py
     Model for Author Resource
 """
-from warriorbeat.utils.data import DynamoDB
+from warriorbeat.utils import DynamoDB
 
 
 class Author(object):

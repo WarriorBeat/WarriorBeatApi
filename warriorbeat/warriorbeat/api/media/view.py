@@ -8,7 +8,7 @@ from flask_restful import Resource
 
 from warriorbeat.api.media.model import Media
 from warriorbeat.api.media.schema import CoverImageSchema
-from warriorbeat.utils.decorators import use_schema
+from warriorbeat.utils import use_schema
 
 
 class MediaList(Resource):

@@ -3,7 +3,7 @@
     Models for Post Resource
 """
 
-from warriorbeat.utils.data import DynamoDB
+from warriorbeat.utils import DynamoDB
 
 
 class Post(object):

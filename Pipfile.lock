@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9c89847be38b6500a08668657d879c9d1b21b4ca8abd5932262c3fd6d7e63704"
+            "sha256": "257b8bf40e871eb3ea0bd70443058388a2578a1adcd3bcc93fd70422d7a6a316"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -306,6 +306,10 @@
             ],
             "markers": "python_version >= '3.4'",
             "version": "==1.24"
+        },
+        "warriorbeat": {
+            "editable": true,
+            "path": "./warriorbeat"
         },
         "webargs": {
             "hashes": [
