@@ -21,3 +21,10 @@ class AuthorList(Resource):
         profile_image.save()
         author.save()
         return author
+
+
+class AuthorItem(Resource):
+
+    def get(self, authorId):
+        author = Author.retrieve(authorId)
+        return author
