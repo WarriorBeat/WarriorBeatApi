@@ -7,6 +7,7 @@ post_url = f"{base_url}/api/posts"
 author_url = f"{base_url}/api/authors"
 media_url = f"{base_url}/api/media"
 user_url = f"{base_url}/api/user"
+category_url = f"{base_url}/api/categories"
 
 # MOCK DATA
 
