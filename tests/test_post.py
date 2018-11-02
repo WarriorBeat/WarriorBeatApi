@@ -9,7 +9,7 @@ import requests
 
 from helper import TestPrint
 from sample import (author_url, make_fullmock_article, make_mock_article,
-                    make_mock_author, post_url)
+                    make_mock_author, post_url, make_mock_category, category_url)
 from test_setup import ApiTestCase
 
 
@@ -87,7 +87,10 @@ class PostTest(ApiTestCase):
                 'title': 'A Test Article',
                 'type': 'article',
                 'cover_image': mock_request['cover_image'],
-                'content': 'Filler Content!'
+                'content': 'Filler Content!',
+                'categories': [
+                    {'categoryId': '1', 'name': 'News'}
+                ]
             }],
         }
         self.assertDictContainsSubset(expected_subset, resp)
@@ -141,6 +144,24 @@ class PostTest(ApiTestCase):
         expected = recv_data = {k: v for k,
                                 v in req.items() if k not in ignore}
         self.assertDictEqual(expected, recv_data)
+
+    def test_create_category(self):
+        """Test direct creation of category"""
+        t = TestPrint('test_create_category')
+        mock_request = make_mock_category()[0]
+        _req = requests.post(category_url, json=json.dumps(mock_request))
+        req = json.loads(_req.json())
+        self.assertDictEqual(mock_request, req)
+
+    def test_post_category(self):
+        """Test category creation from post"""
+        t = TestPrint('test_post_category')
+        mock_request = make_fullmock_article()
+        expected = {'categories': mock_request['categories']}
+        _req = requests.post(post_url, json=json.dumps(mock_request))
+        req = json.loads(_req.json())
+        t.data('Post Cat Data', req)
+        self.assertDictContainsSubset(expected, req)
 
 
 if __name__ == '__main__':

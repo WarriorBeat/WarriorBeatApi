@@ -28,6 +28,10 @@ TABLES = {
     'feedback': {
         'table_name': 'user-feedback-table-dev',
         'primary_key': 'feedbackId'
+    },
+    'category': {
+        'table_name': 'category-table-dev',
+        'primary_key': 'categoryId'
     }
 }
 
@@ -92,6 +96,7 @@ class ApiTestCase(unittest.TestCase):
         self.post_table = create_table(TABLES['post'])
         self.media_table = create_table(TABLES['media'])
         self.feedback_table = create_table(TABLES['feedback'])
+        self.category_table = create_table(TABLES['category'])
         self.media_bucket = create_bucket(BUCKETS['media'])
         resp = self.s3client.list_buckets()
         buckets = [bucket['Name'] for bucket in resp['Buckets']]
@@ -105,6 +110,7 @@ class ApiTestCase(unittest.TestCase):
         self.post_table.delete()
         self.media_table.delete()
         self.feedback_table.delete()
+        self.category_table.delete()
         t.info('Testing Databases Deleted.')
         self.media_bucket.objects.all().delete()
         self.media_bucket.delete()

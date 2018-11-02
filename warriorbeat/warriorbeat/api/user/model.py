@@ -3,8 +3,8 @@
     Models for User Profiles & Accounts
 """
 
-from warriorbeat.utils.data import DynamoDB
 from warriorbeat.api.model import ResourceModel
+from warriorbeat.utils.data import DynamoDB
 
 
 class UserFeedback(ResourceModel):
