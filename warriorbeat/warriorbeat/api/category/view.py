@@ -16,7 +16,6 @@ class CategoryList(Resource):
 
     @use_schema(CategorySchema(), dump=True)
     def post(self, category):
-        category.save()
         return category
 
 
