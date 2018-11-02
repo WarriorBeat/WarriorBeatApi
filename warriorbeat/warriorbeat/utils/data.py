@@ -13,26 +13,30 @@ from botocore.exceptions import ClientError
 # Connection Info
 TABLES = {
     'author': {
-        'table_name': 'author-table-dev',
+        'table_name': 'author-table',
         'primary_key': 'authorId'
     },
     'post': {
-        'table_name': 'post-table-dev',
+        'table_name': 'post-table',
         'primary_key': 'postId'
     },
     'media': {
-        'table_name': 'media-table-dev',
+        'table_name': 'media-table',
         'primary_key': 'mediaId'
     },
     'feedback': {
-        'table_name': 'user-feedback-table-dev',
+        'table_name': 'user-feedback-table',
         'primary_key': 'feedbackId'
+    },
+    'category': {
+        'table_name': 'category-table',
+        'primary_key': 'categoryId'
     }
 }
 
 BUCKETS = {
     'media': {
-        'bucket_name': 'media-bucket-dev',
+        'bucket_name': 'media-bucket',
         'parent_key': 'media/'
     }
 }
@@ -55,9 +59,11 @@ class DynamoDB:
         if TESTING == 'True':
             self.dynamodb = boto3.resource(
                 'dynamodb', region_name='localhost', endpoint_url='http://localhost:8000')
+            self.table = TABLES[table]
+            self.table['table_name'] = self.table['table_name'] + '-dev'
         else:
             self.dynamodb = boto3.resource('dynamodb')
-        self.table = TABLES[table]
+            self.table = TABLES[table]
         self.db = self.dynamodb.Table(self.table['table_name'])
 
     def add_item(self, item):
@@ -110,10 +116,12 @@ class S3Storage:
                 's3', region_name='localhost', endpoint_url='http://localhost:9000', aws_access_key_id='accessKey1', aws_secret_access_key='verySecretKey1')
             self.s3client = boto3.client(
                 's3', region_name='localhost', endpoint_url='http://localhost:9000', aws_access_key_id='accessKey1', aws_secret_access_key='verySecretKey1')
+            self.bucket = BUCKETS[bucket]
+            self.bucket['bucket_name'] = self.bucket['bucket_name'] + '-dev'
         else:
             self.s3bucket = boto3.resource('s3')
             self.s3client = boto3.client('s3')
-        self.bucket = BUCKETS[bucket]
+            self.bucket = BUCKETS[bucket]
         self.bucket_name = self.bucket['bucket_name']
         self.storage = self.s3bucket.Bucket(self.bucket_name)
         self.key = self.bucket['parent_key']

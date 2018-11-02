@@ -12,11 +12,12 @@ class Post(ResourceModel):
     db = DynamoDB('post')
     identity = 'postId'
 
-    def __init__(self, postId, title, author, type):
+    def __init__(self, postId, **kwargs):
         self.postId = postId
-        self.title = title
-        self.author = author
-        self.type = type
+        self.title = kwargs.get('title')
+        self.author = kwargs.get('author')
+        self.type = kwargs.get('type')
+        self.categories = kwargs.get('categories')
 
     def __str__(self):
         return f"({self.type}) {self.title} by {self.author}"
@@ -25,10 +26,10 @@ class Post(ResourceModel):
 class Article(Post):
     """Model for Article Post Type"""
 
-    def __init__(self, postId, title, author, type, cover_image, content):
-        super(Article, self).__init__(postId, title, author, type)
+    def __init__(self, cover_image, content, *args, **kwargs):
         self.cover_image = cover_image
         self.content = content
+        super(Article, self).__init__(*args, **kwargs)
 
 
 class Poll(Post):

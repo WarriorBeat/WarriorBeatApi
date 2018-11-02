@@ -87,7 +87,10 @@ class PostTest(ApiTestCase):
                 'title': 'A Test Article',
                 'type': 'article',
                 'cover_image': mock_request['cover_image'],
-                'content': 'Filler Content!'
+                'content': 'Filler Content!',
+                'categories': [
+                    {'categoryId': '1', 'name': 'News'}
+                ]
             }],
         }
         self.assertDictContainsSubset(expected_subset, resp)

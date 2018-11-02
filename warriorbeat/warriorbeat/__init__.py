@@ -11,6 +11,7 @@ from .api.author.view import AuthorList, AuthorItem
 from .api.post.view import PostList, PostItem
 from .api.media.view import MediaList, MediaItem
 from .api.user.view import UserFeedbackList, UserFeedbackItem
+from .api.category.view import CategoryList, CategoryItem
 from .exceptions import ItemAlreadyExists
 from flask import Flask, jsonify
 from flask_restful import Api
@@ -44,6 +45,10 @@ rest.add_resource(UserFeedbackList, '/api/user/feedback',
                   endpoint='feedback')
 rest.add_resource(UserFeedbackItem, '/api/user/feedback/<string:feedbackId>',
                   endpoint='feedback_item')
+# Category Resource
+rest.add_resource(CategoryList, '/api/categories', endpoint='categories')
+rest.add_resource(
+    CategoryItem, '/api/categories/<int:categoryId>', endpoint='category')
 # Error Handlers
 
 
