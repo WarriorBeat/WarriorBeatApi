@@ -7,7 +7,7 @@ from flask_restful import Resource
 
 from warriorbeat.api.author.model import Author
 from warriorbeat.api.author.schema import AuthorSchema
-from warriorbeat.utils.decorators import use_schema
+from warriorbeat.utils import use_schema
 
 
 class AuthorList(Resource):
@@ -20,4 +20,11 @@ class AuthorList(Resource):
         profile_image = author.profile_image
         profile_image.save()
         author.save()
+        return author
+
+
+class AuthorItem(Resource):
+
+    def get(self, authorId):
+        author = Author.retrieve(authorId)
         return author

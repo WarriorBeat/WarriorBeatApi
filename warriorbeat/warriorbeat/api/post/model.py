@@ -3,39 +3,21 @@
     Models for Post Resource
 """
 
-from warriorbeat.utils.data import DynamoDB
+from warriorbeat.api.model import ResourceModel
+from warriorbeat.utils import DynamoDB
 
 
-class Post(object):
+class Post(ResourceModel):
     """Base Model for Post Resource"""
     db = DynamoDB('post')
+    identity = 'postId'
 
-    def __init__(self, postId, title, author, type):
+    def __init__(self, postId, **kwargs):
         self.postId = postId
-        self.title = title
-        self.author = author
-        self.type = type
-        self.schema = None
-
-    def save(self):
-        """save post to database"""
-        dumped = self.schema.dump(self)
-        self.db.add_item(dumped)
-
-    @classmethod
-    def all(cls):
-        """return all posts"""
-        data = cls.db.all
-        return data
-
-    @classmethod
-    def create_or_retrieve(cls, **kwargs):
-        """return post if exists, otherwise create one"""
-        postId = kwargs.get('postId')
-        post = cls.db.exists(postId)
-        if not post:
-            return cls(**kwargs)
-        return cls(**post)
+        self.title = kwargs.get('title')
+        self.author = kwargs.get('author')
+        self.type = kwargs.get('type')
+        self.categories = kwargs.get('categories')
 
     def __str__(self):
         return f"({self.type}) {self.title} by {self.author}"
@@ -44,10 +26,10 @@ class Post(object):
 class Article(Post):
     """Model for Article Post Type"""
 
-    def __init__(self, postId, title, author, type, cover_image, content):
-        super(Article, self).__init__(postId, title, author, type)
+    def __init__(self, cover_image, content, *args, **kwargs):
         self.cover_image = cover_image
         self.content = content
+        super(Article, self).__init__(*args, **kwargs)
 
 
 class Poll(Post):

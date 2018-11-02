@@ -5,38 +5,20 @@
 
 from slugify import slugify
 
-from warriorbeat.utils.data import DynamoDB, S3Storage
+from warriorbeat.api.model import ResourceModel
+from warriorbeat.utils import DynamoDB, S3Storage
 
 
-class Media(object):
+class Media(ResourceModel):
     """Base Class for Media resource"""
     storage = S3Storage('media')
     db = DynamoDB('media')
+    identity = 'mediaId'
 
     def __init__(self, mediaId, type, source):
         self.mediaId = mediaId
         self.type = type
         self.source = source
-        self.schema = None
-
-    def save(self):
-        """save media item to database"""
-        dumped = self.schema.dump(self)
-        self.db.add_item(dumped)
-
-    @classmethod
-    def create_or_retrieve(cls, **kwargs):
-        """return media if exists, otherwise create one"""
-        mediaId = kwargs.get("mediaId")
-        media = cls.db.exists(mediaId)
-        if not media:
-            return cls(**kwargs)
-        return cls(**media)
-
-    @classmethod
-    def all(cls):
-        data = cls.db.all
-        return data
 
 
 class Image(Media):

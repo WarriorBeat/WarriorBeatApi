@@ -8,7 +8,7 @@ from flask_restful import Resource
 
 from warriorbeat.api.post.model import Article
 from warriorbeat.api.post.schema import ArticleSchema
-from warriorbeat.utils.decorators import use_schema
+from warriorbeat.utils import use_schema
 
 
 class PostList(Resource):
@@ -25,4 +25,10 @@ class PostList(Resource):
         author.save()
         cover_image.save()
         article.save()
+        return article
+
+
+class PostItem(Resource):
+    def get(self, postId):
+        article = Article.retrieve(postId)
         return article

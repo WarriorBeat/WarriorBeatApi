@@ -29,7 +29,11 @@ def use_schema(schema, dump=False):
                 data = schema.load(request.json)
             except Exception as e:
                 print(e)
-                data = schema.loads(request.json)
+                try:
+                    data = schema.loads(request.json)
+                except Exception as e:
+                    print(e)
+                    raise
             f_return = func(self, data, *args, **kwargs)
             if dump:
                 return schema.dumps(f_return)

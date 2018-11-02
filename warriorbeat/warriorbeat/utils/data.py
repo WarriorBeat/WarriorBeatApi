@@ -13,28 +13,37 @@ from botocore.exceptions import ClientError
 # Connection Info
 TABLES = {
     'author': {
-        'table_name': 'author-table-dev',
+        'table_name': 'author-table',
         'primary_key': 'authorId'
     },
     'post': {
-        'table_name': 'post-table-dev',
+        'table_name': 'post-table',
         'primary_key': 'postId'
     },
     'media': {
-        'table_name': 'media-table-dev',
+        'table_name': 'media-table',
         'primary_key': 'mediaId'
+    },
+    'feedback': {
+        'table_name': 'user-feedback-table',
+        'primary_key': 'feedbackId'
+    },
+    'category': {
+        'table_name': 'category-table',
+        'primary_key': 'categoryId'
     }
 }
 
 BUCKETS = {
     'media': {
-        'bucket_name': 'media-bucket-dev',
+        'bucket_name': 'media-bucket',
         'parent_key': 'media/'
     }
 }
 
-# Testing Data
+# Environment Variables
 TESTING = os.environ['FLASK_TESTING']
+AWS_DEV = os.environ['AWS_DEV']
 
 
 class DynamoDB:
@@ -54,6 +63,8 @@ class DynamoDB:
         else:
             self.dynamodb = boto3.resource('dynamodb')
         self.table = TABLES[table]
+        _tname = self.table['table_name']
+        self.table['table_name'] = _tname if AWS_DEV != 'True' else _tname + '-dev'
         self.db = self.dynamodb.Table(self.table['table_name'])
 
     def add_item(self, item):
@@ -110,8 +121,8 @@ class S3Storage:
             self.s3bucket = boto3.resource('s3')
             self.s3client = boto3.client('s3')
         self.bucket = BUCKETS[bucket]
-        self.bucket_name = self.bucket['bucket_name']
-        self.storage = self.s3bucket.Bucket(self.bucket_name)
+        self.bucket['bucket_name'] = self.bucket['bucket_name'] if AWS_DEV != 'True' else self.bucket['bucket_name'] + '-dev'
+        self.storage = self.s3bucket.Bucket(self.bucket['bucket_name'])
         self.key = self.bucket['parent_key']
 
     def get_url(self, key, **kwargs):
