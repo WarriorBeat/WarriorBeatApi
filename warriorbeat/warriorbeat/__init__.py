@@ -13,8 +13,6 @@ from .api.media.view import MediaList, MediaItem
 from .api.user.view import UserFeedbackList, UserFeedbackItem
 from .api.category.view import CategoryList, CategoryItem
 from .exceptions import ItemAlreadyExists
-from flask import Flask, jsonify
-from flask_restful import Api
 
 from warriorbeat.api.user.view import UserFeedbackList
 

@@ -72,20 +72,20 @@ class DynamoDB:
         self.db.put_item(Item=item)
         return item
 
-    def get_item(self, id):
-        """retrieves an item item from database"""
+    def get_item(self, itemId):
+        """retrieves an item from database"""
         try:
             resp = self.db.get_item(Key={
-                self.table['primary_key']: id
+                self.table['primary_key']: itemId
             })
             return resp.get('Item')
         except ClientError as e:
             print(e)
             return None
 
-    def exists(self, id):
+    def exists(self, itemId):
         """checks if an item exists in the database"""
-        item = self.get_item(id)
+        item = self.get_item(itemId)
         return False if item is None else item
 
     @property

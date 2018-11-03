@@ -15,22 +15,22 @@ class Media(ResourceModel):
     db = DynamoDB('media')
     identity = 'mediaId'
 
-    def __init__(self, mediaId, type, source):
+    def __init__(self, mediaId, source, **kwargs):
         self.mediaId = mediaId
-        self.type = type
         self.source = source
+        self.type = kwargs.get('type', '')
 
 
 class Image(Media):
     """Image Type Media"""
 
-    def __init__(self, mediaId, source, title, **kwargs):
+    def __init__(self, title, *args, **kwargs):
         self.credits = kwargs.get('credits', None)
         self.caption = kwargs.get('caption', None)
-        self.type = 'image'
+        self.type = kwargs.get('type', 'image')
         self.title = title
         self.key = kwargs.get('key', '')
-        super().__init__(mediaId, self.type, source)
+        super().__init__(*args, **kwargs)
         self.set_source()
 
     def set_source(self):
@@ -52,17 +52,15 @@ class Image(Media):
 class CoverImage(Image):
     """Cover Image Media Object"""
 
-    def __init__(self, mediaId, source, title, **kwargs):
-        super().__init__(
-            mediaId, source, title, **kwargs)
-        self.type = 'cover-image'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 class ProfileImage(Image):
     """User Profile Image Model"""
 
-    def __init__(self, mediaId, source, title, **kwargs):
+    def __init__(self, **kwargs):
         self.key = 'profile/'
-        self.title = title
-        super().__init__(mediaId, source, title, key=self.key, **kwargs)
-        self.type = 'profile-image'
+        super().__init__(key=self.key, **kwargs)
+        self.title = kwargs.get('title')
+        self.type = kwargs.get('type', 'profile-image')

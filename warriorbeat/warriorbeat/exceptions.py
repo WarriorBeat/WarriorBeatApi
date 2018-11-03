@@ -43,6 +43,6 @@ class ItemAlreadyExists(APIException):
         id of item
     """
 
-    def __init__(self, id):
-        message = f"An Item with id {id} already exists"
+    def __init__(self, itemId):
+        message = f"An Item with id {itemId} already exists"
         super(ItemAlreadyExists, self).__init__(409, message)
