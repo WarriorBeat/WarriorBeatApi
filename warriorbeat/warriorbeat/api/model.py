@@ -23,9 +23,9 @@ class ResourceModel:
         return cls(**item)
 
     @classmethod
-    def retrieve(cls, id):
+    def retrieve(cls, identity):
         """retrieve item from database by id"""
-        item = cls.db.get_item(str(id))
+        item = cls.db.get_item(str(identity))
         return item
 
     @classmethod

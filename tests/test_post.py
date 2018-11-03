@@ -8,8 +8,9 @@ import unittest
 import requests
 
 from helper import TestPrint
-from sample import (author_url, make_fullmock_article, make_mock_article,
-                    make_mock_author, post_url, make_mock_category, category_url)
+from sample import (author_url, category_url, make_fullmock_article,
+                    make_mock_article, make_mock_author, make_mock_category,
+                    post_url)
 from test_setup import ApiTestCase
 
 

@@ -35,7 +35,7 @@ class Article(Post):
 class Poll(Post):
     """Model for Poll Post Type"""
 
-    def __init__(self, postId, title, author, type, answers, results):
-        super(Poll, self).__init__(postId, title, author, type)
+    def __init__(self, answers, results, *args, **kwargs):
         self.answers = answers
         self.results = results
+        super(Poll, self).__init__(*args, **kwargs)
