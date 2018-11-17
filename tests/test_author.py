@@ -25,6 +25,8 @@ class AuthorTest(ApiTestCase):
         p.data('Json Reply', reply)
         ser_reply = json.loads(reply)
         self.mock_request['profile_image'] = ser_reply['profile_image']
+        # Title should be parsed from ['administrator', 'staff_writer'] => "Staff Writer"
+        self.mock_request['title'] = "Staff Writer"
         p.data('Expected', self.mock_request)
         self.assertDictEqual(self.mock_request, ser_reply)
 
@@ -46,6 +48,7 @@ class AuthorTest(ApiTestCase):
             items = scan["Items"]
             t.data('DATABASE DUMP', items)
         mock_request['profile_image'] = resp['profile_image']
+        mock_request['title'] = "Staff Writer"
         t.data('Expected', mock_request)
         self.assertDictEqual(mock_request, resp)
 

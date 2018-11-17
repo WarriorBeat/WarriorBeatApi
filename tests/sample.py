@@ -42,7 +42,7 @@ def make_mock_author(id='1', name='A Test Author'):
         'name': name,
         'profile_image': mock_profile,
         'posts': [],
-        'title': 'Staff Writer',
+        'title': ['author', 'staff_writer'],
         'description': f'Hi, I am a test author #{id}'
     }
     return mock_author
