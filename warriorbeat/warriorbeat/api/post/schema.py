@@ -17,6 +17,7 @@ class ArticleSchema(Schema):
     cover_image = fields.Nested('CoverImageSchema')
     content = fields.Str(required=True)
     categories = fields.Nested('CategorySchema', many=True)
+    date = fields.Str()
 
     @post_load
     def make_article(self, data):

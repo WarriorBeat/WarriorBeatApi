@@ -18,6 +18,7 @@ class Post(ResourceModel):
         self.author = kwargs.get('author')
         self.type = kwargs.get('type')
         self.categories = kwargs.get('categories')
+        self.date = kwargs.get('date')
 
     def __str__(self):
         return f"({self.type}) {self.title} by {self.author}"
