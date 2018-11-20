@@ -17,5 +17,5 @@ class CategorySchema(Schema):
     @post_load
     def make_category(self, data):
         """return category instance"""
-        category = Category.create_or_retrieve(**data, schema=CategorySchema())
+        category = Category.create_or_update(**data, schema=CategorySchema())
         return category

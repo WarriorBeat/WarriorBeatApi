@@ -20,8 +20,8 @@ class PostList(Resource):
     def post(self, article):
         author = article.author
         cover_image = article.cover_image
-        # TODO: Append probably not the best method (MAKE AN UPDATE METHOD)
-        author.posts.append(article)
+        if article.postId not in author.posts:
+            author.posts.append(article.postId)
         author.save()
         cover_image.save()
         article.save()
