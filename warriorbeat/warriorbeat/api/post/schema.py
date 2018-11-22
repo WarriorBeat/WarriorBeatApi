@@ -10,9 +10,13 @@ from warriorbeat.api.post.model import Article
 
 class ArticleSchema(Schema):
     """Article Schema"""
+
     postId = fields.Str(required=True)
     title = fields.Str(required=True)
-    author = fields.Nested('AuthorSchema', exclude=('posts', ), required=True)
+    author = fields.Nested('AuthorSchema', exclude=(
+        'posts', ), load_only=True)
+    authorId = fields.Pluck('AuthorSchema', 'authorId',
+                            attribute='author', dump_only=True)
     type = fields.Str()
     cover_image = fields.Nested('CoverImageSchema')
     content = fields.Str(required=True)
@@ -22,6 +26,6 @@ class ArticleSchema(Schema):
     @post_load
     def make_article(self, data):
         """return article instance"""
-        article = Article.create_or_retrieve(**data)
+        article = Article.create_or_update(**data)
         article.schema = ArticleSchema()
         return article

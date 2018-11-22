@@ -13,8 +13,7 @@ class AuthorSchema(Schema):
     authorId = fields.Str(required=True)
     name = fields.Str()
     profile_image = fields.Nested('ProfileImageSchema')
-    posts = fields.Nested('ArticleSchema', many=True,
-                          exclude=('author', ))
+    posts = fields.List(fields.Str())
     title = fields.Method('author_role', deserialize='get_author_role')
     description = fields.Str(
         required=False, allow_none=True, default='Staff Member')
@@ -36,6 +35,6 @@ class AuthorSchema(Schema):
 
     @post_load
     def make_author(self, data):
-        author = Author.create_or_retrieve(**data)
+        author = Author.create_or_update(**data)
         author.schema = AuthorSchema()
         return author

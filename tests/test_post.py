@@ -34,7 +34,8 @@ class PostTest(ApiTestCase):
         ser_reply = json.loads(reply)
         cover_img = ser_reply['cover_image']
         self.mock_request['cover_image'] = cover_img
-        self.mock_request['author'] = ser_reply['author']
+        self.mock_request['authorId'] = ser_reply['authorId']
+        del self.mock_request['author']
         self.assertDictEqual(self.mock_request, ser_reply)
 
     def test_post_update(self):
@@ -68,7 +69,8 @@ class PostTest(ApiTestCase):
             t.data('DATABASE DUMP', items)
             self.fail("Post ID not found in database!")
         mock_request['cover_image'] = resp['cover_image']
-        mock_request['author'] = resp['author']
+        mock_request['authorId'] = mock_request['author']['authorId']
+        del mock_request['author']
         t.data('Expected: ', mock_request)
         t.data('resp Data', resp)
         self.assertDictEqual(mock_request, resp)
@@ -81,20 +83,9 @@ class PostTest(ApiTestCase):
         )
         resp = _resp['Item']
         t.data('_resp Data', resp)
-        # check if author data contains new post data
-        expected_subset = {
-            'posts': [{
-                'postId': '1',
-                'title': 'A Test Article',
-                'type': 'article',
-                'cover_image': mock_request['cover_image'],
-                'content': 'Filler Content!',
-                'categories': [
-                    {'categoryId': '1', 'name': 'News'}
-                ]
-            }],
-        }
-        self.assertDictContainsSubset(expected_subset, resp)
+        # check if author data contains new postIds
+        expected_posts = ['1']
+        self.assertEqual(expected_posts, resp['posts'])
 
     def test_multi_article_save(self):
         """
@@ -122,17 +113,8 @@ class PostTest(ApiTestCase):
         })
         resp = _resp['Item']
         t.data('Received Response', resp)
-        # Delete two way nested author (would cause inheritance issues in schema)
-        del mock_post_1['author']
-        del mock_post_2['author']
-        # Update mocks cover images
-        mock_post_1['cover_image'] = resp_1['cover_image']
-        mock_post_2['cover_image'] = resp_2['cover_image']
-        expected_subset = {
-            'posts': [mock_post_1, mock_post_2]
-        }
-        t.data('Expected subset', expected_subset)
-        self.assertDictContainsSubset(expected_subset, resp)
+        expected_posts = [mock_post_1['postId'], mock_post_2['postId']]
+        self.assertEqual(expected_posts, resp['posts'])
 
     def test_post_cascade(self):
         """Test author and media creation from a new post"""

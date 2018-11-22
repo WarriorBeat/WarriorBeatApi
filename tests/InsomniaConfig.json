@@ -1,0 +1,138 @@
+{
+	"_type": "export",
+	"__export_format": 3,
+	"__export_date": "2018-11-21T06:28:30.778Z",
+	"__export_source": "insomnia.desktop.app:v6.2.0",
+	"resources": [
+		{
+			"_id": "wrk_1fea04107ea0438185b708bfe6f55e3f",
+			"created": 1542770419348,
+			"description": "",
+			"modified": 1542770419348,
+			"name": "WarriorBeatApi",
+			"parentId": null,
+			"_type": "workspace"
+		},
+		{
+			"_id": "env_46beb3d77fd34b46bedcc2368ab4f8da",
+			"color": null,
+			"created": 1542770419353,
+			"data": {},
+			"isPrivate": false,
+			"metaSortKey": 1542770419353,
+			"modified": 1542770527864,
+			"name": "New Environment",
+			"parentId": "wrk_1fea04107ea0438185b708bfe6f55e3f",
+			"_type": "environment"
+		},
+		{
+			"_id": "jar_f17c14526c0646bc87af6e4b9912089e",
+			"cookies": [],
+			"created": 1542770419356,
+			"modified": 1542770419356,
+			"name": "Default Jar",
+			"parentId": "wrk_1fea04107ea0438185b708bfe6f55e3f",
+			"_type": "cookie_jar"
+		},
+		{
+			"_id": "fld_3ff86b41d483408cbccaeb240d177ece",
+			"created": 1542770433017,
+			"description": "",
+			"environment": {},
+			"metaSortKey": -1542770433017,
+			"modified": 1542770603061,
+			"name": "Posts",
+			"parentId": "wrk_1fea04107ea0438185b708bfe6f55e3f",
+			"_type": "request_group"
+		},
+		{
+			"_id": "env_63e3d346216340bdbe69f5d2950d00d6",
+			"color": null,
+			"created": 1542770530657,
+			"data": {
+				"base_url": "http://localhost:5000/api"
+			},
+			"isPrivate": false,
+			"metaSortKey": 1542770530657,
+			"modified": 1542770574717,
+			"name": "WarriorBeatApi",
+			"parentId": "env_46beb3d77fd34b46bedcc2368ab4f8da",
+			"_type": "environment"
+		},
+		{
+			"_id": "fld_0c04d9d436fd4218a0f4ad425496f16e",
+			"created": 1542780351791,
+			"description": "",
+			"environment": {},
+			"metaSortKey": -1542780351791,
+			"modified": 1542780351791,
+			"name": "More Posts",
+			"parentId": "fld_3ff86b41d483408cbccaeb240d177ece",
+			"_type": "request_group"
+		},
+		{
+			"_id": "req_318bc8c336ca4e448748deb92882912d",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"postId\": \"548\",\n\t\"title\": \"Oak Grove Primary Fall Festival\",\n\t\"date\": \"2018-11-13T21:23:13\",\n\t\"content\": \"<p><span style=\\\"font-weight: 400;\\\">Oak Grove Primary recently held its annual Fall Festival where kids play games, win prizes, and make lasting memories.</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">This year was Laurie Stewart’s first year in charge of planning the festival after helping in previous years.</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“Our first planning meeting was around the beginning of September,” Stewart said.  “We have a committee that started getting everything together.”</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“It really hasn’t been stressful,&#8221; Stewart said. &#8220;It’s just lots of planning and making sure everything is organized.” </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">For Stewart, the biggest reward was seeing the kids make the most of the festival after all of the hard work . </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“People coming out and just seeing the smiles on the kids faces whenever they win a game,&#8221; Stewart said.  &#8220;It’s just a fun family night.”</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">Even though the weather didn&#8217;t cooperate, the festival continued as planned. </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“We almost postponed it, but we decided to go ahead and have it still,” Stewart said “It feels good knowing we organized everything, and it flowed smoothly.” </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">The festival had unlimited games and unique activities for the kids.</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“The toilet paper bowl activity was a very creative idea,&#8221; Stewart said. &#8220;I like that the kids got a treat just for participating. It’s just good fun.” </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">The school’s principal Alice Rainwater saw many rewarding factors in hosting the festival. </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“We love this night because our families get to come out and enjoy good quality time,&#8221; Rainwater said. &#8220;They get to see the school and the teachers as well as spend time as a families.” </span></p>\",\n\t\"author\": {\n\t\t\"authorId\": \"1\",\n\t\t\"name\": \"Braden Mars\",\n\t\t\"title\": [\n\t\t\t\"administrator\",\n\t\t\t\"staff_writer\"\n\t\t],\n\t\t\"description\": \"Staff Member\",\n\t\t\"profile_image\": {\n\t\t\t\"name\": \"Braden Mars\",\n\t\t\t\"source\": \"https://wallpapercave.com/wp/qCXWPUe.jpg\",\n\t\t\t\"mediaId\": \"1\"\n\t\t}\n\t},\n\t\"cover_image\": {\n\t\t\"mediaId\": \"549\",\n\t\t\"source\": \"https://ogwarriorbeat.com/wp-content/uploads/2018/11/IMG_5907.jpg\",\n\t\t\"title\": \"A New Post\",\n\t\t\"credits\": \"Photo Courtesy of Taylor Strange\",\n\t\t\"caption\": \"Oak Grove students help at the Primary's Fall Festival\"\n\t},\n\t\"type\": \"article\",\n\t\"categories\": [\n\t\t{\n\t\t\t\"categoryId\": \"1\",\n\t\t\t\"name\": \"News\"\n\t\t},\n\t\t{\n\t\t\t\"categoryId\": \"2\",\n\t\t\t\"name\": \"Opinion\"\n\t\t}\n\t]\n}"
+			},
+			"created": 1542770495983,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_c5a798f37a5f4370aca059bd2b6bec5a",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1542770495983,
+			"method": "POST",
+			"modified": 1542773958838,
+			"name": "New Post",
+			"parameters": [],
+			"parentId": "fld_3ff86b41d483408cbccaeb240d177ece",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/posts",
+			"_type": "request"
+		},
+		{
+			"_id": "req_3de6a0973fda42fc91b4c9d71ed69cba",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"postId\": \"544\",\n\t\"title\": \"From Wordpress Hook\",\n\t\"content\": \"Only the finests\",\n\t\"author\": {\n\t\t\"authorId\": \"2\",\n\t\t\"name\": \"John Adam\",\n\t\t\"title\": [\n\t\t\t\"subscriber\",\n\t\t\t\"graphic_designer\"\n\t\t],\n\t\t\"description\": \"Staff Member\",\n\t\t\"profile_image\": {\n\t\t\t\"name\": \"John Adam\",\n\t\t\t\"source\": \"http://0.gravatar.com/avatar/33ae6d29d41e713aca62fb52405ebe29?s=96&d=mm&r=g\",\n\t\t\t\"mediaId\": \"4\"\n\t\t}\n\t},\n\t\"cover_image\": {\n\t\t\"mediaId\": \"545\",\n\t\t\"source\": \"https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg\",\n\t\t\"title\": \"From Wordpress Hook\"\n\t},\n\t\"type\": \"article\",\n\t\"categories\": [\n\t\t{\n\t\t\t\"categoryId\": \"2\",\n\t\t\t\"name\": \"Sports\"\n\t\t}\n\t]\n}"
+			},
+			"created": 1542780356115,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_c5a798f37a5f4370aca059bd2b6bec5a",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1542775423887,
+			"method": "POST",
+			"modified": 1542780475559,
+			"name": "Post #1",
+			"parameters": [],
+			"parentId": "fld_0c04d9d436fd4218a0f4ad425496f16e",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/posts",
+			"_type": "request"
+		}
+	]
+}

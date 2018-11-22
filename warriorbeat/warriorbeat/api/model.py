@@ -14,12 +14,13 @@ class ResourceModel:
         self.schema = None
 
     @classmethod
-    def create_or_retrieve(cls, **kwargs):
+    def create_or_update(cls, **kwargs):
         """return resource if it exists, otherwise create one"""
         itemId = kwargs.get(cls.identity)
         item = cls.db.exists(itemId)
         if not item:
             return cls(**kwargs)
+        item = {**item, **kwargs}
         return cls(**item)
 
     @classmethod

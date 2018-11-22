@@ -26,7 +26,8 @@ def make_mock_article(author=None, id='1', title='A Test Article', cover_img=Non
         'categories': mock_category,
         'type': 'article',
         'cover_image': mock_cover,
-        'content': 'Filler Content!'
+        'content': 'Filler Content!',
+        'date': '2018-11-13T21:23:13'
     }
     return mock_post
 
