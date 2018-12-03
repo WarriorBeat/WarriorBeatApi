@@ -3,6 +3,9 @@
 """
 
 from pprint import pprint
+import os
+
+DEBUG = os.environ.get('TEST_DEBUG')
 
 
 class TestPrint:
@@ -14,10 +17,12 @@ class TestPrint:
     def info(self, msg):
         """Context for info prints"""
         msg = f"\n[{self.func}] (Info): {msg}"
-        print(msg)
+        if DEBUG == 'True':
+            print(msg)
 
     def data(self, context, data):
         """Context for data prints"""
         msg = f"\n[{self.func}] (Debug) {context}:"
-        print(msg)
-        pprint(data)
+        if DEBUG == 'True':
+            print(msg)
+            pprint(data)

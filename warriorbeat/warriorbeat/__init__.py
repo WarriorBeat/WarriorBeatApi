@@ -12,6 +12,7 @@ from .api.post.view import PostList, PostItem
 from .api.media.view import MediaList, MediaItem
 from .api.user.view import UserFeedbackList, UserFeedbackItem
 from .api.category.view import CategoryList, CategoryItem
+from .api.poll.view import PollList, PollItem
 from .exceptions import ItemAlreadyExists
 
 from warriorbeat.api.user.view import UserFeedbackList
@@ -47,6 +48,10 @@ rest.add_resource(UserFeedbackItem, '/api/user/feedback/<string:feedbackId>',
 rest.add_resource(CategoryList, '/api/categories', endpoint='categories')
 rest.add_resource(
     CategoryItem, '/api/categories/<int:categoryId>', endpoint='category')
+# Poll Resource
+rest.add_resource(PollList, '/api/polls', endpoint='polls')
+rest.add_resource(PollItem, '/api/polls/<int:pollId>', endpoint='poll')
+
 # Error Handlers
 
 

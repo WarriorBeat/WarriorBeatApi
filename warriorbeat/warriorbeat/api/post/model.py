@@ -15,9 +15,7 @@ class Post(ResourceModel):
     def __init__(self, postId, **kwargs):
         self.postId = postId
         self.title = kwargs.get('title')
-        self.author = kwargs.get('author')
         self.type = kwargs.get('type')
-        self.categories = kwargs.get('categories')
         self.date = kwargs.get('date')
 
     def __str__(self):
@@ -27,16 +25,9 @@ class Post(ResourceModel):
 class Article(Post):
     """Model for Article Post Type"""
 
-    def __init__(self, cover_image, content, *args, **kwargs):
-        self.cover_image = cover_image
-        self.content = content
+    def __init__(self, *args, **kwargs):
+        self.categories = kwargs.get('categories')
+        self.author = kwargs.get('author')
+        self.cover_image = kwargs.get('cover_image')
+        self.content = kwargs.get('content')
         super(Article, self).__init__(*args, **kwargs)
-
-
-class Poll(Post):
-    """Model for Poll Post Type"""
-
-    def __init__(self, answers, results, *args, **kwargs):
-        self.answers = answers
-        self.results = results
-        super(Poll, self).__init__(*args, **kwargs)

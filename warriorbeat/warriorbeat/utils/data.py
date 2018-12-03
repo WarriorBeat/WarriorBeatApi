@@ -31,6 +31,10 @@ TABLES = {
     'category': {
         'table_name': 'category-table',
         'primary_key': 'categoryId'
+    },
+    'poll': {
+        'table_name': 'poll-table',
+        'primary_key': 'pollId'
     }
 }
 
