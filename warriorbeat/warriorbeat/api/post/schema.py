@@ -8,20 +8,23 @@ from marshmallow import Schema, fields, post_load
 from warriorbeat.api.post.model import Article
 
 
-class ArticleSchema(Schema):
-    """Article Schema"""
-
+class PostSchema(Schema):
+    """Generic Post Schema"""
     postId = fields.Str(required=True)
     title = fields.Str(required=True)
+    date = fields.Str()
+    type = fields.Str()
+
+
+class ArticleSchema(PostSchema):
+    """Article Post Type Schema"""
     author = fields.Nested('AuthorSchema', exclude=(
         'posts', ), load_only=True)
     authorId = fields.Pluck('AuthorSchema', 'authorId',
                             attribute='author', dump_only=True)
-    type = fields.Str()
     cover_image = fields.Nested('CoverImageSchema')
     content = fields.Str(required=True)
     categories = fields.Nested('CategorySchema', many=True)
-    date = fields.Str()
 
     @post_load
     def make_article(self, data):
