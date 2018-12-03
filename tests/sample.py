@@ -8,6 +8,7 @@ author_url = f"{base_url}/api/authors"
 media_url = f"{base_url}/api/media"
 user_url = f"{base_url}/api/user"
 category_url = f"{base_url}/api/categories"
+poll_url = f"{base_url}/api/polls"
 
 # MOCK DATA
 
@@ -79,6 +80,30 @@ def make_mock_category(id='1', name='News'):
             'name': name
         }
     ]
+    return mock_request
+
+
+def make_mock_poll():
+    """make mock poll data"""
+    mock_request = {
+        "pollId": "1",
+        "question": "Yes or No?",
+        "total_votes": "8",
+        "status": "Open",
+        "date": "2018-10-11T08:55:57",
+        "answers": [
+            {
+                "answerId": "0",
+                "answer": "Yes",
+                "votes": "5"
+            },
+            {
+                "answerId": "1",
+                "answer": "No",
+                "votes": "3"
+            }
+        ]
+    }
     return mock_request
 # ----
 

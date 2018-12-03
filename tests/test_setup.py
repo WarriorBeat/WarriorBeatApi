@@ -32,6 +32,10 @@ TABLES = {
     'category': {
         'table_name': 'category-table-dev',
         'primary_key': 'categoryId'
+    },
+    'poll': {
+        'table_name': 'poll-table-dev',
+        'primary_key': 'pollId'
     }
 }
 
@@ -97,6 +101,7 @@ class ApiTestCase(unittest.TestCase):
         self.media_table = create_table(TABLES['media'])
         self.feedback_table = create_table(TABLES['feedback'])
         self.category_table = create_table(TABLES['category'])
+        self.poll_table = create_table(TABLES['poll'])
         self.media_bucket = create_bucket(BUCKETS['media'])
         resp = self.s3client.list_buckets()
         buckets = [bucket['Name'] for bucket in resp['Buckets']]
@@ -111,6 +116,7 @@ class ApiTestCase(unittest.TestCase):
         self.media_table.delete()
         self.feedback_table.delete()
         self.category_table.delete()
+        self.poll_table.delete()
         t.info('Testing Databases Deleted.')
         self.media_bucket.objects.all().delete()
         self.media_bucket.delete()

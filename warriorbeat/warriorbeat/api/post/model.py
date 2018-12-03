@@ -31,12 +31,3 @@ class Article(Post):
         self.cover_image = cover_image
         self.content = content
         super(Article, self).__init__(*args, **kwargs)
-
-
-class Poll(Post):
-    """Model for Poll Post Type"""
-
-    def __init__(self, answers, results, *args, **kwargs):
-        self.answers = answers
-        self.results = results
-        super(Poll, self).__init__(*args, **kwargs)
