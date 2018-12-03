@@ -30,6 +30,14 @@ class ResourceModel:
         return item
 
     @classmethod
+    def retrieve_instance(cls, identity, schema=None):
+        """retrieve instance of item by id"""
+        item = cls.db.get_item(str(identity))
+        instance = cls(**item)
+        instance.schema = schema()
+        return instance
+
+    @classmethod
     def all(cls):
         """return all items"""
         data = cls.db.all
@@ -39,3 +47,4 @@ class ResourceModel:
         """save item to database"""
         dumped = self.schema.dump(self)
         self.db.add_item(dumped)
+        return dumped

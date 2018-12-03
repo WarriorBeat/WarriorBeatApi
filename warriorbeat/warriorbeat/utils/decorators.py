@@ -34,7 +34,7 @@ def use_schema(schema, dump=False):
                 except Exception as e:
                     print(e)
                     raise
-            f_return = func(self, data, *args, **kwargs)
+            f_return = func(self, *args, data, **kwargs)
             if dump:
                 return schema.dumps(f_return)
             return f_return

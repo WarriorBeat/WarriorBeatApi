@@ -2,8 +2,8 @@
     Helper test functions
 """
 
-from pprint import pprint
 import os
+from pprint import pprint
 
 DEBUG = os.environ.get('TEST_DEBUG')
 

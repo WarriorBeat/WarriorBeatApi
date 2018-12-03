@@ -6,6 +6,7 @@
 
 from flask import Flask, jsonify
 from flask_restful import Api
+from .api.middleware import HTTPMethodOverrideMiddleware
 from .api.root.view import Root
 from .api.author.view import AuthorList, AuthorItem
 from .api.post.view import PostList, PostItem
@@ -20,7 +21,7 @@ from warriorbeat.api.user.view import UserFeedbackList
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('warriorbeat.config')
-
+app.wsgi_app = HTTPMethodOverrideMiddleware(app.wsgi_app)
 try:
     app.config.from_pyfile('config.py')
 except FileNotFoundError:

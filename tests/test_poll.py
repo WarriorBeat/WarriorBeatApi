@@ -2,10 +2,10 @@
     Tests for Poll Resource
 """
 import json
-import unittest
 
 import requests
-from sample import poll_url, make_mock_poll
+
+from sample import make_mock_poll, poll_url
 from test_setup import ApiTestCase
 
 
