@@ -47,3 +47,13 @@ class PostTest(ApiTestCase):
         _req = requests.patch(mock_url, json=json.dumps(mock_request))
         req = _req.json()
         self.assertDictEqual(req, expected)
+
+    def test_poll_delete(self):
+        """Test Poll Deletion"""
+        mock_poll = make_mock_poll()
+        _req = requests.post(poll_url, json=json.dumps(mock_poll))
+        mock_url = f"{poll_url}/{mock_poll['pollId']}"
+        req = requests.delete(mock_url)
+        self.assertEqual(req.status_code, 204)
+        get_req = requests.get(mock_url)
+        self.assertEqual(get_req.status_code, 404)

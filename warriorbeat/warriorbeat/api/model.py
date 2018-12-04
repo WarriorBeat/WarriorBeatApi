@@ -26,9 +26,15 @@ class ResourceModel:
         return cls(**item)
 
     @classmethod
-    def retrieve(cls, identity):
+    def retrieve(cls, identity, schema=None, instance=False):
         """retrieve item from database by id"""
         item = cls.db.get_item(str(identity))
+        if item is None:
+            return None
+        if schema or instance:
+            item = cls(**item)
+            item.schema = schema() if schema else None
+            return item
         return item
 
     @classmethod
@@ -50,3 +56,9 @@ class ResourceModel:
         dumped = self.schema.dump(self)
         self.db.add_item(dumped)
         return dumped
+
+    def delete(self):
+        """delete item from database"""
+        itemId = getattr(self, self.identity)
+        self.db.delete_item(itemId)
+        return itemId

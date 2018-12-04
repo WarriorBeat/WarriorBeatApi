@@ -25,7 +25,7 @@ def use_schema(schema, dump=False):
     """
     def decorator(func):
         @wraps(func)
-        def wrapper(self, *args, **kwargs):
+        def wrapper(*args, **kwargs):
             try:
                 data = schema.load(request.json)
             except Exception as e:
@@ -35,7 +35,8 @@ def use_schema(schema, dump=False):
                 except Exception as e:
                     print(e)
                     raise
-            f_return = func(self, *args, data, **kwargs)
+            args = args + (data, )
+            f_return = func(*args, **kwargs)
             if dump:
                 return schema.dumps(f_return)
             return f_return
@@ -57,7 +58,7 @@ def parse_json(func):
         data = request.json
         data_type = type(data)
         data = json.loads(data) if data_type == str else data
-        kwargs['parsed_data'] = data
+        args = args + (data, )
         f_return = func(*args, **kwargs)
         return f_return
     return wrapper

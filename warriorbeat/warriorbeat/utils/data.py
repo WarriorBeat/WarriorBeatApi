@@ -76,6 +76,13 @@ class DynamoDB:
         self.db.put_item(Item=item)
         return item
 
+    def delete_item(self, itemId):
+        """deletes item from database"""
+        self.db.delete_item(Key={
+            self.table['primary_key']: itemId
+        })
+        return itemId
+
     def get_item(self, itemId):
         """retrieves an item from database"""
         try:
