@@ -19,10 +19,11 @@ class PostList(Resource):
     @use_schema(ArticleSchema(), dump=True)
     def post(self, article):
         author = article.author
-        author = type(author).update_item(author.authorId, {
-            'posts': [article.postId]
-        }, author.schema)
-        author.save()
+        if article.postId not in author.posts:
+            author.posts.append(article.postId)
+            author = type(author).update_item(author.authorId, {
+                'posts': author.posts}, author.schema)
+            author.save()
         article.save()
         return article
 

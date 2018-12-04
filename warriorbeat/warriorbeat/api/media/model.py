@@ -31,7 +31,6 @@ class Image(Media):
         self.title = kwargs.get('title')
         self.key = kwargs.get('key', '')
         super().__init__(*args, **kwargs)
-        self.get_source()
 
     def set_source(self):
         """download image from url and set source"""
@@ -39,10 +38,4 @@ class Image(Media):
         url, file_ext = self.storage.upload_from_url(self.source, key=key)
         self.source = url
         self.key = self.storage.key + key + file_ext
-        return url
-
-    def get_source(self):
-        """generate url for image"""
-        url = self.storage.get_url(self.key)
-        self.source = url
         return url
