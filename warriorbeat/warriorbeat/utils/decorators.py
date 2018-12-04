@@ -3,6 +3,7 @@
     Useful decorators with various functions
 """
 
+import json
 from functools import wraps
 
 from flask_restful import request
@@ -40,3 +41,23 @@ def use_schema(schema, dump=False):
             return f_return
         return wrapper
     return decorator
+
+
+def parse_json(func):
+    """
+    @parse_json : @decorator
+    Deserialize json data if needed
+
+    returns:
+        decorated function with additional
+        parsed_data keyword
+    """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        data = request.json
+        data_type = type(data)
+        data = json.loads(data) if data_type == str else data
+        kwargs['parsed_data'] = data
+        f_return = func(*args, **kwargs)
+        return f_return
+    return wrapper

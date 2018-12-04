@@ -88,7 +88,6 @@ def make_mock_poll():
     mock_request = {
         "pollId": "1",
         "question": "Yes or No?",
-        "total_votes": "8",
         "status": "Open",
         "date": "2018-10-11T08:55:57",
         "answers": [

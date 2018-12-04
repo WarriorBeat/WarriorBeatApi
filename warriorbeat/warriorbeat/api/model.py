@@ -3,6 +3,8 @@
     Base Classes for Api Models
 """
 
+from warriorbeat.utils import deep_merge_dicts
+
 
 class ResourceModel:
     """Base Class for Resource Models"""
@@ -30,11 +32,11 @@ class ResourceModel:
         return item
 
     @classmethod
-    def retrieve_instance(cls, identity, schema=None):
-        """retrieve instance of item by id"""
-        item = cls.db.get_item(str(identity))
-        instance = cls(**item)
-        instance.schema = schema()
+    def update_item(cls, identity, data, schema, **kwargs):
+        """update resource item with new data"""
+        item = cls.retrieve(identity)
+        deep_merge_dicts(item, data)
+        instance = schema().load(item)
         return instance
 
     @classmethod

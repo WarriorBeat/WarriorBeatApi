@@ -4,11 +4,11 @@
 """
 
 
-from flask_restful import Resource, request
+from flask_restful import Resource
 
 from warriorbeat.api.poll.model import Poll
 from warriorbeat.api.poll.schema import PollSchema
-from warriorbeat.utils import use_schema
+from warriorbeat.utils import parse_json, use_schema
 
 
 class PollList(Resource):
@@ -27,7 +27,8 @@ class PollItem(Resource):
         poll = Poll.retrieve(pollId)
         return poll
 
-    def patch(self, pollId):
-        poll = Poll.retrieve_instance(pollId, schema=PollSchema)
-        poll.answers = request.json.get('answers', poll.answers)
+    @parse_json
+    def patch(self, pollId, **kwargs):
+        data = kwargs.get('parsed_data')
+        poll = Poll.update_item(pollId, data, PollSchema)
         return poll.save()
