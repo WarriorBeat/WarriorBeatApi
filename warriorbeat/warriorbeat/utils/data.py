@@ -164,7 +164,7 @@ class S3Storage:
         """upload file from url"""
         img_stream = requests.get(url, stream=True)
         content_type = img_stream.headers.get('content-type', 'image/jpeg')
-        file_ext = self.FILE_EXTENSIONS[content_type]
+        file_ext = self.FILE_EXTENSIONS.get(content_type, '.jpeg')
         img_obj = img_stream.raw
         img_data = img_obj.read()
         return (self.upload_obj((img_data, file_ext), **kwargs), file_ext)

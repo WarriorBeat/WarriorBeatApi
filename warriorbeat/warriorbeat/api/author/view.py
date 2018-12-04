@@ -17,8 +17,6 @@ class AuthorList(Resource):
 
     @use_schema(AuthorSchema(), dump=True)
     def post(self, author):
-        profile_image = author.profile_image
-        profile_image.save()
         author.save()
         return author
 
