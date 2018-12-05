@@ -97,14 +97,6 @@ class PostTest(ApiTestCase):
         expected_posts = [mock_post_1['postId'], mock_post_2['postId']]
         self.assertEqual(expected_posts, resp['posts'])
 
-    def test_create_category(self):
-        """Test Category Creation"""
-        t = TestPrint('test_create_category')
-        mock_request = make_mock_category()
-        _req = requests.post(category_url, json=json.dumps(mock_request))
-        req = json.loads(_req.json())
-        self.assertDictEqual(mock_request, req)
-
     def test_article_edit(self):
         """Test Article Edit via Patch"""
         # Setup test Article
