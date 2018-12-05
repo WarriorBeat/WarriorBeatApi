@@ -8,7 +8,7 @@ from flask_restful import Resource
 
 from warriorbeat.api.poll.model import Poll
 from warriorbeat.api.poll.schema import PollSchema
-from warriorbeat.utils import parse_json, use_schema
+from warriorbeat.utils import parse_json, retrieve_item, use_schema
 
 
 class PollList(Resource):
@@ -23,15 +23,15 @@ class PollList(Resource):
 
 
 class PollItem(Resource):
-    def get(self, pollId):
-        poll = Poll.retrieve(pollId)
-        if poll is None:
-            return '', 404
+
+    @retrieve_item(Poll)
+    def get(self, poll, **kwargs):
         return poll
 
     @parse_json
-    def patch(self, data, pollId):
-        poll = Poll.update_item(pollId, data, PollSchema)
+    @retrieve_item(Poll, PollSchema)
+    def patch(self, data, poll, **kwargs):
+        poll = poll.update(data)
         return poll.save()
 
     @use_schema(PollSchema(), dump=True)
@@ -39,9 +39,7 @@ class PollItem(Resource):
         poll.save()
         return poll
 
-    def delete(self, pollId):
-        poll = Poll.retrieve(pollId, instance=True)
-        if poll is None:
-            return '', 404
+    @retrieve_item(Poll, PollSchema)
+    def delete(self, poll, **kwargs):
         poll.delete()
         return '', 204

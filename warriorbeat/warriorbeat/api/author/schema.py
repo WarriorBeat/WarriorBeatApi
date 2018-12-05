@@ -24,6 +24,8 @@ class AuthorSchema(Schema):
 
     def get_author_role(self, title):
         """parse author custom role out of standard ones"""
+        if type(title) is str:
+            return title
         ignored_roles = ['administrator', 'author', 'contributor',
                          'customer', 'editor', 'shop_manager', 'subscriber']
         titles = [t for t in title if not t in ignored_roles]

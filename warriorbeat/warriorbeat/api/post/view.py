@@ -8,7 +8,7 @@ from flask_restful import Resource
 
 from warriorbeat.api.post.model import Article
 from warriorbeat.api.post.schema import ArticleSchema
-from warriorbeat.utils import use_schema
+from warriorbeat.utils import parse_json, retrieve_item, use_schema
 
 
 class PostList(Resource):
@@ -20,15 +20,26 @@ class PostList(Resource):
     def post(self, article):
         author = article.author
         if article.postId not in author.posts:
-            author.posts.append(article.postId)
-            author = type(author).update_item(author.authorId, {
-                'posts': author.posts}, author.schema)
+            author_posts = {'posts': [*author.posts, article.postId]}
+            author = author.update(author_posts)
             author.save()
         article.save()
         return article
 
 
 class PostItem(Resource):
-    def get(self, postId):
-        article = Article.retrieve(postId)
+
+    @retrieve_item(Article)
+    def get(self, article, **kwargs):
         return article
+
+    @parse_json
+    @retrieve_item(Article, ArticleSchema)
+    def patch(self, data, article, **kwargs):
+        article = article.update(data)
+        return article.save()
+
+    @retrieve_item(Article, ArticleSchema)
+    def delete(self, article, **kwargs):
+        article.delete()
+        return '', 204

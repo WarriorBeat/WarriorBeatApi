@@ -62,3 +62,39 @@ def parse_json(func):
         f_return = func(*args, **kwargs)
         return f_return
     return wrapper
+
+
+def retrieve_item(model, schema=None):
+    """
+    @retrieve_item : @decorator
+    Attempts to retrieve item from endpoint id kwarg
+
+    args:
+    model: object (class)
+        resource model to retrieve item with
+    func: object
+        function to wrap
+
+    kwargs:
+    schema: object (instance)
+        schema to be passed to model
+
+    returns:
+        404 if item does not exist
+        instance if item exists and schema is passed
+        item if only model is passed
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            item_id = next(iter(kwargs.values()))
+            if schema:
+                item = model.retrieve(item_id, schema=schema, instance=True)
+            else:
+                item = model.retrieve(item_id)
+            if item is None:
+                return '', 404
+            args = args + (item, )
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator

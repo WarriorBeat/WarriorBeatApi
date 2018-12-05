@@ -1,7 +1,7 @@
 {
 	"_type": "export",
 	"__export_format": 3,
-	"__export_date": "2018-11-21T06:28:30.778Z",
+	"__export_date": "2018-12-05T04:50:45.331Z",
 	"__export_source": "insomnia.desktop.app:v6.2.0",
 	"resources": [
 		{
@@ -46,6 +46,17 @@
 			"_type": "request_group"
 		},
 		{
+			"_id": "fld_4cc6ea38ab524abfbabf2ed8bf9ca8b3",
+			"created": 1543878966534,
+			"description": "",
+			"environment": {},
+			"metaSortKey": -1543878966534,
+			"modified": 1543878966534,
+			"name": "Polls",
+			"parentId": "wrk_1fea04107ea0438185b708bfe6f55e3f",
+			"_type": "request_group"
+		},
+		{
 			"_id": "env_63e3d346216340bdbe69f5d2950d00d6",
 			"color": null,
 			"created": 1542770530657,
@@ -60,14 +71,381 @@
 			"_type": "environment"
 		},
 		{
+			"_id": "fld_29c2cdd14b234d61b5af4b3602047212",
+			"created": 1543902415361,
+			"description": "",
+			"environment": {},
+			"metaSortKey": -1543902415361,
+			"modified": 1543968795879,
+			"name": "Create",
+			"parentId": "fld_3ff86b41d483408cbccaeb240d177ece",
+			"_type": "request_group"
+		},
+		{
+			"_id": "fld_807faf3207a549e282440a00a2bbb1e2",
+			"created": 1543968632195,
+			"description": "",
+			"environment": {},
+			"metaSortKey": -1543968632196,
+			"modified": 1543968632195,
+			"name": "Old",
+			"parentId": "fld_3ff86b41d483408cbccaeb240d177ece",
+			"_type": "request_group"
+		},
+		{
+			"_id": "fld_3924217719f44dfd97f60f9d3a2027b3",
+			"created": 1543968800807,
+			"description": "",
+			"environment": {},
+			"metaSortKey": -1543902415311,
+			"modified": 1543968821795,
+			"name": "Patch",
+			"parentId": "fld_3ff86b41d483408cbccaeb240d177ece",
+			"_type": "request_group"
+		},
+		{
+			"_id": "req_55248da189544f37ab750fb058ef4567",
+			"authentication": {},
+			"body": {},
+			"created": 1543970160717,
+			"description": "",
+			"headers": [],
+			"isPrivate": false,
+			"metaSortKey": -1543970160717,
+			"method": "DELETE",
+			"modified": 1543970180014,
+			"name": "Delete Post",
+			"parameters": [],
+			"parentId": "fld_3ff86b41d483408cbccaeb240d177ece",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/posts/548",
+			"_type": "request"
+		},
+		{
+			"_id": "req_b5de121aae3743e0a497eb93b757c79a",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"pollId\": \"1\",\n\t\"question\": \"Yes or No?\",\n\t\"status\": \"Open\",\n\t\"date\": \"2018-10-11T08:55:57\",\n\t\"answers\": [\n\t\t{\n\t\t\t\"answerId\": \"0\",\n\t\t\t\"answer\": \"Yes\",\n\t\t\t\"votes\": \"5\"\n\t\t},\n\t\t{\n\t\t\t\"answerId\": \"1\",\n\t\t\t\"answer\": \"No\",\n\t\t\t\"votes\": \"3\"\n\t\t}\n\t]\n}"
+			},
+			"created": 1543878979745,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_6b9e99e92de04114a8305df3488caf23",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1543878979745,
+			"method": "POST",
+			"modified": 1543897854373,
+			"name": "New Poll",
+			"parameters": [],
+			"parentId": "fld_4cc6ea38ab524abfbabf2ed8bf9ca8b3",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/polls",
+			"_type": "request"
+		},
+		{
+			"_id": "req_6ed421e21cfc43769c6691b6bab8847d",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"answers\": [\n\t\t{\n\t\t\t\"answerId\": \"0\",\n\t\t\t\"votes\": \"6\"\n\t\t},\n\t\t{\n\t\t\t\"answerId\": \"1\",\n\t\t\t\"votes\": \"4\"\n\t\t}\n\t]\n}"
+			},
+			"created": 1543879021546,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_b1beca18970a4a39aa2923c7e0626329",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1543879021546,
+			"method": "PATCH",
+			"modified": 1543969384535,
+			"name": "Vote Poll",
+			"parameters": [],
+			"parentId": "fld_4cc6ea38ab524abfbabf2ed8bf9ca8b3",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/polls/1",
+			"_type": "request"
+		},
+		{
+			"_id": "req_d319e1f9d7c04855ad4932b90e5e3c12",
+			"authentication": {},
+			"body": {},
+			"created": 1543892514535,
+			"description": "",
+			"headers": [],
+			"isPrivate": false,
+			"metaSortKey": -1543892514535,
+			"method": "DELETE",
+			"modified": 1543896327546,
+			"name": "Delete Poll",
+			"parameters": [],
+			"parentId": "fld_4cc6ea38ab524abfbabf2ed8bf9ca8b3",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/polls/1",
+			"_type": "request"
+		},
+		{
+			"_id": "req_3ebd754e5330404a9cdf12578dbaf685",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"pollId\": \"1\",\n\t\"question\": \"Yes or Maybe?\",\n\t\"status\": \"Open\",\n\t\"date\": \"2018-10-11T08:55:57\",\n\t\"answers\": [\n\t\t{\n\t\t\t\"answerId\": \"0\",\n\t\t\t\"answer\": \"Yes\",\n\t\t\t\"votes\": \"1\"\n\t\t},\n\t\t{\n\t\t\t\"answerId\": \"1\",\n\t\t\t\"answer\": \"Maybe\",\n\t\t\t\"votes\": \"0\"\n\t\t}\n\t]\n}"
+			},
+			"created": 1543895536278,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_b279924f3d4a4a36be7dab928cb22d98",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1543895536278,
+			"method": "PUT",
+			"modified": 1543897858032,
+			"name": "Put Poll",
+			"parameters": [],
+			"parentId": "fld_4cc6ea38ab524abfbabf2ed8bf9ca8b3",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/polls/1",
+			"_type": "request"
+		},
+		{
+			"_id": "req_09ff202f65b840138f08f7ba29862ee4",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"status\": \"Closed\"\n}"
+			},
+			"created": 1543897762699,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_74c1ac0fa6824ab79e095759db968cf5",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1543897762699,
+			"method": "PATCH",
+			"modified": 1543897863857,
+			"name": "Poll Status Change",
+			"parameters": [],
+			"parentId": "fld_4cc6ea38ab524abfbabf2ed8bf9ca8b3",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/polls/1",
+			"_type": "request"
+		},
+		{
+			"_id": "req_2f969920ee804809a373c24c1f8810a9",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"postId\": \"548\",\n\t\"title\": \"Oak Grove Primary Fall Festival\",\n\t\"date\": \"2018-11-13T21:23:13\",\n\t\"content\": \"<p><span style=\\\"font-weight: 400;\\\">Oak Grove Primary recently held its annual Fall Festival where kids play games, win prizes, and make lasting memories.</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">T</span></p>\",\n\t\"author\": \"1\",\n\t\"cover_image\": \"549\",\n\t\"type\": \"article\",\n\t\"categories\": [\n\t\t\"1\"\n\t]\n}"
+			},
+			"created": 1543902405299,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_68a2a34a49ff4396acd7d490f2c61408",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1543902410330,
+			"method": "POST",
+			"modified": 1543970112939,
+			"name": "New Post",
+			"parameters": [],
+			"parentId": "fld_29c2cdd14b234d61b5af4b3602047212",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/posts",
+			"_type": "request"
+		},
+		{
+			"_id": "req_f28248f5700f48afb969d9aa44a2e831",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"authorId\": \"1\",\n\t\"name\": \"Braden Mars\",\n\t\"title\": [\n\t\t\"administrator\",\n\t\t\"staff_writer\"\n\t],\n\t\"description\": \"Staff Member\",\n\t\"profile_image\": \"20\"\n}"
+			},
+			"created": 1543903629068,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_a306f1fd34094071ae087568918359ba",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1543903629068,
+			"method": "POST",
+			"modified": 1543970051802,
+			"name": "New Author",
+			"parameters": [],
+			"parentId": "fld_29c2cdd14b234d61b5af4b3602047212",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/authors",
+			"_type": "request"
+		},
+		{
+			"_id": "req_71e08109fd3d4a16bf3c3a991518d27e",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"categoryId\": \"1\",\n\t\"name\": \"News\"\n}"
+			},
+			"created": 1543903686379,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_a10fdf55261749c8a139d39048fca47f",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1543903686379,
+			"method": "POST",
+			"modified": 1543970049124,
+			"name": "New Category",
+			"parameters": [],
+			"parentId": "fld_29c2cdd14b234d61b5af4b3602047212",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/categories",
+			"_type": "request"
+		},
+		{
+			"_id": "req_a652284f00a247548474520ee1dea621",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"mediaId\": \"549\",\n\t\"source\": \"https://ogwarriorbeat.com/wp-content/uploads/2018/11/IMG_5907.jpg\",\n\t\"title\": \"A New Post\",\n\t\"credits\": \"Photo Courtesy of Taylor Strange\",\n\t\"caption\": \"Oak Grove students help at the Primary's Fall Festival\",\n\t\"type\": \"cover-image\"\n}"
+			},
+			"created": 1543903754921,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_ca35139731d246c8ac5c473beb9e54e3",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1543903754921,
+			"method": "POST",
+			"modified": 1543970046748,
+			"name": "New Media",
+			"parameters": [],
+			"parentId": "fld_29c2cdd14b234d61b5af4b3602047212",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/media",
+			"_type": "request"
+		},
+		{
+			"_id": "req_b1881ee707dc4a34ba84f45ce8350129",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"mediaId\": \"20\",\n\t\"source\": \"https://s.hswstatic.com/gif/landscape-photography-1.jpg\",\n\t\"title\": \"Braden Mars\",\n\t\"type\": \"profile-image\"\n}"
+			},
+			"created": 1543904810111,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_8127b29322644a37be19cd1bbef15d5e",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1543904810111,
+			"method": "POST",
+			"modified": 1543970043753,
+			"name": "New Profile Image",
+			"parameters": [],
+			"parentId": "fld_29c2cdd14b234d61b5af4b3602047212",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/media",
+			"_type": "request"
+		},
+		{
 			"_id": "fld_0c04d9d436fd4218a0f4ad425496f16e",
 			"created": 1542780351791,
 			"description": "",
 			"environment": {},
 			"metaSortKey": -1542780351791,
-			"modified": 1542780351791,
+			"modified": 1543968637846,
 			"name": "More Posts",
-			"parentId": "fld_3ff86b41d483408cbccaeb240d177ece",
+			"parentId": "fld_807faf3207a549e282440a00a2bbb1e2",
 			"_type": "request_group"
 		},
 		{
@@ -75,7 +453,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"postId\": \"548\",\n\t\"title\": \"Oak Grove Primary Fall Festival\",\n\t\"date\": \"2018-11-13T21:23:13\",\n\t\"content\": \"<p><span style=\\\"font-weight: 400;\\\">Oak Grove Primary recently held its annual Fall Festival where kids play games, win prizes, and make lasting memories.</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">This year was Laurie Stewart’s first year in charge of planning the festival after helping in previous years.</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“Our first planning meeting was around the beginning of September,” Stewart said.  “We have a committee that started getting everything together.”</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“It really hasn’t been stressful,&#8221; Stewart said. &#8220;It’s just lots of planning and making sure everything is organized.” </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">For Stewart, the biggest reward was seeing the kids make the most of the festival after all of the hard work . </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“People coming out and just seeing the smiles on the kids faces whenever they win a game,&#8221; Stewart said.  &#8220;It’s just a fun family night.”</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">Even though the weather didn&#8217;t cooperate, the festival continued as planned. </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“We almost postponed it, but we decided to go ahead and have it still,” Stewart said “It feels good knowing we organized everything, and it flowed smoothly.” </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">The festival had unlimited games and unique activities for the kids.</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“The toilet paper bowl activity was a very creative idea,&#8221; Stewart said. &#8220;I like that the kids got a treat just for participating. It’s just good fun.” </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">The school’s principal Alice Rainwater saw many rewarding factors in hosting the festival. </span></p>\\n<p><span style=\\\"font-weight: 400;\\\">“We love this night because our families get to come out and enjoy good quality time,&#8221; Rainwater said. &#8220;They get to see the school and the teachers as well as spend time as a families.” </span></p>\",\n\t\"author\": {\n\t\t\"authorId\": \"1\",\n\t\t\"name\": \"Braden Mars\",\n\t\t\"title\": [\n\t\t\t\"administrator\",\n\t\t\t\"staff_writer\"\n\t\t],\n\t\t\"description\": \"Staff Member\",\n\t\t\"profile_image\": {\n\t\t\t\"name\": \"Braden Mars\",\n\t\t\t\"source\": \"https://wallpapercave.com/wp/qCXWPUe.jpg\",\n\t\t\t\"mediaId\": \"1\"\n\t\t}\n\t},\n\t\"cover_image\": {\n\t\t\"mediaId\": \"549\",\n\t\t\"source\": \"https://ogwarriorbeat.com/wp-content/uploads/2018/11/IMG_5907.jpg\",\n\t\t\"title\": \"A New Post\",\n\t\t\"credits\": \"Photo Courtesy of Taylor Strange\",\n\t\t\"caption\": \"Oak Grove students help at the Primary's Fall Festival\"\n\t},\n\t\"type\": \"article\",\n\t\"categories\": [\n\t\t{\n\t\t\t\"categoryId\": \"1\",\n\t\t\t\"name\": \"News\"\n\t\t},\n\t\t{\n\t\t\t\"categoryId\": \"2\",\n\t\t\t\"name\": \"Opinion\"\n\t\t}\n\t]\n}"
+				"text": "{\n\t\"postId\": \"548\",\n\t\"title\": \"Oak Grove Primary Fall Festival\",\n\t\"date\": \"2018-11-13T21:23:13\",\n\t\"content\": \"<p><span style=\\\"font-weight: 400;\\\">Oak Grove Primary recently held its annual Fall Festival where kids play games, win prizes, and make lasting memories.</span></p>\\n<p><span style=\\\"font-weight: 400;\\\">T</span></p>\",\n\t\"author\": {\n\t\t\"authorId\": \"1\",\n\t\t\"name\": \"Braden Mars\",\n\t\t\"title\": [\n\t\t\t\"administrator\",\n\t\t\t\"staff_writer\"\n\t\t],\n\t\t\"description\": \"Staff Member\",\n\t\t\"profile_image\": {\n\t\t\t\"name\": \"Braden Mars\",\n\t\t\t\"source\": \"https://wallpapercave.com/wp/qCXWPUe.jpg\",\n\t\t\t\"mediaId\": \"1\"\n\t\t}\n\t},\n\t\"cover_image\": {\n\t\t\"mediaId\": \"549\",\n\t\t\"source\": \"https://ogwarriorbeat.com/wp-content/uploads/2018/11/IMG_5907.jpg\",\n\t\t\"title\": \"A New Post\",\n\t\t\"credits\": \"Photo Courtesy of Taylor Strange\",\n\t\t\"caption\": \"Oak Grove students help at the Primary's Fall Festival\"\n\t},\n\t\"type\": \"article\",\n\t\"categories\": [\n\t\t{\n\t\t\t\"categoryId\": \"1\",\n\t\t\t\"name\": \"News\"\n\t\t},\n\t\t{\n\t\t\t\"categoryId\": \"2\",\n\t\t\t\"name\": \"Opinion\"\n\t\t}\n\t]\n}"
 			},
 			"created": 1542770495983,
 			"description": "",
@@ -87,12 +465,12 @@
 				}
 			],
 			"isPrivate": false,
-			"metaSortKey": -1542770495983,
+			"metaSortKey": -1542780351741,
 			"method": "POST",
-			"modified": 1542773958838,
+			"modified": 1543968639646,
 			"name": "New Post",
 			"parameters": [],
-			"parentId": "fld_3ff86b41d483408cbccaeb240d177ece",
+			"parentId": "fld_807faf3207a549e282440a00a2bbb1e2",
 			"settingDisableRenderRequestBody": false,
 			"settingEncodeUrl": true,
 			"settingMaxTimelineDataSize": 1000,
@@ -100,6 +478,102 @@
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
 			"url": "{{ base_url  }}/posts",
+			"_type": "request"
+		},
+		{
+			"_id": "req_bb9e0faa81f0435fb66663edd9ee7ab0",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"title\": \"Oak Grove Fall Festival\",\n\t\"date\": \"2018-10-23T21:23:13\"\n}"
+			},
+			"created": 1543899547306,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_0cfc2fe9e10241d6afccfc9b8fafdc01",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1542780351766,
+			"method": "PATCH",
+			"modified": 1543968641172,
+			"name": "Patch Title/Date",
+			"parameters": [],
+			"parentId": "fld_807faf3207a549e282440a00a2bbb1e2",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/posts/548",
+			"_type": "request"
+		},
+		{
+			"_id": "req_26f7665d89e74dfc82b6bbb807a9ce30",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"mediaId\": \"550\",\n\t\"source\": \"http://www.usclimateplan.org/wp-content/uploads/2018/11/landscape-hd-wallpapers-pictures-images-elegant-hd-original-0.jpg\",\n\t\"title\": \"Oak Grove Primary Fall Festival\",\n\t\"credits\": \"Photo Courtesy of Taylor Strange\",\n\t\"caption\": \"Oak Grove students help at the Primary's Fall Festival\",\n\t\"type\": \"cover-image\"\n}"
+			},
+			"created": 1543968845477,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_97b7e23e507c42ae93355511f904c808",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1543968845477,
+			"method": "POST",
+			"modified": 1543970084988,
+			"name": "New Cover Image",
+			"parameters": [],
+			"parentId": "fld_3924217719f44dfd97f60f9d3a2027b3",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/media",
+			"_type": "request"
+		},
+		{
+			"_id": "req_dfcd247dd61e48b8b320c9df758b5f24",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"cover_image\": \"550\"\n}"
+			},
+			"created": 1543968988338,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_5f6352e5d0cd4296a20dc3f814e7b4d9",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1543968988338,
+			"method": "PATCH",
+			"modified": 1543970116672,
+			"name": "Article Cover Img",
+			"parameters": [],
+			"parentId": "fld_3924217719f44dfd97f60f9d3a2027b3",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ base_url  }}/posts/548",
 			"_type": "request"
 		},
 		{
