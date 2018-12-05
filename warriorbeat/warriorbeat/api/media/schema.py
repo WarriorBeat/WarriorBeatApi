@@ -5,7 +5,7 @@
 
 from marshmallow import Schema, fields, post_load
 
-from warriorbeat.api.media.model import CoverImage, ProfileImage
+from warriorbeat.api.media.model import Image
 
 
 class MediaSchema(Schema):
@@ -23,29 +23,9 @@ class ImageSchema(MediaSchema):
     key = fields.Str()
     type = fields.Str(missing='image', default='image')
 
-
-class CoverImageSchema(ImageSchema):
-    """Cover Image Schema"""
-    type = fields.Str(missing='cover-image', default='cover-image')
-
     @post_load
-    def make_cover_image(self, data):
-        """return instance of CoverImage"""
-        cover_img = CoverImage(**data)
-        cover_img.schema = CoverImageSchema()
-        return cover_img
-
-
-class ProfileImageSchema(ImageSchema):
-    """Profile Image Schema"""
-    class Meta:
-        fields = ('title', 'source', 'mediaId', 'type')
-
-    title = fields.Str(data_key='name')
-    type = fields.Str(missing='profile-image', default='profile-image')
-
-    @post_load
-    def make_profile_image(self, data):
-        profile_img = ProfileImage(**data)
-        profile_img.schema = ProfileImageSchema()
-        return profile_img
+    def make_image(self, data):
+        """return image instance"""
+        image = Image.create_or_update(**data)
+        image.schema = ImageSchema()
+        return image

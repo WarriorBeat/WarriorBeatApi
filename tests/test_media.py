@@ -12,7 +12,6 @@ from test_setup import ApiTestCase
 
 
 class MediaTest(ApiTestCase):
-    media_url = "http://127.0.0.1:5000/api/media"
 
     def test_create_cover(self):
         """Create Cover Image Test"""
