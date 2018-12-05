@@ -27,7 +27,7 @@ def deep_merge_lists(original, incoming):
             deep_merge_lists(original[idx], incoming[idx])
 
         else:
-            orginal[idx] = incoming[idx]
+            original[idx] = incoming[idx]
 
     for idx in range(common_length, len(incoming)):
         original.append(incoming[idx])

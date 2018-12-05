@@ -16,5 +16,3 @@ class Category(ResourceModel):
         self.categoryId = categoryId
         self.name = kwargs.get('name')
         self.schema = kwargs.get('schema')
-        if not self.db.exists(self.categoryId):
-            self.save()

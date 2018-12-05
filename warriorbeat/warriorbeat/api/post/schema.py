@@ -10,21 +10,19 @@ from warriorbeat.api.post.model import Article
 
 class PostSchema(Schema):
     """Generic Post Schema"""
-    postId = fields.Str(required=True)
-    title = fields.Str(required=True)
+    postId = fields.Str()
+    title = fields.Str()
     date = fields.Str()
     type = fields.Str()
 
 
 class ArticleSchema(PostSchema):
     """Article Post Type Schema"""
-    author = fields.Nested('AuthorSchema', exclude=(
-        'posts', ), load_only=True)
-    authorId = fields.Pluck('AuthorSchema', 'authorId',
-                            attribute='author', dump_only=True)
-    cover_image = fields.Nested('CoverImageSchema')
-    content = fields.Str(required=True)
-    categories = fields.Nested('CategorySchema', many=True)
+
+    author = fields.Pluck('AuthorSchema', 'authorId')
+    cover_image = fields.Pluck('ImageSchema', 'mediaId')
+    content = fields.Str()
+    categories = fields.Pluck('CategorySchema', 'categoryId', many=True)
 
     @post_load
     def make_article(self, data):

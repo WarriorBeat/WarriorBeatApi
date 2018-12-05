@@ -19,11 +19,11 @@ class PostList(Resource):
     @use_schema(ArticleSchema(), dump=True)
     def post(self, article):
         author = article.author
-        cover_image = article.cover_image
         if article.postId not in author.posts:
             author.posts.append(article.postId)
-        author.save()
-        cover_image.save()
+            author = type(author).update_item(author.authorId, {
+                'posts': author.posts}, author.schema)
+            author.save()
         article.save()
         return article
 

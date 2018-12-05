@@ -42,7 +42,8 @@ class ResourceModel:
         """update resource item with new data"""
         item = cls.retrieve(identity)
         deep_merge_dicts(item, data)
-        instance = schema().load(item)
+        schema = schema() if isinstance(schema, type) else schema
+        instance = schema.load(item)
         return instance
 
     @classmethod

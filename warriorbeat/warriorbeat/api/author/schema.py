@@ -12,8 +12,8 @@ class AuthorSchema(Schema):
     """Author Schema"""
     authorId = fields.Str(required=True)
     name = fields.Str()
-    profile_image = fields.Nested('ProfileImageSchema')
-    posts = fields.List(fields.Str())
+    profile_image = fields.Pluck('ImageSchema', 'mediaId')
+    posts = fields.Pluck('ArticleSchema', 'postId', many=True)
     title = fields.Method('author_role', deserialize='get_author_role')
     description = fields.Str(
         required=False, allow_none=True, default='Staff Member')
