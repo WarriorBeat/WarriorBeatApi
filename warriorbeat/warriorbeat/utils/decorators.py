@@ -64,7 +64,7 @@ def parse_json(func):
     return wrapper
 
 
-def retrieve_item(model, schema=None):
+def retrieve_item(model, schema=None, raise_404=True):
     """
     @retrieve_item : @decorator
     Attempts to retrieve item from endpoint id kwarg
@@ -78,6 +78,8 @@ def retrieve_item(model, schema=None):
     kwargs:
     schema: object (instance)
         schema to be passed to model
+    raise_404: bool
+        whether to raise 404 if item is not found
 
     returns:
         404 if item does not exist
@@ -92,7 +94,7 @@ def retrieve_item(model, schema=None):
                 item = model.retrieve(item_id, schema=schema, instance=True)
             else:
                 item = model.retrieve(item_id)
-            if item is None:
+            if item is None and raise_404:
                 return '', 404
             args = args + (item, )
             return func(*args, **kwargs)

@@ -19,6 +19,14 @@ class Author(ResourceModel):
         self.title = kwargs.get('title')
         self.description = kwargs.get('description')
 
+    def add_post(self, postId, *args, **kwargs):
+        """adds postId to author posts"""
+        if postId not in self.posts:
+            self.posts.append(postId)
+            self = super().update({'posts': self.posts})
+            return self.save()
+        return self
+
     def __repr__(self):
         return f'<Author(authorId={self.authorId}, name={self.name})>'
 

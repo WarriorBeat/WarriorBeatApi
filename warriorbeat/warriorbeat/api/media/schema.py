@@ -21,6 +21,7 @@ class ImageSchema(MediaSchema):
     caption = fields.Str()
     title = fields.Str()
     key = fields.Str()
+    url = fields.Str()
     type = fields.Str(missing='image', default='image')
 
     @post_load

@@ -62,3 +62,7 @@ class ResourceModel:
         itemId = getattr(self, self.identity)
         self.db.delete_item(itemId)
         return itemId
+
+    def create(self):
+        """create item from model"""
+        return self.save()
