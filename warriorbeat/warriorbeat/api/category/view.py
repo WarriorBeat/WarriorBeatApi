@@ -14,10 +14,10 @@ class CategoryList(Resource):
     def get(self):
         return Category.all()
 
-    @use_schema(CategorySchema(), dump=True)
-    def post(self, category):
-        category.save()
-        return category
+    @use_schema(CategorySchema(), dump=True, allow_many=True)
+    def post(self, categories):
+        categories = [c.create() for c in categories]
+        return categories
 
 
 class CategoryItem(Resource):
@@ -31,6 +31,11 @@ class CategoryItem(Resource):
     def patch(self, data, category, **kwargs):
         category = category.update(data)
         return category.save()
+
+    @use_schema(CategorySchema(), dump=True)
+    def put(self, category, **kwargs):
+        category.create()
+        return category
 
     @retrieve_item(Category, CategorySchema)
     def delete(self, category, **kwargs):

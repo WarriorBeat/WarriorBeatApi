@@ -9,36 +9,44 @@ from functools import wraps
 from flask_restful import request
 
 
-def use_schema(schema, dump=False):
+def use_schema(schema, dump=False, allow_many=False):
     """
     @use_schema : @decorator
     Se/Deserialize data for post requests
 
-    params:
+    args:
     schema: instance
         Instance of schema to utilize
-    dump: bool
-        Dump return data to the schema
     func: object
         function to wrap
         must return data to be serialized
+
+    kwargs:
+    dump: bool
+        Dump return data to the schema
+    allow_many: bool
+        allow list of items to be loaded
+        will always return a list
+
     """
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
+            is_many = type(request.json) == list and allow_many
             try:
-                data = schema.load(request.json)
+                data = schema.load(request.json, many=is_many)
             except Exception as e:
                 print(e)
                 try:
-                    data = schema.loads(request.json)
+                    data = schema.loads(request.json, many=is_many)
                 except Exception as e:
                     print(e)
                     raise
+            data = [data] if allow_many and type(data) != list else data
             args = args + (data, )
             f_return = func(*args, **kwargs)
             if dump:
-                return schema.dumps(f_return)
+                return schema.dumps(f_return, many=is_many)
             return f_return
         return wrapper
     return decorator
