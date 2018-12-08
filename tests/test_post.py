@@ -56,21 +56,17 @@ class PostTest(ApiTestCase):
         try:
             resp = _resp['Item']
         except KeyError:
-            t.info('FAILED')
             scan = self.post_table.scan()
             items = scan["Items"]
-            t.data('DATABASE DUMP', items)
             self.fail("Post ID not found in database!")
         self.assertDictEqual(mock_request, resp)
         # Check Author Updated
-        t = TestPrint('test_post_update (author)')
         _resp = self.author_table.get_item(
             Key={
                 'authorId': mock_request['author']
             }
         )
         resp = _resp['Item']
-        t.data('_resp Data', resp)
         # check if author data contains new postIds
         expected_posts = ['1']
         self.assertEqual(expected_posts, resp['posts'])

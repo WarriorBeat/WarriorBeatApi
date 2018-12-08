@@ -17,10 +17,11 @@ class MediaSchema(Schema):
 
 class ImageSchema(MediaSchema):
     """Schema for Image Type Media"""
-    credits = fields.Str(required=False)
-    caption = fields.Str(required=False)
+    credits = fields.Str()
+    caption = fields.Str()
     title = fields.Str()
     key = fields.Str()
+    url = fields.Str()
     type = fields.Str(missing='image', default='image')
 
     @post_load

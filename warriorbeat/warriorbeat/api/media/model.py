@@ -18,6 +18,7 @@ class Media(ResourceModel):
     def __init__(self, mediaId, **kwargs):
         self.mediaId = mediaId
         self.source = kwargs.get('source')
+        self.url = kwargs.get('url', '')
         self.type = kwargs.get('type', '')
 
 
@@ -36,6 +37,13 @@ class Image(Media):
         """download image from url and set source"""
         key = slugify(self.title)
         url, file_ext = self.storage.upload_from_url(self.source, key=key)
-        self.source = url
+        self.url = url
         self.key = self.storage.key + key + file_ext
         return url
+
+    def create(self, overwrite=None):
+        """override create to set source"""
+        existing_source = getattr(overwrite, 'source', None)
+        if existing_source != self.source:
+            self.set_source()
+        return super().save()

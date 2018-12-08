@@ -44,11 +44,11 @@ def make_mock_author(id='1', name='A Test Author', media_id='20'):
     return mock_request
 
 
-def make_mock_media(id='1', title='Super Cool Pic'):
+def make_mock_media(id='1', title='Super Cool Pic', source="https://bit.ly/2xF5t73"):
     """Make media mock request"""
     mock_request = {
         'mediaId': id,
-        'source': 'https://bit.ly/2xF5t73',
+        'source': source,
         'credits': '@123ABC Comp.',
         'caption': 'Super Cool Image',
         'title': title,
