@@ -71,8 +71,17 @@ class DynamoDB:
         self.table['table_name'] = _tname if AWS_DEV != 'True' else _tname + '-dev'
         self.db = self.dynamodb.Table(self.table['table_name'])
 
+    def clean_item(self, item):
+        """prepare item for database insertion"""
+        clean = item.copy()
+        for k, v in item.items():
+            if type(v) is str and len(v) <= 0:
+                clean.pop(k)
+        return clean
+
     def add_item(self, item):
         """adds item to database"""
+        item = self.clean_item(item)
         self.db.put_item(Item=item)
         return item
 

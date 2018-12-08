@@ -32,8 +32,15 @@ class MediaItem(Resource):
     @retrieve_item(Media, ImageSchema)
     def patch(self, data, media, **kwargs):
         media = media.update(data)
-        media.set_source()
+        if 'source' in data:
+            media.set_source()
         return media.save()
+
+    @retrieve_item(Media, ImageSchema, raise_404=False)
+    @use_schema(ImageSchema(), dump=True)
+    def put(self, old_media, media, **kwargs):
+        media.create(overwrite=old_media)
+        return media
 
     @retrieve_item(Media, ImageSchema)
     def delete(self, media, **kwargs):

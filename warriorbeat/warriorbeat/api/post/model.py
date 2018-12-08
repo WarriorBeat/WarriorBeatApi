@@ -31,3 +31,9 @@ class Article(Post):
         self.cover_image = kwargs.get('cover_image')
         self.content = kwargs.get('content')
         super(Article, self).__init__(*args, **kwargs)
+
+    def create(self, *args, **kwargs):
+        """override create to update author"""
+        author = self.author
+        author.add_post(self.postId)
+        return super().save(*args, **kwargs)
