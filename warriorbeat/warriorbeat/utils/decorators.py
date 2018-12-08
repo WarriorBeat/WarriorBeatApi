@@ -32,7 +32,10 @@ def use_schema(schema, dump=False, allow_many=False):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            is_many = type(request.json) == list and allow_many
+            json_type = type(request.json)
+            if type(request.json) is str:
+                json_type = json.loads(request.json)
+            is_many = type(json_type) == list and allow_many
             try:
                 data = schema.load(request.json, many=is_many)
             except Exception as e:
@@ -42,7 +45,7 @@ def use_schema(schema, dump=False, allow_many=False):
                 except Exception as e:
                     print(e)
                     raise
-            data = [data] if allow_many and type(data) != list else data
+            data = data if allow_many and type(data) != list else data
             args = args + (data, )
             f_return = func(*args, **kwargs)
             if dump:
@@ -98,13 +101,36 @@ def retrieve_item(model, schema=None, raise_404=True):
         @wraps(func)
         def wrapper(*args, **kwargs):
             item_id = next(iter(kwargs.values()))
-            if schema:
-                item = model.retrieve(item_id, schema=schema, instance=True)
-            else:
-                item = model.retrieve(item_id)
+            item = model.retrieve(item_id)
             if item is None and raise_404:
                 return '', 404
+            if schema:
+                _item = model.retrieve(item_id)
+                item = schema().load(_item)
             args = args + (item, )
             return func(*args, **kwargs)
         return wrapper
     return decorator
+
+
+def allow_relations(func):
+    """
+    @allow_relations : @decorator
+    Parses 'include' query arg and populates relations
+
+    returns:
+        item data with any relations populated entirely
+    """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        item = args[-1]
+        query = request.args.get('include', None)
+        data = item.schema.dump(item)
+        if query:
+            query = query.split(',')
+            relations = {k: v for k, v in [
+                item.get_relation(r) for r in query] if v is not None}
+            data = {**data, **relations}
+        args = args + (data, )
+        return func(*args, **kwargs)
+    return wrapper

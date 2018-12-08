@@ -18,6 +18,18 @@ class CategoryTest(ApiTestCase):
         req = json.loads(_req.json())
         self.assertDictEqual(mock_request, req)
 
+    def test_multi_category_create(self):
+        """Test Multiple Category Creation"""
+        mock_request = [
+            make_mock_category(),
+            make_mock_category(id='2', name='Fun'),
+            make_mock_category(id='3', name='Culture'),
+            make_mock_category(id='4', name='Something')
+        ]
+        _req = requests.post(category_url, json=json.dumps(mock_request))
+        req = json.loads(_req.json())
+        self.assertEqual(mock_request, req)
+
     def test_category_edit(self):
         """Test Category Edit via Patch"""
         # Create Test Category

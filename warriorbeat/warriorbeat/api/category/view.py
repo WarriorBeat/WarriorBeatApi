@@ -16,7 +16,8 @@ class CategoryList(Resource):
 
     @use_schema(CategorySchema(), dump=True, allow_many=True)
     def post(self, categories):
-        categories = [c.create() for c in categories]
+        categories = [c.create() for c in categories] if type(
+            categories) is list else categories.create()
         return categories
 
 
