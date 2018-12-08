@@ -9,7 +9,7 @@ from sample import make_mock_poll, poll_url
 from test_setup import ApiTestCase
 
 
-class PostTest(ApiTestCase):
+class PollTest(ApiTestCase):
 
     def test_create_poll(self):
         """Test Poll Creation"""

@@ -3,7 +3,6 @@
 """
 
 import decimal
-import io
 import json
 import os
 import unittest
@@ -121,21 +120,6 @@ class ApiTestCase(unittest.TestCase):
         self.media_bucket.objects.all().delete()
         self.media_bucket.delete()
         t.info('Test Buckets Deleted.')
-
-    def test_s3_bucket(self):
-        """Test Local S3 Bucket"""
-        t = TestPrint('test_s3_bucket')
-        sample_file = 'tests/sample_author.json'
-        sample_data = open(sample_file, 'r')
-        expected = json.load(sample_data)
-        self.media_bucket.upload_file(sample_file, 'tests/sample_author.json')
-        tmpdata = io.BytesIO()
-        self.media_bucket.download_fileobj(
-            'tests/sample_author.json', tmpdata)
-        down = json.loads(tmpdata.getvalue().decode("utf-8"))
-        t.data('Expected Data', expected)
-        t.data('Downloaded Data', down)
-        self.assertEqual(expected, down)
 
     def upload_sample_author(self):
         t = TestPrint('Upload Sample Author')

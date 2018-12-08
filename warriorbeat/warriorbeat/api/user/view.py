@@ -8,7 +8,7 @@ from flask_restful import Resource
 
 from warriorbeat.api.user.model import UserFeedback
 from warriorbeat.api.user.schema import UserFeedbackSchema
-from warriorbeat.utils.decorators import use_schema
+from warriorbeat.utils import parse_json, retrieve_item, use_schema
 
 
 class UserFeedbackList(Resource):
@@ -23,6 +23,18 @@ class UserFeedbackList(Resource):
 
 
 class UserFeedbackItem(Resource):
-    def get(self, feedbackId):
-        feedback = UserFeedback.retrieve(feedbackId)
+
+    @retrieve_item(UserFeedback)
+    def get(self, feedback, **kwargs):
         return feedback
+
+    @parse_json
+    @retrieve_item(UserFeedback, UserFeedbackSchema)
+    def patch(self, data, feedback, **kwargs):
+        feedback = feedback.update(data)
+        return feedback.save()
+
+    @retrieve_item(UserFeedback, UserFeedbackSchema)
+    def delete(self, feedback, **kwargs):
+        feedback.delete()
+        return '', 204

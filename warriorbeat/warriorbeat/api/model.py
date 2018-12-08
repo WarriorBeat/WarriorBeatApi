@@ -38,19 +38,18 @@ class ResourceModel:
         return item
 
     @classmethod
-    def update_item(cls, identity, data, schema, **kwargs):
-        """update resource item with new data"""
-        item = cls.retrieve(identity)
-        deep_merge_dicts(item, data)
-        schema = schema() if isinstance(schema, type) else schema
-        instance = schema.load(item)
-        return instance
-
-    @classmethod
     def all(cls):
         """return all items"""
         data = cls.db.all
         return data
+
+    def update(self, data):
+        """merge item with new data"""
+        item_id = getattr(self, self.identity)
+        item_data = self.db.get_item(item_id)
+        deep_merge_dicts(item_data, data)
+        updated_item = self.schema.load(item_data)
+        return updated_item
 
     def save(self):
         """save item to database"""

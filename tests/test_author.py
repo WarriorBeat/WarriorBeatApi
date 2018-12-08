@@ -8,7 +8,8 @@ import unittest
 import requests
 
 from helper import TestPrint
-from sample import author_url, make_mock_author
+from sample import (author_url, make_mock_author, make_mock_profile_image,
+                    media_url)
 from test_setup import ApiTestCase
 
 
@@ -55,6 +56,47 @@ class AuthorTest(ApiTestCase):
         mock_request['posts'] = []
         t.data('Expected', mock_request)
         self.assertDictEqual(mock_request, db_item)
+
+    def test_author_edit(self):
+        """Test Author Edit via Patch"""
+        # Create test author profile image
+        mock_profile = make_mock_profile_image()
+        _req = requests.post(media_url, json=json.dumps(mock_profile))
+        # Create test author
+        mock_author = make_mock_author()
+        _req = requests.post(author_url, json=json.dumps(mock_author))
+        # Mock Patch Request
+        mock_url = f"{author_url}/{mock_author['authorId']}"
+        mock_request = {
+            'name': "Johnny Appleseed",
+            'description': "Yep"
+        }
+        # Expect same author but with new name/desc
+        expected = mock_author
+        expected['name'] = "Johnny Appleseed"
+        expected['description'] = "Yep"
+        expected['posts'] = []
+        # Title should be parsed from ['administrator', 'staff_writer'] => "Staff Writer"
+        expected['title'] = "Staff Writer"
+        # Send Patch Request
+        _req = requests.patch(mock_url, json=json.dumps(mock_request))
+        req = _req.json()
+        self.assertDictEqual(expected, req)
+
+    def test_author_delete(self):
+        """Test Author Deletion"""
+        # Create test author profile image
+        mock_profile = make_mock_profile_image()
+        _req = requests.post(media_url, json=json.dumps(mock_profile))
+        # Create test author
+        mock_author = make_mock_author()
+        _req = requests.post(author_url, json=json.dumps(mock_author))
+        # Make Delete Request
+        mock_url = f"{author_url}/{mock_author['authorId']}"
+        req = requests.delete(mock_url)
+        self.assertEqual(req.status_code, 204)
+        get_req = requests.get(mock_url)
+        self.assertEqual(get_req.status_code, 404)
 
 
 if __name__ == '__main__':

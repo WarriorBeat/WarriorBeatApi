@@ -3,7 +3,6 @@
     Models for User Profiles & Accounts
 """
 
-from datetime import datetime
 
 from marshmallow import Schema, fields, post_load
 
@@ -15,10 +14,9 @@ class UserFeedbackSchema(Schema):
     userId = fields.Str(default='GUEST', missing='GUEST')
     feedbackId = fields.Str()
     phone = fields.Str(required=True)
-    create_date = fields.DateTime(
-        default=datetime.now(), missing=datetime.now())
-    subject = fields.String()
-    content = fields.String()
+    create_date = fields.Str()
+    subject = fields.Str()
+    content = fields.Str()
 
     @post_load
     def make_feedback(self, data):

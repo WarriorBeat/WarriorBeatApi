@@ -8,10 +8,9 @@ import unittest
 import requests
 
 from helper import TestPrint
-from sample import (author_url, category_url, make_fullmock_article,
-                    make_mock_article, make_mock_author, make_mock_category,
-                    make_mock_media, make_mock_profile_image, media_url,
-                    post_url)
+from sample import (author_url, category_url, make_mock_article,
+                    make_mock_author, make_mock_category, make_mock_media,
+                    make_mock_profile_image, media_url, post_url)
 from test_setup import ApiTestCase
 
 
@@ -98,13 +97,37 @@ class PostTest(ApiTestCase):
         expected_posts = [mock_post_1['postId'], mock_post_2['postId']]
         self.assertEqual(expected_posts, resp['posts'])
 
-    def test_create_category(self):
-        """Test Category Creation"""
-        t = TestPrint('test_create_category')
-        mock_request = make_mock_category()
-        _req = requests.post(category_url, json=json.dumps(mock_request))
-        req = json.loads(_req.json())
-        self.assertDictEqual(mock_request, req)
+    def test_article_edit(self):
+        """Test Article Edit via Patch"""
+        # Setup test Article
+        article_setup = self.setup_article()
+        mock_article = make_mock_article(**article_setup)
+        _req = requests.post(post_url, json=json.dumps(mock_article))
+        # Create new Cover Image to replace article's current
+        mock_cover_img = make_mock_media(id='30', title='Replacement Pic')
+        _req = requests.post(media_url, json=json.dumps(mock_cover_img))
+        # Mock Patch Request
+        mock_url = f"{post_url}/{mock_article['postId']}"
+        mock_request = {
+            'cover_image': '30'
+        }
+        _req = requests.patch(mock_url, json=json.dumps(mock_request))
+        req = _req.json()
+        # Expect same article but with new cover_image id
+        expected = mock_article
+        expected['cover_image'] = '30'
+        self.assertDictEqual(expected, req)
+
+    def test_article_delete(self):
+        """Test Article Deletion"""
+        article_setup = self.setup_article()
+        mock_article = make_mock_article(**article_setup)
+        _req = requests.post(post_url, json=json.dumps(mock_article))
+        mock_url = f"{post_url}/{mock_article['postId']}"
+        req = requests.delete(mock_url)
+        self.assertEqual(req.status_code, 204)
+        get_req = requests.get(mock_url)
+        self.assertEqual(get_req.status_code, 404)
 
 
 if __name__ == '__main__':

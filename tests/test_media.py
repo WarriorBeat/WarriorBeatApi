@@ -62,3 +62,49 @@ class MediaTest(ApiTestCase):
         db_content = self.make_db_test(p, self.media_table, db_key)
         p.data('Expected', expected)
         self.assertDictEqual(expected, db_content)
+
+    def test_media_edit(self):
+        """Test Media Edit via Patch"""
+        # Create Test Media
+        mock_media = make_mock_media()
+        _req = requests.post(media_url, json=json.dumps(mock_media))
+        media_req = json.loads(_req.json())
+        # Mock Patch Request
+        mock_url = f"{media_url}/{mock_media['mediaId']}"
+        mock_request = {
+            'caption': 'Really Cool Image',
+            'source': 'https://bit.ly/2N5be49'
+        }
+        # Expect new caption/source & media attributes
+        expected = mock_media
+        expected['caption'] = "Really Cool Image"
+        expected['source'] = media_req['source']
+        expected['key'] = media_req['key']
+        expected['type'] = media_req['type']
+        # Send Patch Request
+        _req = requests.patch(mock_url, json=json.dumps(mock_request))
+        req = _req.json()
+        # Test new image source
+
+        def get_img_data(url):
+            img_stream = requests.get(url, stream=True)
+            img_obj = img_stream.raw
+            img_data = img_obj.read()
+            return img_data
+        sent_img = get_img_data("https://bit.ly/2N5be49")
+        rec_img = get_img_data(req['source'])
+        self.assertEqual(sent_img, rec_img)
+        # Assert Data Changes
+        self.assertEqual(expected, req)
+
+    def test_media_delete(self):
+        """Test Media Deletion"""
+        # Create Test Media
+        mock_media = make_mock_media()
+        _req = requests.post(media_url, json=json.dumps(mock_media))
+        # Make Delete Request
+        mock_url = f"{media_url}/{mock_media['mediaId']}"
+        req = requests.delete(mock_url)
+        self.assertEqual(req.status_code, 204)
+        get_req = requests.get(mock_url)
+        self.assertEqual(get_req.status_code, 404)
