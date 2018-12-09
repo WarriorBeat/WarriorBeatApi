@@ -125,6 +125,20 @@ class PostTest(ApiTestCase):
         get_req = requests.get(mock_url)
         self.assertEqual(get_req.status_code, 404)
 
+    def test_article_relations(self):
+        """Test Article Relations"""
+        article_setup = self.setup_article()
+        mock_article = make_mock_article(**article_setup)
+        _req = requests.post(post_url, json=json.dumps(mock_article))
+        mock_url = f"{post_url}/1"
+        _author = requests.get(f"{author_url}/1")
+        author = _author.json()
+        _req = requests.get(f'{mock_url}?include=author')
+        req = _req.json()
+        expected = mock_article
+        expected['author'] = author
+        self.assertDictEqual(expected, req)
+
 
 if __name__ == '__main__':
     unittest.main()

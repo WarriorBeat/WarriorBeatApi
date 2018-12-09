@@ -11,6 +11,7 @@ class Post(ResourceModel):
     """Base Model for Post Resource"""
     db = DynamoDB('post')
     identity = 'postId'
+    relations = ["author", "categories", "cover_image"]
 
     def __init__(self, postId, **kwargs):
         self.postId = postId

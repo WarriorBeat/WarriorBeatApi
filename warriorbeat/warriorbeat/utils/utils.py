@@ -56,3 +56,14 @@ def deep_merge_dicts(original, incoming):
                 original[key] = incoming[key]
         else:
             original[key] = incoming[key]
+
+
+def get_json_load_method(instance, json_data):
+    """Determine to load json as object or string."""
+    json_type = type(json_data)
+    method = 'loads' if json_type is str else 'load'
+    if json_type is str:
+        json_opener = json_data[0]
+        json_type = list if json_opener == '[' else dict
+    method = getattr(instance, method)
+    return (method, json_type)
