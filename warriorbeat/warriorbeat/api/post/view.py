@@ -8,7 +8,8 @@ from flask_restful import Resource
 
 from warriorbeat.api.post.model import Article
 from warriorbeat.api.post.schema import ArticleSchema
-from warriorbeat.utils import parse_json, retrieve_item, use_schema
+from warriorbeat.utils import (allow_relations, parse_json, retrieve_item,
+                               use_schema)
 
 
 class PostList(Resource):
@@ -24,9 +25,10 @@ class PostList(Resource):
 
 class PostItem(Resource):
 
-    @retrieve_item(Article)
-    def get(self, article, **kwargs):
-        return article
+    @retrieve_item(Article, ArticleSchema)
+    @allow_relations
+    def get(self, article, data, **kwargs):
+        return data
 
     @parse_json
     @retrieve_item(Article, ArticleSchema)

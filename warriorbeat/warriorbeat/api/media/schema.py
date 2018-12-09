@@ -17,8 +17,8 @@ class MediaSchema(Schema):
 
 class ImageSchema(MediaSchema):
     """Schema for Image Type Media"""
-    credits = fields.Str()
-    caption = fields.Str()
+    credits = fields.Str(allow_none=True)
+    caption = fields.Str(allow_none=True)
     title = fields.Str()
     key = fields.Str()
     url = fields.Str()

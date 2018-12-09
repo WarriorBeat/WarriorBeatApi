@@ -66,3 +66,14 @@ class ResourceModel:
     def create(self):
         """create item from model"""
         return self.save()
+
+    def get_relation(self, relation):
+        """retrieve item relationship"""
+        if relation in self.relations:
+            item = getattr(self, relation)
+            is_many = type(item) == list
+            model = type(item[0]) if is_many else type(item)
+            item_data = [
+                model.retrieve(getattr(i, i.identity)) for i in item] if is_many else model.retrieve(getattr(item, item.identity))
+            return (relation, item_data)
+        return None
