@@ -8,6 +8,8 @@ from functools import wraps
 
 from flask_restful import request
 
+from .utils import get_json_load_method
+
 
 def use_schema(schema, dump=False, allow_many=False):
     """
@@ -32,20 +34,10 @@ def use_schema(schema, dump=False, allow_many=False):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            json_type = type(request.json)
-            if type(request.json) is str:
-                json_type = json.loads(request.json)
-            is_many = type(json_type) == list and allow_many
-            try:
-                data = schema.load(request.json, many=is_many)
-            except Exception as e:
-                print(e)
-                try:
-                    data = schema.loads(request.json, many=is_many)
-                except Exception as e:
-                    print(e)
-                    raise
-            data = data if allow_many and type(data) != list else data
+            load_method, json_type = get_json_load_method(schema, request.json)
+            is_many = json_type is list and allow_many
+            data = load_method(request.json, many=is_many)
+            data = data if allow_many and json_type != list else data
             args = args + (data, )
             f_return = func(*args, **kwargs)
             if dump:
@@ -106,7 +98,7 @@ def retrieve_item(model, schema=None, raise_404=True):
                 return '', 404
             if schema:
                 _item = model.retrieve(item_id)
-                item = schema().load(_item)
+                item = schema().load(_item) if _item is not None else None
             args = args + (item, )
             return func(*args, **kwargs)
         return wrapper

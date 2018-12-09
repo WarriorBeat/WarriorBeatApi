@@ -10,6 +10,7 @@ class Author(ResourceModel):
     """Model for Author Resource"""
     db = DynamoDB('author')
     identity = 'authorId'
+    relations = ['profile_image', 'posts']
 
     def __init__(self, authorId, **kwargs):
         self.authorId = authorId

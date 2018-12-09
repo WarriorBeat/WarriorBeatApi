@@ -7,7 +7,8 @@ from flask_restful import Resource
 
 from warriorbeat.api.author.model import Author
 from warriorbeat.api.author.schema import AuthorSchema
-from warriorbeat.utils import parse_json, retrieve_item, use_schema
+from warriorbeat.utils import (allow_relations, parse_json, retrieve_item,
+                               use_schema)
 
 
 class AuthorList(Resource):
@@ -23,9 +24,10 @@ class AuthorList(Resource):
 
 class AuthorItem(Resource):
 
-    @retrieve_item(Author)
-    def get(self, author, **kwargs):
-        return author
+    @retrieve_item(Author, AuthorSchema)
+    @allow_relations
+    def get(self, author, data, **kwargs):
+        return data
 
     @parse_json
     @retrieve_item(Author, AuthorSchema)
