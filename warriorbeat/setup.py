@@ -4,7 +4,7 @@ setup(
     name='warriorbeat',
     packages=['warriorbeat'],
     author='Braden Mars',
-    version="0.6.3",
+    version="0.6.4",
     url='https://github.com/WarriorBeat/WarriorBeatApi',
     include_package_data=True,
     install_requires=[
