@@ -16,13 +16,16 @@ from .api.category.view import CategoryList, CategoryItem
 from .api.poll.view import PollList, PollItem
 from .exceptions import ItemAlreadyExists
 from warriorbeat.api.user.view import UserFeedbackList
+import pkg_resources
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 # Init Sentry
+version = pkg_resources.require("warriorbeat")[0].version
 sentry_sdk.init(
     dsn="https://9c5dbdae23c4481ab38987b2069d3fe5@sentry.io/1358208",
-    integrations=[FlaskIntegration()]
+    integrations=[FlaskIntegration()],
+    release=f"warriorbeatapi@{version}"
 )
 
 app = Flask(__name__, instance_relative_config=True)
