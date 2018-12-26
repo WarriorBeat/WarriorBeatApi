@@ -19,14 +19,18 @@ from warriorbeat.api.user.view import UserFeedbackList
 import pkg_resources
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
+import os
+
 
 # Init Sentry
-version = pkg_resources.require("warriorbeat")[0].version
-sentry_sdk.init(
-    dsn="https://9c5dbdae23c4481ab38987b2069d3fe5@sentry.io/1358208",
-    integrations=[FlaskIntegration()],
-    release=f"warriorbeatapi@{version}"
-)
+if os.environ.get('FLASK_TESTING') != 'True':
+    version = pkg_resources.require("warriorbeat")[0].version
+    sentry_sdk.init(
+        dsn="https://9c5dbdae23c4481ab38987b2069d3fe5@sentry.io/1358208",
+        integrations=[FlaskIntegration()],
+        release=f"warriorbeatapi@{version}"
+    )
+
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('warriorbeat.config')
