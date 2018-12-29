@@ -1,6 +1,6 @@
 """
-    warriorbeat/api/user/view.py
-    User Resources
+    warriorbeat/api/user/feedback/view.py
+    User Feedback View
 """
 
 

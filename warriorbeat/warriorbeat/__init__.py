@@ -11,11 +11,10 @@ from .api.root.view import Root
 from .api.author.view import AuthorList, AuthorItem
 from .api.post.view import PostList, PostItem
 from .api.media.view import MediaList, MediaItem
-from .api.user.view import UserFeedbackList, UserFeedbackItem
+from .api.user.feedback.view import UserFeedbackList, UserFeedbackItem
 from .api.category.view import CategoryList, CategoryItem
 from .api.poll.view import PollList, PollItem
 from .exceptions import ItemAlreadyExists
-from warriorbeat.api.user.view import UserFeedbackList
 import pkg_resources
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
