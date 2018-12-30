@@ -55,7 +55,7 @@ rest.add_resource(MediaList, '/api/media', endpoint='media')
 rest.add_resource(MediaItem, '/api/media/<int:mediaId>', endpoint='media_item')
 # User Resource
 rest.add_resource(UserList, '/api/users', endpoint='users')
-rest.add_resource(UserItem, '/api/user/<int:userId>', endpoint='user')
+rest.add_resource(UserItem, '/api/users/<int:userId>', endpoint='user')
 rest.add_resource(UserFeedbackList, '/api/user/feedback',
                   endpoint='feedback')
 rest.add_resource(UserFeedbackItem, '/api/user/feedback/<string:feedbackId>',
