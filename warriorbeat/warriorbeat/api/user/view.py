@@ -1,40 +1,41 @@
 """
-    warriorbeat/api/user/view.py
-    User Resources
+    warriorbeat/api/user/schema.py
+    Primary View for User Resource
 """
-
 
 from flask_restful import Resource
 
-from warriorbeat.api.user.model import UserFeedback
-from warriorbeat.api.user.schema import UserFeedbackSchema
-from warriorbeat.utils import parse_json, retrieve_item, use_schema
+from warriorbeat.api.user.model import User
+from warriorbeat.api.user.schema import UserSchema
+from warriorbeat.utils import (allow_relations, parse_json, retrieve_item,
+                               use_schema)
 
 
-class UserFeedbackList(Resource):
+class UserList(Resource):
 
     def get(self):
-        return UserFeedback.all()
+        return User.all()
 
-    @use_schema(UserFeedbackSchema(), dump=True)
-    def post(self, feedback):
-        feedback.save()
-        return feedback
+    @use_schema(UserSchema(), dump=True)
+    def post(self, user):
+        user.create()
+        return user
 
 
-class UserFeedbackItem(Resource):
+class UserItem(Resource):
 
-    @retrieve_item(UserFeedback)
-    def get(self, feedback, **kwargs):
-        return feedback
+    @retrieve_item(User, UserSchema)
+    @allow_relations
+    def get(self, user, data, **kwargs):
+        return data
 
     @parse_json
-    @retrieve_item(UserFeedback, UserFeedbackSchema)
-    def patch(self, data, feedback, **kwargs):
-        feedback = feedback.update(data)
-        return feedback.save()
+    @retrieve_item(User, UserSchema)
+    def patch(self, data, user, **kwargs):
+        user = user.update(data)
+        return user.save()
 
-    @retrieve_item(UserFeedback, UserFeedbackSchema)
-    def delete(self, feedback, **kwargs):
-        feedback.delete()
+    @retrieve_item(User, UserSchema)
+    def delete(self, user, **kwargs):
+        user.delete()
         return '', 204

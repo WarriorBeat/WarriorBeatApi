@@ -6,7 +6,20 @@
 
 from marshmallow import Schema, fields, post_load
 
-from warriorbeat.api.user.model import UserFeedback
+from warriorbeat.api.user.model import User, UserFeedback
+
+
+class UserSchema(Schema):
+    """Data Schema for Users"""
+    userId = fields.Str()
+    devices = fields.List(fields.Str())
+
+    @post_load
+    def make_user(self, data):
+        """return User instance"""
+        user = User.create_or_update(**data)
+        user.schema = UserSchema()
+        return user
 
 
 class UserFeedbackSchema(Schema):

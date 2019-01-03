@@ -7,6 +7,22 @@ from warriorbeat.api.model import ResourceModel
 from warriorbeat.utils.data import DynamoDB
 
 
+class User(ResourceModel):
+    """Model for User Resource"""
+    db = DynamoDB('user')
+    identity = 'userId'
+
+    def __init__(self, *args, **kwargs):
+        self.userId = kwargs.get('userId')
+        self.devices = kwargs.get('devices', [])
+
+    def save(self, *args, **kwargs):
+        """override save to ensure devices are unique"""
+        self.devices.append(self.userId)
+        self.devices = set(self.devices)
+        return super().save(*args, **kwargs)
+
+
 class UserFeedback(ResourceModel):
     """Model for User Feedback/Suggestions"""
     db = DynamoDB('feedback')
