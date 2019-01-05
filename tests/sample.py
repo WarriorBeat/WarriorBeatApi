@@ -39,7 +39,9 @@ def make_mock_author(id='1', name='A Test Author', media_id='20'):
         'name': name,
         'profile_image': media_id,
         'title': ['author', 'administrator', 'staff_writer'],
-        'description': f'Hi, I am a test author #{id}'
+        'description': f'Hi, I am a test author #{id}',
+        'grade_year': "11",
+        "staff_year": "3"
     }
     return mock_request
 
