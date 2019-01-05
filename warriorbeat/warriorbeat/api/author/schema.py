@@ -17,6 +17,9 @@ class AuthorSchema(Schema):
     title = fields.Method('author_role', deserialize='get_author_role')
     description = fields.Str(
         required=False, allow_none=True, default='Staff Member')
+    post_count = fields.Str()
+    staff_year = fields.Str()
+    grade_year = fields.Str()
 
     def author_role(self, obj):
         """return author role"""
