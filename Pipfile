@@ -13,8 +13,9 @@ webargs = "*"
 "boto3" = "*"
 awesome-slugify = "*"
 requests = "*"
-warriorbeat = {editable = true, path = "./warriorbeat"}
-sentry-sdk = {version = "==0.6.4", extras = ["flask"]}
+warriorbeat = {editable = true,path = "./warriorbeat"}
+sentry-sdk = {version = "==0.6.4",extras = ["flask"]}
+pyyaml = "*"
 
 [dev-packages]
 pylint = "*"
