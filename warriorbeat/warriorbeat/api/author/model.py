@@ -19,12 +19,17 @@ class Author(ResourceModel):
         self.posts = kwargs.get('posts', [])
         self.title = kwargs.get('title')
         self.description = kwargs.get('description')
+        self.post_count = str(len(self.posts))
+        self.staff_year = kwargs.get('staff_year')
+        self.grade_year = kwargs.get('grade_year')
 
     def add_post(self, postId, *args, **kwargs):
         """adds postId to author posts"""
         if postId not in self.posts:
             self.posts.append(postId)
-            self = super().update({'posts': self.posts})
+            self.post_count = str(len(self.posts))
+            self = super().update(
+                {'posts': self.posts, 'post_count': self.post_count})
             return self.save()
         return self
 

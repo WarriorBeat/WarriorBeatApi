@@ -29,6 +29,8 @@ class AuthorTest(ApiTestCase):
         mock_request['title'] = "Staff Writer"
         # Author should be returned with empty array for posts attribute
         mock_request['posts'] = []
+        # Author Should have 0 posts
+        mock_request['post_count'] = '0'
         p.data('Expected', mock_request)
         self.assertDictEqual(mock_request, req)
 
@@ -54,6 +56,7 @@ class AuthorTest(ApiTestCase):
         mock_request['profile_image'] = db_item['profile_image']
         mock_request['title'] = "Staff Writer"
         mock_request['posts'] = []
+        mock_request['post_count'] = '0'
         t.data('Expected', mock_request)
         self.assertDictEqual(mock_request, db_item)
 
@@ -78,6 +81,8 @@ class AuthorTest(ApiTestCase):
         expected['posts'] = []
         # Title should be parsed from ['administrator', 'staff_writer'] => "Staff Writer"
         expected['title'] = "Staff Writer"
+        # Author should still have 0 posts
+        expected['post_count'] = '0'
         # Send Patch Request
         _req = requests.patch(mock_url, json=json.dumps(mock_request))
         req = _req.json()

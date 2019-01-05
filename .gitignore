@@ -42,3 +42,4 @@ build
 # Flask
 instance/
 tests/live\.py
+.env
