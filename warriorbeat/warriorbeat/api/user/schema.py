@@ -12,7 +12,9 @@ from warriorbeat.api.user.model import User, UserFeedback
 class UserSchema(Schema):
     """Data Schema for Users"""
     userId = fields.Str()
-    devices = fields.List(fields.Str())
+    cognitoId = fields.Str()
+    subscriptions = fields.Pluck('AuthorSchema', 'authorId', many=True)
+    liked_posts = fields.Pluck('ArticleSchema', 'postId', many=True)
 
     @post_load
     def make_user(self, data):
