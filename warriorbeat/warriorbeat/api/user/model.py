@@ -14,9 +14,9 @@ class User(ResourceModel):
 
     def __init__(self, *args, **kwargs):
         self.userId = kwargs.get('userId')
-        self.cognitoId = kwargs.get('cognitoId')
-        self.subscriptions = kwargs.get('subscriptions')
-        self.liked_posts = kwargs.get('liked_posts')
+        self.subscriptions = kwargs.get('subscriptions', [])
+        self.liked_posts = kwargs.get('liked_posts', [])
+        self.voted_polls = kwargs.get('voted_polls', [])
 
 
 class UserFeedback(ResourceModel):
