@@ -1,4 +1,29 @@
-# [](https://github.com/WarriorBeat/WarriorBeatApi/compare/v0.6.4...v) (2019-01-03)
+# [](https://github.com/WarriorBeat/WarriorBeatApi/compare/v0.7.0...v) (2019-01-09)
+
+
+
+# [0.7.0](https://github.com/WarriorBeat/WarriorBeatApi/compare/v0.6.5...v0.7.0) (2019-01-09)
+
+
+### ✨ Features
+
+* **Author:** Added Author Stats to Author Resource  ([#6](https://github.com/WarriorBeat/WarriorBeatApi/issues/6)) ([57e3d62](https://github.com/WarriorBeat/WarriorBeatApi/commit/57e3d62))
+* **User:** Added User Attributes to Schema/Model ([07d2b14](https://github.com/WarriorBeat/WarriorBeatApi/commit/07d2b14))
+* **User:** Added User Attributes to UserResource ([fcf06f6](https://github.com/WarriorBeat/WarriorBeatApi/commit/fcf06f6))
+
+
+### 🐛 Bug Fixes
+
+* Updated Dependencies ([328fefe](https://github.com/WarriorBeat/WarriorBeatApi/commit/328fefe))
+
+
+### ♻️ Chores
+
+* **release:** v0.7.0 ([2a4a201](https://github.com/WarriorBeat/WarriorBeatApi/commit/2a4a201))
+
+
+
+## [0.6.5](https://github.com/WarriorBeat/WarriorBeatApi/compare/v0.6.4...v0.6.5) (2019-01-03)
 
 
 ### ✨ Features
@@ -9,6 +34,11 @@
 ### 🐛 Bug Fixes
 
 * Sentry loading in dev/debug environments ([88c3dfe](https://github.com/WarriorBeat/WarriorBeatApi/commit/88c3dfe))
+
+
+### ♻️ Chores
+
+* **release:** v0.6.5 ([0c1089f](https://github.com/WarriorBeat/WarriorBeatApi/commit/0c1089f))
 
 
 
