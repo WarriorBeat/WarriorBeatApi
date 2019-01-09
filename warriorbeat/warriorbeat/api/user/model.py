@@ -14,13 +14,9 @@ class User(ResourceModel):
 
     def __init__(self, *args, **kwargs):
         self.userId = kwargs.get('userId')
-        self.devices = kwargs.get('devices', [])
-
-    def save(self, *args, **kwargs):
-        """override save to ensure devices are unique"""
-        self.devices.append(self.userId)
-        self.devices = set(self.devices)
-        return super().save(*args, **kwargs)
+        self.subscriptions = kwargs.get('subscriptions', [])
+        self.liked_posts = kwargs.get('liked_posts', [])
+        self.voted_polls = kwargs.get('voted_polls', [])
 
 
 class UserFeedback(ResourceModel):
